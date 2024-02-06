@@ -22,6 +22,7 @@ namespace AdminApi.Models
 
 
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<State> States { get; set; }
       
 
 
@@ -29,20 +30,29 @@ namespace AdminApi.Models
         {   
 
             modelBuilder.Seed();//use this for Sql server,Mysql,Sqlite and PostgreSql
-            //modelBuilder.SeedOracle();//use this only for Oracle
+                                //modelBuilder.SeedOracle();//use this only for Oracle
             #region 
 
 
-          //modelBuilder.Entity<HospitalMaster>()
-          //  .Property(s => s.CreatedOn)
-          //  .HasDefaultValue(System.DateTime.Now);
+            modelBuilder.Entity<Country>()
+              .Property(s => s.CreatedOn)
+              .HasDefaultValue(System.DateTime.Now);
 
-          //modelBuilder.Entity<HospitalMaster>()
-          //  .Property(s => s.IsDeleted)
-          //  .HasDefaultValue(false)
-          //  .ValueGeneratedNever();
+            modelBuilder.Entity<Country>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
 
-           
+            modelBuilder.Entity<State>()
+             .Property(s => s.CreatedOn)
+             .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<State>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
 
             #endregion
         }

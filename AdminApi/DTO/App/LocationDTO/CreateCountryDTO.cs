@@ -1,6 +1,6 @@
 ﻿namespace AdminApi.DTO.App.LocationDTO
 {
-    public class CountryDTO
+    public class CreateCountryDTO
     {
         public string CountryName { get; set; }
         public string CountryCode { get; set; }

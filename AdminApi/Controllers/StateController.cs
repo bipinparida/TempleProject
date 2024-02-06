@@ -4,123 +4,120 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using AdminApi.DTO.App.LocationDTO;
 using AdminApi.Models.Helper;
-using System;
 using System.Linq;
+using System;
 
 namespace AdminApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CountryController : Controller
+    public class StateController : Controller
     {
         private readonly IConfiguration _config;
         private readonly AppDbContext _context;
-        private readonly ISqlRepository<Country> _CountryRepo;
+        private readonly ISqlRepository<State> _StateRepo;
 
-        public CountryController(IConfiguration config,
-                                 AppDbContext context,
-                                 ISqlRepository<Country> countryRepo)
+        public StateController(IConfiguration config,
+                                    AppDbContext context,
+                                    ISqlRepository<State> StateRepo)
         {
             _config = config;
             _context = context;
-            _CountryRepo = countryRepo;
+            _StateRepo = StateRepo;
         }
 
 
         [HttpPost]
-        public IActionResult CountryCreate(CreateCountryDTO countryDTO)
+        public IActionResult StateCreate(CreateStateDTO createStateDTO)
         {
-            var objcheck = _context.Countries.SingleOrDefault(opt => opt.CountryName == countryDTO.CountryName && opt.IsDeleted == false);
+            var objcheck = _context.States.SingleOrDefault(opt => opt.StateName == createStateDTO.StateName && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
                 {
-                    Country country = new Country();
-                  
-                    country.CountryName = countryDTO.CountryName;
-                    country.CountryCode = countryDTO.CountryCode;
-
-                    country.CreatedBy = countryDTO.CreatedBy;
-                    country.CreatedOn = System.DateTime.Now;
-                    var obj = _CountryRepo.Insert(country);
+                    State state = new State();
+                    state.StateName = createStateDTO.StateName;
+                    state.CountryId = createStateDTO.CountryId;
+                    state.CreatedBy = createStateDTO.CreatedBy;
+                    state.CreatedOn = System.DateTime.Now;
+                    var obj = _StateRepo.Insert(state);
                     return Ok(obj);
                 }
                 else if (objcheck != null)
                 {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate StateName..!" });
                 }
                 return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+
             }
+
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
-
         }
 
 
         [HttpGet]
-        public ActionResult GetCountryList()
+        public ActionResult GetStateList()
         {
             try
             {
-                var list = (from u in _context.Countries
+                var list = (from u in _context.States
+                            join a in _context.Countries on u.CountryId equals a.CountryId
 
-                            select new { u.CountryName, u.CountryId, u.CountryCode, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
+                            select new { u.StateId, u.StateName, a.CountryName, u.CountryId, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
 
                 int totalRecords = list.Count();
 
                 return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
             }
+
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
 
-
-        [HttpGet("{CountryId}")]
-        public ActionResult GetSingleCountry(int CountryId)
+        //single list
+        [HttpGet("{StateId}")]
+        public ActionResult GetSingleState(int StateId)
         {
             try
             {
-                var singleCountry = _CountryRepo.SelectById(CountryId);
-                return Ok(singleCountry);
+                var singleState = _StateRepo.SelectById(StateId);
+                return Ok(singleState);
             }
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-
-
+        //update
         [HttpPost]
-        public ActionResult UpdateCountry(UpdateCountryDTO updateCountryDTO)
+        public ActionResult UpdateState(UpdateStateDTO updateStateDTO)
         {
             try
             {
-                var objCountry = _context.Countries.SingleOrDefault(opt => opt.CountryId == updateCountryDTO.CountryId);
-              
-                objCountry.CountryName = updateCountryDTO.CountryName;
-                objCountry.CountryCode = updateCountryDTO.CountryCode;
-                objCountry.UpdatedBy = updateCountryDTO.CreatedBy;
-                objCountry.UpdatedOn = System.DateTime.Now;
+                var objState = _context.States.SingleOrDefault(opt => opt.StateId == updateStateDTO.StateId);
+                objState.StateName = updateStateDTO.StateName;
+                objState.CountryId = updateStateDTO.CountryId;
+                objState.UpdatedBy = updateStateDTO.CreatedBy;
+                objState.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
-                return Ok(objCountry);
+                return Ok(objState);
             }
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-
-
         [HttpGet("{Id}/{DeletedBy}")]
-        public ActionResult DeleteCountry(int Id, int DeletedBy)
+        public ActionResult DeleteState(int Id, int DeletedBy)
         {
             try
             {
-                var objabout = _context.Countries.SingleOrDefault(opt => opt.CountryId == Id);
+                var objabout = _context.States.SingleOrDefault(opt => opt.StateId == Id);
                 objabout.IsDeleted = true;
                 objabout.UpdatedBy = DeletedBy;
                 objabout.UpdatedOn = System.DateTime.Now;
