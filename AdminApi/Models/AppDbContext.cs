@@ -23,6 +23,7 @@ namespace AdminApi.Models
 
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<State> States { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
       
 
 
@@ -48,6 +49,16 @@ namespace AdminApi.Models
              .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<State>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
+            modelBuilder.Entity<City>()
+           .Property(s => s.CreatedOn)
+           .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<City>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();

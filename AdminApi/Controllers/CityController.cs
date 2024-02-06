@@ -1,46 +1,47 @@
-﻿using AdminApi.Models.App.Location;
+﻿using AdminApi.DTO.App.LocationDTO;
 using AdminApi.Models;
+using AdminApi.Models.App.Location;
+using AdminApi.Models.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using AdminApi.DTO.App.LocationDTO;
-using AdminApi.Models.Helper;
-using System.Linq;
 using System;
+using System.Linq;
 
 namespace AdminApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class StateController : Controller
+    public class CityController : Controller
     {
+
         private readonly IConfiguration _config;
         private readonly AppDbContext _context;
-        private readonly ISqlRepository<State> _StateRepo;
+        private readonly ISqlRepository<City> _CityRepo;
 
-        public StateController(IConfiguration config,
+        public CityController(IConfiguration config,
                                     AppDbContext context,
-                                    ISqlRepository<State> StateRepo)
+                                    ISqlRepository<City> cityRepo)
         {
             _config = config;
             _context = context;
-            _StateRepo = StateRepo;
+            _CityRepo = cityRepo;
         }
 
-
         [HttpPost]
-        public IActionResult StateCreate(CreateStateDTO createStateDTO)
+        public IActionResult CityCreate(CreateCityDTO createCityDTO)
         {
-            var objcheck = _context.States.SingleOrDefault(opt => opt.StateName == createStateDTO.StateName && opt.IsDeleted == false);
+            var objcheck = _context.Cities.SingleOrDefault(opt => opt.CityName == createCityDTO.CityName && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
                 {
-                    State state = new State();
-                    state.StateName = createStateDTO.StateName;
-                    state.CountryId = createStateDTO.CountryId;
-                    state.CreatedBy = createStateDTO.CreatedBy;
-                    state.CreatedOn = System.DateTime.Now;
-                    var obj = _StateRepo.Insert(state);
+                    City city = new City();
+                    city.CityName = createCityDTO.CityName;
+                    city.StateId = createCityDTO.StateId;
+                    city.CountryId = createCityDTO.CountryId;
+                    city.CreatedBy = createCityDTO.CreatedBy;
+                    city.CreatedOn = System.DateTime.Now;
+                    var obj = _CityRepo.Insert(city);
                     return Ok(obj);
                 }
                 else if (objcheck != null)
@@ -57,16 +58,16 @@ namespace AdminApi.Controllers
             }
         }
 
-
         [HttpGet]
-        public ActionResult GetStateList()
+        public ActionResult GetCityList()
         {
             try
             {
-                var list = (from u in _context.States
-                            join a in _context.Countries on u.CountryId equals a.CountryId
+                var list = (from u in _context.Cities
+                            join a in _context.States on u.StateId equals a.StateId
+                            join c in _context.Countries on u.CountryId equals c.CountryId
 
-                            select new { u.StateId, u.StateName, a.CountryName, u.CountryId, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
+                            select new { u.CityId, u.CityName, a.StateName, u.StateId,c.CountryId,c.CountryName ,u.IsDeleted }).Where(x => x.IsDeleted == false).Distinct().ToList();
 
                 int totalRecords = list.Count();
 
@@ -79,45 +80,49 @@ namespace AdminApi.Controllers
             }
         }
 
-        //single list
-        [HttpGet("{StateId}")]
-        public ActionResult GetSingleState(int StateId)
+
+        [HttpGet("{CityId}")]
+        public ActionResult GetSingleCity(int CityId)
         {
             try
             {
-                var singleState = _StateRepo.SelectById(StateId);
-                return Ok(singleState);
+                var singleCity = _CityRepo.SelectById(CityId);
+                return Ok(singleCity);
             }
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-        //update
+
+
         [HttpPost]
-        public ActionResult UpdateState(UpdateStateDTO updateStateDTO)
+        public ActionResult UpdateCity(UpdateCityDTO updateCityDTO)
         {
             try
             {
-                var objState = _context.States.SingleOrDefault(opt => opt.StateId == updateStateDTO.StateId);
-                objState.StateName = updateStateDTO.StateName;
-                objState.CountryId = updateStateDTO.CountryId;
-                objState.UpdatedBy = updateStateDTO.CreatedBy;
-                objState.UpdatedOn = System.DateTime.Now;
+                var objCity = _context.Cities.SingleOrDefault(opt => opt.CityId == updateCityDTO.CityId);
+                objCity.CityName = updateCityDTO.CityName;
+                objCity.StateId = updateCityDTO.StateId;
+                objCity.CountryId = updateCityDTO.CountryId;
+                objCity.UpdatedBy = updateCityDTO.CreatedBy;
+                objCity.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
-                return Ok(objState);
+                return Ok(objCity);
             }
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
         [HttpGet("{Id}/{DeletedBy}")]
-        public ActionResult DeleteState(int Id, int DeletedBy)
+        public ActionResult DeleteCity(int Id, int DeletedBy)
         {
             try
             {
-                var objabout = _context.States.SingleOrDefault(opt => opt.StateId == Id);
+                var objabout = _context.Cities.SingleOrDefault(opt => opt.CityId == Id);
                 objabout.IsDeleted = true;
                 objabout.UpdatedBy = DeletedBy;
                 objabout.UpdatedOn = System.DateTime.Now;
@@ -130,22 +135,22 @@ namespace AdminApi.Controllers
             }
         }
 
-        [HttpGet("{Countryid}")]
-        public ActionResult GetStateListbyCountryid(int Countryid)
+        [HttpGet("{Stateid}")]
+        public ActionResult GetCityListbystateid(int Stateid)
         {
             try
             {
-                var list = (from u in _context.States
-                            join a in _context.Countries on u.CountryId equals a.CountryId
+                var list = (from u in _context.Cities
+                            join a in _context.States on u.StateId equals a.StateId
 
                             select new
                             {
-                                u.StateId,
-                                u.StateName,
-                                a.CountryName,
-                                u.CountryId,
+                                a.StateId,
+                                a.StateName,
+                                u.CityName,
+                                u.CityId,
                                 u.IsDeleted
-                            }).Where(x => x.IsDeleted == false && x.CountryId == Countryid).Distinct().ToList();
+                            }).Where(x => x.IsDeleted == false && x.StateId == Stateid).Distinct().ToList();
 
                 int totalRecords = list.Count();
 
@@ -157,6 +162,7 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
 
     }
 }
