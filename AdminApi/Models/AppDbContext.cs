@@ -1,4 +1,5 @@
-﻿using AdminApi.Models.Helper;
+﻿using AdminApi.Models.App.Location;
+using AdminApi.Models.Helper;
 using AdminApi.Models.Menu;
 using AdminApi.Models.User;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,9 @@ namespace AdminApi.Models
         public virtual DbSet<AppMenu> Menu { get; set; }
         public virtual DbSet<MenuGroup> MenuGroup { get; set; }
         public virtual DbSet<MenuGroupWiseMenuMapping> MenuGroupWiseMenuMapping { get; set; }
+
+
+        public virtual DbSet<Country> Countries { get; set; }
       
 
 

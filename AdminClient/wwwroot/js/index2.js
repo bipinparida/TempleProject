@@ -24,7 +24,7 @@ $(function() {
 			name: 'Main Project',
 			data: dates
 		}],
-		colors: ['#25c574'],
+		colors: ['#FF7743'],
 		markers: {
 			size: 0,
 			style: 'full',
@@ -90,7 +90,7 @@ $(function() {
 			opacity: 1
 
 		},
-		colors: ['#25c574' ,'#8c8eef' ,'#b7b9ec'],
+		colors: ['#FF7743' ,'#8c8eef' ,'#b7b9ec'],
 		legend: {
 			position: 'top',
 			horizontalAlign: 'center',
