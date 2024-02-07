@@ -56,6 +56,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section scripts {
     <script>
         var CountryId = @ViewBag.CountryId
@@ -110,24 +112,63 @@
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
                     },
 
+                    // success: function (data, statusText, xhr) {
+                    //     console.log(data)
+                    //     if (xhr.status === 200) {
+                    //         $('#Country_Tb').DataTable().ajax.reload(null, false);
+                    //         sweetAlert({
+                    //             html: true,
+                    //             icon: "success",
+                    //             title: "Country Update",
+                    //             text: "Successfully updated!",
+                    //             type: "success"
+                    //         });
+                    //     } else if (data.status === "duplicate") {
+                    //         sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //     } else if (data.status === "error") {
+                    //         sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //     } else {
+                    //         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    //     }
+                    // },
+
                     success: function (data, statusText, xhr) {
-                        console.log(data)
                         if (xhr.status === 200) {
-                            $('#Country_Tb').DataTable().ajax.reload(null, false);
-                            sweetAlert({
-                                html: true,
+                            Swal.fire({
                                 icon: "success",
-                                title: "Country Update",
-                                text: "Successfully updated!",
-                                type: "success"
+                                title: "Country Create",
+                                text: "Successfully Created!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
                             });
-                        } else if (data.status === "duplicate") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Country Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else if (data.status === "error") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else {
-                            sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         }
+                        preloader.addClass("d-none");
                     },
                     error: function (data) {
                         console.log(data);

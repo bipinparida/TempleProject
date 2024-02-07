@@ -107,6 +107,16 @@ namespace AdminApi.Controllers
             {
                 var objCountry = _context.Countries.SingleOrDefault(opt => opt.CountryId == updateCountryDTO.CountryId);
 
+                // Check if the updated country name is different from the existing one
+                if (objCountry.CountryName != updateCountryDTO.CountryName)
+                {
+                    var duplicateCountry = _context.Countries.SingleOrDefault(opt => opt.CountryName == updateCountryDTO.CountryName && opt.IsDeleted == false);
+                    if (duplicateCountry != null)
+                    {
+                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                    }
+                }
+
                 objCountry.CountryName = updateCountryDTO.CountryName;
                 objCountry.CountryCode = updateCountryDTO.CountryCode;
                 objCountry.UpdatedBy = updateCountryDTO.CreatedBy;
