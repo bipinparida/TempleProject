@@ -1,4 +1,5 @@
-﻿using AdminApi.Models.App.Location;
+﻿using AdminApi.Models.App.Bhaktas;
+using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
@@ -28,7 +29,8 @@ namespace AdminApi.Models
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Temple> Temples { get; set; }
         public virtual DbSet<Pandit> Pandits { get; set; }
-      
+        public virtual DbSet<Bhakta> Bhaktas { get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -82,6 +84,16 @@ namespace AdminApi.Models
         .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Pandit>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
+            modelBuilder.Entity<Bhakta>()
+       .Property(s => s.CreatedOn)
+       .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Bhakta>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
