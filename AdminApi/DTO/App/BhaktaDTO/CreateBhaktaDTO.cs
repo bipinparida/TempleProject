@@ -17,7 +17,7 @@ namespace AdminApi.DTO.App.BhaktaDTO
     }
     public class UpdateBhaktaDTO
     {
-        public Int64 BhaktaId { get; set; }
+        public int BhaktaId { get; set; }
         public string BhaktaName { get; set; }
         public string Address { get; set; }
         public string PrimaryPhone { get; set; }

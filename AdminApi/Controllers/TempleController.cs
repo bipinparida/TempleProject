@@ -71,7 +71,18 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Temples
 
-                            select new { u.TempleName, u.CountryId, u.StateId,u.CityId,u.Latitude,u.Longitude,u.GodName,u.TempleImage, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
+                            select new
+                            {
+                                u.TempleName,
+                                u.CountryId,
+                                u.StateId,
+                                u.CityId,
+                                u.Latitude,
+                                u.Longitude,
+                                u.GodName,
+                                u.TempleImage,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false).ToList();
 
                 int totalRecords = list.Count();
 
