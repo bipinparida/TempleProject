@@ -3,17 +3,17 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "City";
+    ViewBag.Title = "Temple";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
-        <li class="breadcrumb-item active" aria-current="page">City Edit</li>
+        <li class="breadcrumb-item active" aria-current="page">Temple Edit</li>
     </ol>
     <div class="ml-auto">
-        <a href="~/City/CityList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+        <a href="~/Temple/TempleList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
             </span> View
@@ -25,7 +25,7 @@
     <div class="col-md">
         <div class="card overflow-hidden">
             <div class="card-header">
-                <h3 class="card-title">State Edit</h3>
+                <h3 class="card-title">Temple Edit</h3>
             </div>
             <div class="card-body">
                 <form action="#" role="form" class="validate" id="formPost">
@@ -53,15 +53,51 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">City Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="text" class="form-control" id="cityname" placeholder="Enter City Name" required>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectCity">
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">TempleName &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="TempleName" placeholder="Enter TempleName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">GodName &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="GodName" placeholder="Enter GodName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Latitude &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Latitude" placeholder="Enter Latitude" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Longitude &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Longitude" placeholder="Enter Longitude" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">TempleImage &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="TempleImage" placeholder="TempleImage" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
-                            <a type="button" href="~/City/CityList" class="btn btn-radius btn-danger">Reset</a>
+                            <a type="button" href="~/Temple/TempleList" class="btn btn-radius btn-danger">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -69,12 +105,11 @@
         </div>
     </div>
 </div>
-
 @section scripts {
     <script>
 
         //GetState()
-         function CountryList(Id) {
+        function CountryList(Id) {
             var opt = '';
             $.ajax({
                 type: "GET",
@@ -104,7 +139,37 @@
                 }
             });
         }
+        //GetCity
+        function StateList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/State/GetStateList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select State </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].stateId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].stateId + '" ' + opt + ' > ' + res.data[i].stateName + '</option>');
+                    }
+                    $("#SelectCity").html(options.join(''));
+                },
 
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
         //Get CityList
         function StateList(selectedState) {
             var opt = '';
@@ -143,12 +208,12 @@
 
 
 
-        var cityId = @ViewBag.CityId
+        var templeId = @ViewBag.TempleId
             loadSinglecity()
         function loadSinglecity() {
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/City/GetSingleCity/" + cityId,
+                url: "@apiUrl/api/Temple/GetSingleTemple/" + templeId,
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -156,12 +221,9 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        // $('#Selectcountry').val(data.countryId);
-                        // $('#Selectstate').val(data.stateId);
-
                         CountryList(data.countryId);
                         StateList(data.stateId);
-
+                        TempleList(data.stateId);
                         $('#cityname').val(data.cityName);
 
                     }
@@ -185,16 +247,21 @@
             } else {
 
                 var model = {
-                    cityId: cityId,
+                    templeId: templeId,
                     countryId: $.trim($("#Selectcountry").val()),
                     stateId: $.trim($("#Selectstate").val()),
-                    cityName: $.trim($("#cityname").val()),
+                    cityId: $.trim($("#SelectCity").val()),
+                    templeName: $.trim($("#TempleName").val()),
+                    godName: $.trim($("#GodName").val()),
+                    templeImage: $.trim($("#TempleImage").val()),
+                    latitude: $.trim($("#Latitude").val()),
+                    longitude: $.trim($("#Longitude").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
                 $.ajax({
                     type: "POST",
-                    url: "@apiUrl/api/City/UpdateCity",
+                    url: "@apiUrl/api/Temple/UpdateTemple",
                     data: JSON.stringify(model),
                     contentType: "application/json; charset=utf-8",
                     headers: {
@@ -208,7 +275,7 @@
                             sweetAlert({
                                 html: true,
                                 icon: "success",
-                                title: "City Update",
+                                title: "State Update Order",
                                 text: "Successfully updated!",
                                 type: "success"
                             });

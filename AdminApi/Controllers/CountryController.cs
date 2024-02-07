@@ -36,7 +36,7 @@ namespace AdminApi.Controllers
                 if (objcheck == null)
                 {
                     Country country = new Country();
-                  
+
                     country.CountryName = countryDTO.CountryName;
                     country.CountryCode = countryDTO.CountryCode;
 
@@ -66,7 +66,13 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Countries
 
-                            select new { u.CountryName, u.CountryId, u.CountryCode, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
+                            select new
+                            {
+                                u.CountryName,
+                                u.CountryId,
+                                u.CountryCode,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false).ToList();
 
                 int totalRecords = list.Count();
 
@@ -100,7 +106,7 @@ namespace AdminApi.Controllers
             try
             {
                 var objCountry = _context.Countries.SingleOrDefault(opt => opt.CountryId == updateCountryDTO.CountryId);
-              
+
                 objCountry.CountryName = updateCountryDTO.CountryName;
                 objCountry.CountryCode = updateCountryDTO.CountryCode;
                 objCountry.UpdatedBy = updateCountryDTO.CreatedBy;

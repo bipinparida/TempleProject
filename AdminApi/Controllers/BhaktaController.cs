@@ -72,7 +72,18 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Bhaktas
 
-                            select new { u.BhaktaName, u.Address, u.PrimaryPhone, u.AlternatePhone, u.MailId, u.DateOfBirth, u.Password, u.BhaktaImage, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
+                            select new
+                            {
+                                u.BhaktaName,
+                                u.Address,
+                                u.PrimaryPhone,
+                                u.AlternatePhone,
+                                u.MailId,
+                                u.DateOfBirth,
+                                u.Password,
+                                u.BhaktaImage,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false).ToList();
 
                 int totalRecords = list.Count();
 
