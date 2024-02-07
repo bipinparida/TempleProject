@@ -1,4 +1,5 @@
 ﻿using AdminApi.Models.App.Location;
+using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
 using AdminApi.Models.Menu;
@@ -26,6 +27,7 @@ namespace AdminApi.Models
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Temple> Temples { get; set; }
+        public virtual DbSet<Pandit> Pandits { get; set; }
       
 
 
@@ -71,6 +73,15 @@ namespace AdminApi.Models
          .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Temple>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Pandit>()
+        .Property(s => s.CreatedOn)
+        .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Pandit>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
