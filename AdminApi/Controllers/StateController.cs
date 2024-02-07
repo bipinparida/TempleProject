@@ -66,7 +66,14 @@ namespace AdminApi.Controllers
                 var list = (from u in _context.States
                             join a in _context.Countries on u.CountryId equals a.CountryId
 
-                            select new { u.StateId, u.StateName, a.CountryName, u.CountryId, u.IsDeleted }).Where(x => x.IsDeleted == false).ToList();
+                            select new
+                            {
+                                u.StateId,
+                                u.StateName,
+                                a.CountryName,
+                                u.CountryId,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false).ToList();
 
                 int totalRecords = list.Count();
 

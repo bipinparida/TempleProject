@@ -4,7 +4,7 @@ namespace AdminApi.Models.App.Temples
 {
     public class Temple
     {
-        public Int64 TempleId { get; set; }
+        public int TempleId { get; set; }
         public string TempleName { get; set; }
         public int CountryId { get; set; }
         public int StateId { get; set; }

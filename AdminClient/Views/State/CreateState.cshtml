@@ -60,6 +60,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section scripts {
     <script>
         Getstate()
@@ -115,23 +117,63 @@
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
                     },
                     dataType: "json",
+                    // success: function (data, statusText, xhr) {
+                    //     if (xhr.status === 200) {
+                    //         console.log(data);
+                    //         sweetAlert({
+                    //             html: true,
+                    //             title: "State Add",
+                    //             text: "Successfully Created!",
+                    //             type: "success"
+                    //         });
+                    //     } else if (data.status === "duplicate") {
+                    //         sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //     } else if (data.status === "error") {
+                    //         sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //     } else {
+                    //         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    //     }
+                    // },
+
                     success: function (data, statusText, xhr) {
                         if (xhr.status === 200) {
-                            console.log(data);
-                            sweetAlert({
-                                html: true,
-                                title: "State Add",
+                            Swal.fire({
+                                icon: "success",
+                                title: "State Create",
                                 text: "Successfully Created!",
-                                type: "success"
+                            }).then(function () {
+                                location.reload(); // Refresh the page
                             });
-                        } else if (data.status === "duplicate") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "State Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else if (data.status === "error") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else {
-                            sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         }
+                        preloader.addClass("d-none");
                     },
+
                     error: function (data) {
                         if (data.status == 401) {
                             window.location.replace('/Message/TokenExpire');

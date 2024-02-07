@@ -4,7 +4,7 @@ namespace AdminApi.Models.App.Pandits
 {
     public class Pandit
     {
-        public Int64 PanditId { get; set; }
+        public int PanditId { get; set; }
         public int CountryId { get; set; }
         public int StateId { get; set; }
         public int CityId { get; set; }
@@ -16,7 +16,7 @@ namespace AdminApi.Models.App.Pandits
         public string Gothram { get; set; }
         public string AadharCard { get; set; }
         public string Qualification { get; set; }
-        public Int64 TempleId { get; set; }
+        public int TempleId { get; set; }
         public string PanditName { get; set; }
         public string Address { get; set; }
         public string PrimaryPhone { get; set; }
