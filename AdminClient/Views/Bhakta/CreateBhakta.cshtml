@@ -1,0 +1,161 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "Bhakta";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Bhakta Create</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/Bhakta/BhaktaList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+<!-- PAGE-HEADER END -->
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">Bhakta Create</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Bhakta Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="BhaktaName" placeholder="Enter Bhakta Name " required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Address &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Address" placeholder="Enter Address" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Primary Phone &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="number" class="form-control" id="PrimaryPhone" placeholder="Enter Primary Phone " required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Alternate Phone &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="number" class="form-control" id="AlternatePhone" placeholder="Enter Alternate Phone" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Mail Id &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="MailId" placeholder="Enter Mail Id " required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Date Of Birth &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="date" class="form-control" id="DateOfBirth" placeholder="Enter Date Of Birth" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Password &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="password" class="form-control" id="Password" placeholder="Enter Password" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Bhakta Image &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="file" class="form-control" id="BhaktaImage" placeholder="Enter Bhakta Image" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btncreate" class="btn btn-radius btn-success">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        //Create
+        $(function () {
+
+            $("#btncreate").click(function (e) {
+
+                if (!document.getElementById("formPost").checkValidity()) {
+                    e.preventDefault();
+                }
+                else {
+                    var model = {
+                        bhaktaName: $.trim($("#BhaktaName").val()),
+                        address: $.trim($("#Address").val()),
+                        primaryPhone: $.trim($("#PrimaryPhone").val()),
+                        alternatePhone: $.trim($("#AlternatePhone").val()),
+                        mailId: $.trim($("#MailId").val()),
+                        dateOfBirth: $.trim($("#DateOfBirth").val()),
+                        password: $.trim($("#Password").val()),
+                        bhaktaImage: $.trim($("#BhaktaImage").val()),
+                        createdBy: @Context.Session.GetInt32("UserId"),
+                    }
+                    console.log(model)
+                    $.ajax({
+                        type: "POST",
+                        url: "@apiUrl/api/Bhakta/BhaktaCreate",
+                        data: JSON.stringify(model),
+                        contentType: "application/json; charset=utf-8",
+                        headers: {
+                            "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                        },
+                        dataType: "json",
+                        success: function (data, statusText, xhr) {
+                            if (xhr.status === 200) {
+
+                                sweetAlert({
+                                    html: true,
+                                    icon: "success",
+                                    title: "Bhakta",
+                                    text: "Successfully created!",
+                                    type: "success"
+                                });
+                            } else if (data.status === "duplicate") {
+                                sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                            } else if (data.status === "error") {
+                                sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                            } else {
+                                sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                            }
+                        },
+                        error: function (data) {
+                            if (data.status == 401) {
+                                window.location.replace('/Message/TokenExpire');
+                            } else if (data.status == 403) {
+                                window.location.replace('/Message/Unauthorize');
+                            } else if (data.status == 400) {
+                                sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
