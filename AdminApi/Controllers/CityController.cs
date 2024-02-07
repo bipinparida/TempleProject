@@ -46,7 +46,7 @@ namespace AdminApi.Controllers
                 }
                 else if (objcheck != null)
                 {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate StateName..!" });
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CityName..!" });
                 }
                 return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
 
