@@ -1,4 +1,5 @@
 ﻿using AdminApi.Models.App.Location;
+using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
 using AdminApi.Models.Menu;
 using AdminApi.Models.User;
@@ -24,6 +25,7 @@ namespace AdminApi.Models
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<Temple> Temples { get; set; }
       
 
 
@@ -59,6 +61,16 @@ namespace AdminApi.Models
            .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<City>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
+            modelBuilder.Entity<Temple>()
+         .Property(s => s.CreatedOn)
+         .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Temple>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
