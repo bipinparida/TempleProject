@@ -73,6 +73,7 @@ namespace AdminApi.Controllers
 
                             select new
                             {
+                                u.TempleId,
                                 u.TempleName,
                                 u.CountryId,
                                 u.StateId,
