@@ -70,14 +70,20 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.Temples
+                            join c in _context.Countries on u.CountryId equals c.CountryId
+                            join s in _context.States on u.StateId equals s.StateId
+                            join d in _context.Cities on u.CityId equals d.CityId
 
                             select new
                             {
                                 u.TempleId,
                                 u.TempleName,
                                 u.CountryId,
+                                c.CountryName,
                                 u.StateId,
+                                s.StateName,
                                 u.CityId,
+                                d.CityName,
                                 u.Latitude,
                                 u.Longitude,
                                 u.GodName,
