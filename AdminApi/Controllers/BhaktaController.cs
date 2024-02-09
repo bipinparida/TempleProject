@@ -74,6 +74,7 @@ namespace AdminApi.Controllers
 
                             select new
                             {
+                                u.BhaktaId,
                                 u.BhaktaName,
                                 u.Address,
                                 u.PrimaryPhone,
