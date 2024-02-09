@@ -64,19 +64,24 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Date Of Birth &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="date" class="form-control" id="DateOfBirth" placeholder="Enter Date Of Birth" required>
+                                <input type="date" class="form-control datepicker" id="DateOfBirth" placeholder="Enter Date Of Birth" required>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Password &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="password" class="form-control" id="Password" placeholder="Enter Password" required>
+                                <input type="text" class="form-control" id="Password" placeholder="Enter Password" required>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Bhakta Image &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="file" class="form-control" id="BhaktaImage" placeholder="Enter Bhakta Image" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg" src="" width="100" class="rounded-circle">
                             </div>
                         </div>
 
@@ -113,9 +118,23 @@
                         $('#PrimaryPhone').val(data.primaryPhone);
                         $('#AlternatePhone').val(data.alternatePhone);
                         $('#MailId').val(data.mailId);
-                        $('#DateOfBirth').val(data.dateOfBirth);
+
+                        if (data.dateOfBirth != null) {
+                            var dateVal = data.dateOfBirth.substring(0, 10);
+                            $('#DateOfBirth').datepicker('setDate', new Date(dateVal.replace(/\-/g, '/')));
+                        } 
+                        // else {
+                        //     $('#DateOfBirth').val('');
+                        // }
+
+                        // $('#DateOfBirth').val(data.dateOfBirth);
+
                         $('#Password').val(data.password);
-                        $('#BhaktaImage').val(data.bhaktaImage);
+
+                        // $('#BhaktaImage').val(data.bhaktaImage);
+
+                        $('#imgg').attr('src', data.bhaktaImage);
+
                     }
                     else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -135,6 +154,15 @@
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
             } else {
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg').attr('src');
+
+                if ($('#BhaktaImage').val() != '' && $('#BhaktaImage').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
 
                 var model = {
                     bhaktaId: BhaktaId,
@@ -144,9 +172,13 @@
                     primaryPhone: $.trim($("#PrimaryPhone").val()),
                     alternatePhone: $.trim($("#AlternatePhone").val()),
                     mailId: $.trim($("#MailId").val()),
+
+                    // dateOfBirth: $.trim($("#DateOfBirth").val()) == '' ? null : $.trim($("#DateOfBirth").val().replace(/\//g, '-')),
+
                     dateOfBirth: $.trim($("#DateOfBirth").val()),
+
                     password: $.trim($("#Password").val()),
-                    bhaktaImage: $.trim($("#BhaktaImage").val()),
+                    bhaktaImage: imgPath,
 
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
@@ -192,5 +224,33 @@
                 });
             }
         });
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('BhaktaImage').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('BhaktaImage').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
     </script>
 }

@@ -54,8 +54,8 @@
     <script>
 
         //List
-        loadCountry()
-        async function loadCountry() {
+        loadBhakta()
+        async function loadBhakta() {
             var table = $('#Bhakta_Tb').DataTable();
             table.destroy();
             table = $('#Bhakta_Tb').dataTable({
@@ -90,10 +90,21 @@
                     { "data": "mailId", "orderable": true, "visible": true },
                     { "data": "dateOfBirth", "orderable": true, "visible": true },
                     { "data": "password", "orderable": true, "visible": true },
-                    { "data": "bhaktaImage", "orderable": true, "visible": true },
+
+                    // { "data": "bhaktaImage", "orderable": true, "visible": true },
+
                     {
                         "render": function (data, type, row) {
-                            return '<a class="btn btn-sm btn-primary" href="../Bhakta/BhaktaEdit?bhaktaId=' + row.bhaktaId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.bhaktaId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
+                            if (row.bhaktaImage === '')
+                                return '';
+                            else
+                                return '<a href="#" data-toggle="modal" data-target="#photoModal" data-photo="' + row.bhaktaImage + '"><img style="margin-left: 28px;" class="avatar avatar-md rounded-circle" src="' + row.bhaktaImage + '"/></a>'
+                        }
+                    },
+
+                    {
+                        "render": function (data, type, row) {
+                            return '<a class="btn btn-sm btn-primary" href="../Bhakta/BhaktaEdit?BhaktaId=' + row.bhaktaId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.bhaktaId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
 
                         }
                     }
@@ -127,7 +138,7 @@
                             $('#Country_Tb').DataTable().ajax.reload(null, false);
                             sweetAlert({
                                 html: true,
-                                title: "Country",
+                                title: "Bhakta",
                                 text: "Successfully deleted!",
                                 type: "success"
                             });
@@ -147,5 +158,31 @@
                 });
             });
         });
+
+        // JavaScript function for opening profile photo in a modal
+        $(document).on('click', 'a[data-toggle="modal"]', function () {
+            var photoUrl = $(this).data('photo');
+            $('#profilePhotoModal').attr('src', photoUrl);
+        });
+
     </script>
 }
+
+
+<!-- Modal for displaying profile photo -->
+<div id="photoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bhakta Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Center the content -->
+                <img id="profilePhotoModal" class="img-fluid mx-auto" src="" alt="Profile Photo">
+            </div>
+        </div>
+    </div>
+</div>
