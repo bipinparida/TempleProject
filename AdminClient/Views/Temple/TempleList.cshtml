@@ -53,8 +53,8 @@
     <script>
 
         //List
-        loadcity()
-        async function loadcity() {
+        loadtemple()
+        async function loadtemple() {
             var table = $('#Temple_Tb').DataTable();
             table.destroy();
             table = $('#Temple_Tb').dataTable({
@@ -89,7 +89,15 @@
                     { "data": "latitude", "orderable": true, "visible": true },
                     { "data": "longitude", "orderable": true, "visible": true },
                     { "data": "godName", "orderable": true, "visible": true },
-                    { "data": "templeImage", "orderable": true, "visible": true },
+                    {
+                        "render": function (data, type, row) {
+                            if (row.templeImage === '')
+                                return '';
+                            else
+                                return '<img style="max-width: 65%;" src="' + row.templeImage + '"/>'
+
+                        }
+                    },
                     {
                         "render": function (data, type, row) {
                             return '<a class="btn btn-sm btn-primary" href="../Temple/TempleEdit?templeId=' + row.templeId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.templeId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
@@ -137,7 +145,7 @@
                         }
                     },
                     error: function (data) {
-                        if (data.status == 401) {
+                        if (data.status == 401) {   
                             window.location.replace('/Message/TokenExpire');
                         } else if (data.status == 403) {
                             window.location.replace('/Message/Unauthorize');
