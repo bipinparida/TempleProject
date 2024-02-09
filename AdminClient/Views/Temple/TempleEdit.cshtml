@@ -89,8 +89,14 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">TempleImage &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="text" class="form-control" id="TempleImage" placeholder="TempleImage" required>
+                                <label class="form-label">Temple Image &nbsp;</label>
+                                <input type="file" class="form-control" id="TempleImage">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="TempleImagee" src="" width="100" class="rounded-circle">
                             </div>
                         </div>
                     </div>
@@ -105,10 +111,11 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section scripts {
     <script>
-
-        //GetState()
         function CountryList(Id) {
             var opt = '';
             $.ajax({
@@ -139,38 +146,7 @@
                 }
             });
         }
-        //GetCity
-        function StateList(Id) {
-            var opt = '';
-            $.ajax({
-                type: "GET",
-                url: "@apiUrl/api/State/GetStateList",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (res) {
-                    var options = [];
-                    options.push('<option value = ""> Select State </option>');
-                    for (var i = 0; i < res.data.length; i++) {
-                        if (Id == res.data[i].stateId) {
-                            opt = 'selected'
-                        } else {
-                            opt = '';
-                        }
-                        options.push('<option value = "' + res.data[i].stateId + '" ' + opt + ' > ' + res.data[i].stateName + '</option>');
-                    }
-                    $("#SelectCity").html(options.join(''));
-                },
 
-                error: function (data) {
-                    if (data.status == 401) {
-                        window.location.replace('/Message/TokenExpire');
-                    } else if (data.status == 403) {
-                        window.location.replace('/Message/Unauthorize');
-                    }
-                }
-            });
-        }
-        //Get CityList
         function StateList(selectedState) {
             var opt = '';
             $.ajax({
@@ -206,11 +182,46 @@
             });
         }
 
+        function CityList(selectedCity) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/City/GetCityList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value="">Select City</option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        var cityName = res.data[i].cityName;
+                        var cityId = res.data[i].cityId;
+                        options.push('<option value="' + cityId + '">' + cityName + '</option>');
+                    }
+                    $("#SelectCity").html(options.join(''));
+
+                    if (selectedCity) {
+                        $('#SelectCity').val(selectedCity);
+                        $('#SelectCity').trigger('change');
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
 
 
         var templeId = @ViewBag.TempleId
-            loadSinglecity()
-        function loadSinglecity() {
+            loadSingletemple()
+        function loadSingletemple() {
             $.ajax({
                 type: "GET",
                 url: "@apiUrl/api/Temple/GetSingleTemple/" + templeId,
@@ -223,8 +234,13 @@
                     if (data) {
                         CountryList(data.countryId);
                         StateList(data.stateId);
-                        TempleList(data.stateId);
-                        $('#cityname').val(data.cityName);
+                        CityList(data.cityId);
+
+                        $('#TempleName').val(data.templeName);
+                        $('#GodName').val(data.godName);
+                        $('#Latitude').val(data.latitude);
+                        $('#Longitude').val(data.longitude);
+                        $('#TempleImagee').attr('src',data.templeImage);
 
                     }
                     else {
@@ -245,7 +261,15 @@
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
             } else {
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#TempleImagee').attr('src'); //eithi rahiba circle ra id
 
+                if ($('#TempleImage').val() != '' && $('#TempleImage').val() != 'Choose file') { //eithi rahiba circle ra upare thiba jou id
+                    uploadFile();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
                 var model = {
                     templeId: templeId,
                     countryId: $.trim($("#Selectcountry").val()),
@@ -253,9 +277,9 @@
                     cityId: $.trim($("#SelectCity").val()),
                     templeName: $.trim($("#TempleName").val()),
                     godName: $.trim($("#GodName").val()),
-                    templeImage: $.trim($("#TempleImage").val()),
                     latitude: $.trim($("#Latitude").val()),
                     longitude: $.trim($("#Longitude").val()),
+                    templeImage: imgPath,
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
@@ -268,24 +292,62 @@
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
                     },
 
+                    //success: function (data, statusText, xhr) {
+                    //    console.log(data)
+                    //    if (xhr.status === 200) {
+                    //        $('#Temple_Tb').DataTable().ajax.reload(null, false);
+                    //        sweetAlert({
+                    //            html: true,
+                    //            icon: "success",
+                    //            title: "Temple Update",
+                    //            text: "Successfully updated!",
+                    //            type: "success"
+                    //        });
+                    //    } else if (data.status === "duplicate") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else if (data.status === "error") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else {
+                    //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    //    }
+                    //},
                     success: function (data, statusText, xhr) {
-                        console.log(data)
                         if (xhr.status === 200) {
-                            $('#State_Tb').DataTable().ajax.reload(null, false);
-                            sweetAlert({
-                                html: true,
+                            Swal.fire({
                                 icon: "success",
-                                title: "State Update Order",
+                                title: "Temple Update",
                                 text: "Successfully updated!",
-                                type: "success"
+                            }).then(function () {
+                                location.reload(); // Refresh the page
                             });
-                        } else if (data.status === "duplicate") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Temple Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else if (data.status === "error") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else {
-                            sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         }
+                        preloader.addClass("d-none");
                     },
                     error: function (data) {
                         console.log(data);
@@ -300,5 +362,31 @@
                 });
             }
         });
+        function uploadFile() {
+            var totalFiles = document.getElementById('TempleImage').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('TempleImage').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+
+        }
     </script>
 }

@@ -12,7 +12,7 @@ namespace AdminApi.Models.App.Bhaktas
         public string MailId { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string Password { get; set; }
-        public string BhaktaImage { get; set; }
+        public string? BhaktaImage { get; set; }
 
         public int CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }

@@ -92,6 +92,7 @@ namespace AdminApi.Controllers
 
                             select new
                             {
+                                u.PanditId,
                                 a.TempleId,
                                 a.TempleName,
                                 u.CountryId,
