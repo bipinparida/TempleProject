@@ -1,0 +1,468 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "Pandit";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pandit Create</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/Pandit/PanditList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+<!-- PAGE-HEADER END -->
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">Pandit Create</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Country Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="Selectcountry">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">State Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectState">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">City Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectCity">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Experiences &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Experiences" placeholder="Enter Experiences" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PujaCategory &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PujaCategory" placeholder="Enter PujaCategory" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Religion &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Religion" placeholder="Enter Religion" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">MotherTongue &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="MotherTongue" placeholder="Enter MotherTongue" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Caste &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Caste" placeholder="Enter Caste" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Gothram &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Gothram" placeholder="Enter Gothram" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">AadharCard &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="AadharCard" placeholder="Enter AadharCard" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Qualification &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Qualification" placeholder="Enter Qualification" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectTemple">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PanditName &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PanditName" placeholder="Enter PanditName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Address &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Address" placeholder="Enter Address" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PrimaryPhone &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PrimaryPhone" placeholder="Enter PrimaryPhone" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">AlternatePhone &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="AlternatePhone" placeholder="Enter AlternatePhone" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">MailId &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="MailId" placeholder="Enter MailId" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">DateOfBirth &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="datetime-local" class="form-control" name="example-text-input" tabindex="11" id="DateOfBirth" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Password &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Password" placeholder="Enter Password" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PanditImage &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="file" class="form-control" id="PanditImage" placeholder="Enter PanditImage" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Message &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Message" placeholder="Enter Message" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Reject &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Reject" placeholder="Enter Reject" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox">IsAprove &nbsp;</label>
+                                <br>
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="example-checkbox1" value="IsApprove"
+                                           id="IsApprove"
+                                           onchange="IsApprovechecked">
+                                    <span class="custom-control-label"></span>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btncreate" class="btn btn-radius btn-success">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        Getstate()
+        async function Getstate(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Country/GetCountryList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push(' <option value = ""> Select Country </option> ');
+                    for (var i = 0; i < res.data.length; i++) {
+                        options.push('<option value = "' + res.data[i].countryId + '" ' + opt + ' > ' + res.data[i].countryName + '</option>');
+                    }
+                    $("#Selectcountry").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#Selectcountry").change(function () {
+            var vcountryid = $("#Selectcountry").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/State/GetStateListbyCountryid/' + vcountryid,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select State</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        options.push('<option value="' + data['data'][i].stateId + '" ' + opt + '>' + data['data'][i].stateName + '</option>');
+                    }
+                    $("#SelectState").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
+        $("#SelectState").change(function () {
+            var vstateId = $("#SelectState").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/City/GetCityListbystateid/' + vstateId,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select City</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        options.push('<option value="' + data['data'][i].cityId + '" ' + opt + '>' + data['data'][i].cityName + '</option>');
+                    }
+                    $("#SelectCity").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
+        var IsApprove = 0;
+        function IsApprovechecked(el) {
+            var status = el.checked;
+            if (status == 1) {
+                IsApprove = 1
+            }
+            else {
+                IsApprove = 0
+            }
+        }
+        Gettemple()
+        async function Gettemple(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Temple/GetTempleList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push(' <option value = ""> Select Temple </option> ');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].templeId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+                    }
+                    $("#SelectTemple").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#btncreate").click(function (e) {
+            if (!document.getElementById("formPost").checkValidity()) {
+                e.preventDefault();
+            } else {
+                imgPath = '';
+                var totalFiles = document.getElementById('PanditImage').files.length;
+                if (totalFiles > 0) {
+                    uploadFile();
+                }
+                var model = {
+                    countryId: parseInt($("#Selectcountry").val()),
+                    stateId: parseInt($("#SelectState").val()),
+                    cityId: parseInt($("#SelectCity").val()),
+                    templeId: parseInt($("#SelectTemple").val()),
+                    experiences: $.trim($("#Experiences").val()),
+                    pujaCategory: $.trim($("#PujaCategory").val()),
+                    religion: $.trim($("#Religion").val()),
+                    motherTongue: $.trim($("#MotherTongue").val()),
+                    caste: $.trim($("#Caste").val()),
+                    gothram: $.trim($("#Gothram").val()),
+                    aadharCard: $.trim($("#AadharCard").val()),
+                    qualification: $.trim($("#Qualification").val()),
+                    panditName: $.trim($("#PanditName").val()),
+                    address: $.trim($("#Address").val()),
+                    primaryPhone: $.trim($("#PrimaryPhone").val()),
+                    alternatePhone: $.trim($("#AlternatePhone").val()),
+                    mailId: $.trim($("#MailId").val()),
+                    dateOfBirth: $.trim($("#DateOfBirth").val()) == '' ? null : $.trim($("#DateOfBirth").val().replace(/\//g, '-')),
+                    password: $.trim($("#Password").val()),
+                    message: $.trim($("#Message").val()),
+                    reject: $.trim($("#Reject").val()),
+                    isApprove: IsApprove,
+                    panditImage: imgPath,
+                    createdBy: @Context.Session.GetInt32("UserId"),
+                };
+
+                console.log(model);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@apiUrl/api/Pandit/PanditCreate",
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    headers: {
+                        "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                    },
+                    dataType: "json",
+                    success: function (data, statusText, xhr) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Pandit Create",
+                                text: "Successfully Created!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Pandit Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else if (data.status === "error") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        }
+                        preloader.addClass("d-none");
+                    },
+                    error: function (data) {
+                        if (data.status == 401) {
+                            window.location.replace('/Message/TokenExpire');
+                        } else if (data.status == 403) {
+                            window.location.replace('/Message/Unauthorize');
+                        } else if (data.status == 400) {
+                            sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+        function uploadFile() {
+            var totalFiles = document.getElementById('PanditImage').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('PanditImage').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+
+        }
+
+    </script>
+
+}
