@@ -181,13 +181,13 @@
                                 <input type="text" class="form-control" id="Message" placeholder="Enter Message" required>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                       @*  <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Reject &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="Reject" placeholder="Enter Reject" required>
                             </div>
-                        </div>
-                        <div class="col-md-3">
+                        </div> *@
+                      @*   <div class="col-md-3">
                             <div class="form-group">
                                 <label class="custom-control custom-checkbox">IsAprove &nbsp;</label>
                                 <br>
@@ -198,7 +198,7 @@
                                     <span class="custom-control-label"></span>
                                 
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -294,16 +294,16 @@
             });
         });
 
-        var IsApprove = 0;
-        function IsApprovechecked(el) {
-            var status = el.checked;
-            if (status == 1) {
-                IsApprove = 1
-            }
-            else {
-                IsApprove = 0
-            }
-        }
+        // var IsApprove = 0;
+        // function IsApprovechecked(el) {
+        //     var status = el.checked;
+        //     if (status == 1) {
+        //         IsApprove = 1
+        //     }
+        //     else {
+        //         IsApprove = 0
+        //     }
+        // }
         Gettemple()
         async function Gettemple(Id) {
             var opt = '';
@@ -336,6 +336,7 @@
             });
         }
 
+
         $("#btncreate").click(function (e) {
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
@@ -366,8 +367,6 @@
                     dateOfBirth: $.trim($("#DateOfBirth").val()) == '' ? null : $.trim($("#DateOfBirth").val().replace(/\//g, '-')),
                     password: $.trim($("#Password").val()),
                     message: $.trim($("#Message").val()),
-                    reject: $.trim($("#Reject").val()),
-                    isApprove: IsApprove,
                     panditImage: imgPath,
                     createdBy: @Context.Session.GetInt32("UserId"),
                 };
