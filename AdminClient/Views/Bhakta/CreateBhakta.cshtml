@@ -72,7 +72,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Password &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="password" class="form-control" id="Password" placeholder="Enter Password" required>
+                                <input type="text" class="form-control" id="Password" placeholder="Enter Password" required>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -105,15 +105,24 @@
                     e.preventDefault();
                 }
                 else {
+                    imgPath = '';
+                    var totalFiles = document.getElementById('BhaktaImage').files.length;
+                    if (totalFiles > 0) {
+                        uploadFile();
+                    }
                     var model = {
                         bhaktaName: $.trim($("#BhaktaName").val()),
                         address: $.trim($("#Address").val()),
                         primaryPhone: $.trim($("#PrimaryPhone").val()),
                         alternatePhone: $.trim($("#AlternatePhone").val()),
                         mailId: $.trim($("#MailId").val()),
-                        dateOfBirth: $.trim($("#DateOfBirth").val()),
+                        dateOfBirth: $.trim($("#DateOfBirth").val()) == '' ? null : $.trim($("#DateOfBirth").val().replace(/\//g, '-')),
                         password: $.trim($("#Password").val()),
-                        bhaktaImage: $.trim($("#BhaktaImage").val()),
+
+                        bhaktaImage: imgPath,
+
+                        // bhaktaImage: $.trim($("#BhaktaImage").val()),
+                        
                         createdBy: @Context.Session.GetInt32("UserId"),
                     }
                     console.log(model)
@@ -156,6 +165,37 @@
                     });
                 }
             });
+
+            function uploadFile() {
+                var totalFiles = document.getElementById('BhaktaImage').files.length;
+                if (totalFiles > 0) {
+                    var formData = new FormData();
+                    var files = document.getElementById('BhaktaImage').files;
+                    formData.append("file", files[0]);
+                    $.ajax(
+                        {
+                            url: "/Upload/ImgUpload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            async: false,
+                            type: "POST",
+                            success: function (data) {
+                                imgPath = data;
+
+                            },
+                            error: function (data) {
+                                window.location.replace('/Message/SessionExpire');
+                            }
+                        }
+                    );
+                }
+
+            }
+
         });
+
+
+
     </script>
 }
