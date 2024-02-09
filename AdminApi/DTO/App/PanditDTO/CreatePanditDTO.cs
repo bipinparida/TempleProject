@@ -23,7 +23,7 @@ namespace AdminApi.DTO.App.PanditDTO
         public string MailId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Password { get; set; }
-        public string PanditImage { get; set; }
+        public string? PanditImage { get; set; }
         public string Message { get; set; }
         public bool Reject { get; set; }
         public bool IsApprove { get; set; }
@@ -52,7 +52,7 @@ namespace AdminApi.DTO.App.PanditDTO
         public string MailId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Password { get; set; }
-        public string PanditImage { get; set; }
+        public string? PanditImage { get; set; }
         public string Message { get; set; }
         public bool Reject { get; set; }
         public bool IsApprove { get; set; }
