@@ -27,9 +27,9 @@
 	margin:0 auto;
 	position:relative;
 	overflow:hidden;
-	background:#FF7743;
+	background:#4F77FF;
 	z-index:1;
-	border:5px solid #FF7743;
+	border:5px solid #4F77FF;
 	color:#fff;
 }
 .countdown .time{

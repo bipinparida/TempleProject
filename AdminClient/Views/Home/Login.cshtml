@@ -1,140 +1,170 @@
 ﻿@{
     Layout = null;
 }
-
-
-
-<!doctype html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="zxx">
 <head>
+    <!-- Basic Page Needs
+    ================================================== -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Specific Metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Meta data -->
-    <meta charset="UTF-8">
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta content="Admin Console – Business Administartion Tool By Appman Technologies" name="description">
-    <meta content="Appman Technologies Private Limited" name="author">
-    <meta name="keywords" content="Admin Console – Business Administartion Tool By Appman Technologies" />
+    <!-- For Search Engine Meta Data  -->
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="yoursite.com" />
 
-    <!--favicon -->
-    <link rel="icon" href="~/images/brand/Fv.png" type="image/x-icon" />
+    <title>LOGIN </title>
 
-    <!-- TITLE -->
-    <title>Yatri Admin Consol</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/icon" href="~/login/images/favicon-16x16.png" />
 
-    <!-- DASHBOARD CSS -->
-    <link href="~/css/style.css" rel="stylesheet" />
-    <link href="~/css/color-skins/color1.css" rel="stylesheet" />
-    <link href="~/css/skins-modes.css" rel="stylesheet" />
-
-    <!-- SINGLE-PAGE CSS -->
-    <link href="~/plugins/single-page/css/single-page.css" rel="stylesheet" type="text/css">
-
-    <!--- FONT-ICONS CSS -->
-    <link href="~/css/icons.css" rel="stylesheet" />
+    <!-- Main structure css file -->
+    <link rel="stylesheet" href="~/login/css/login3-style.css">
+    <!--[if IE]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <style>
-        .side-menu__item {
-            
-            color: black !important;
-           
+        .authfy-panel-left {
+            background-color: rgb(232 240 254);
+        }
+
+        .authfy-container {
+            margin-top: 97px;
+            margin-bottom: 60px;
         }
     </style>
 </head>
-
-<body class="app dark-mode">
-
-    <!-- BACKGROUND-IMAGE -->
-    <div class="login-img">
-
-        <!-- GLOABAL LOADER -->
-        <div id="global-loader">
-            <img src="~/images/svgs/loader.svg" class="loader-img" alt="Loader">
-        </div>
-
-        <div class="page h-100">
-            <div class="">
-                <!-- CONTAINER OPEN -->
-                <div class="col col-login mx-auto">
-                    
-                </div>
-                <div class="container-login100">
-                    <div class="wrap-login100 p-6">
-                        <form class="login100-form validate-form"  action="/" method="POST">
-                            <div class="text-center">
-                               <img src="~/images/brand/yatri-LOGO.png" class="header-brand-img" alt="">
-                            </div>   
-                            <span class="login100-form-title">
-                                Member Login
-                            </span>
-                            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                              
-                                <input class="input100" type="text" name="username"  placeholder="Username" required>
-                                <span class="focus-input100"></span>
-                                <span class="symbol-input100">
-                                    <i class="zmdi zmdi-email" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <div class="wrap-input100 validate-input" data-validate="Password is required">
-                                <input class="input100" type="password" name="password" id="typepass" placeholder="Password" required>
-                                <span class="focus-input100"></span>
-                                <span class="symbol-input100">
-                                    <i class="zmdi zmdi-lock" aria-hidden="true"></i>
-                                </span>
-                            </div>
-
-                            <div class="text-left pt-1">
-                                <p class="mb-0"><input type="checkbox" onclick="Toggle()"><a class="text-primary ml-1">Show Password</a></p>
-                            </div>
-                            <div class="container-login100-form-btn">
-                                <button type="submit" class="login100-form-btn btn-primary">Sign In</button> 
-                            </div>
-                            <div class=" flex-c-m text-center mt-3">
-                                <div class="login-logo">
-                                    <div class="alert alert-danger" role="alert" style="display: table-row-group;">
-	                                  @ViewBag.ErrorMessage
-	                                </div>
-                                </div>
-                            </div>
-                        </form>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-6 col-sm-offset-1 col-md-offset-2 col-lg-offset-3">
+                <div class="col-sm-5 authfy-panel-left">
+                    <div class="brand-col">
+                        <div class="headline">
+                            <!-- brand-logo start -->
+                            <div class="brand-logo">
+                                <img src="../login/images/LoginLOGO.png" width="230" alt="brand-logo" style="margin-left: -19px;">
+                            </div><!-- ./brand-logo -->
+                        </div>
                     </div>
                 </div>
-                <!-- CONTAINER CLOSED -->
+                <div class="col-sm-7 authfy-panel-right">
+                    <!-- authfy-login start -->
+                    <div class="authfy-login">
+                        <!-- panel-login start -->
+                        <div class="authfy-panel panel-login text-center active">
+                            <div class="authfy-heading">
+                                <h3 class="auth-title">Sanatan Mandir</h3>
+                                @* <p>Don’t have an account? <a class="lnk-toggler" data-panel=".panel-signup" href="#">Sign Up Free!</a></p>*@
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <form name="loginForm" class="loginForm" action="/" method="POST">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control email" name="username" placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="pwdMask">
+                                                <input type="password" class="form-control password" name="password" id="typepass" placeholder="Password">
+                                                <span class="fa fa-eye-slash pwd-toggle"></span>
+                                            </div>
+                                        </div>
+                                        <!-- start remember-row -->
+                                        <div class="row remember-row">
+                                            <div class="col-xs-6 col-sm-6">
+                                                <label class="checkbox text-left">
+                                                    <input type="checkbox" value="remember-me">
+                                                    <span class="label-text">Remember me</span>
+                                                </label>
+                                            </div>
+
+                                        </div> <!-- ./remember-row -->
+
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- ./panel-login -->
+                        <!-- panel-signup start -->
+                        <div class="authfy-panel panel-signup text-center">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="authfy-heading">
+                                        <h3 class="auth-title">Sign up for free!</h3>
+                                    </div>
+                                    <form name="signupForm" class="signupForm" action="#" method="POST">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" name="username" placeholder="Email address">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="fullname" placeholder="Full name">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="pwdMask">
+                                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                                <span class="fa fa-eye-slash pwd-toggle"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="term-policy text-muted small">I agree to the <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up with email</button>
+                                        </div>
+                                    </form>
+                                    <a class="lnk-toggler" data-panel=".panel-login" href="#">Already have an account?</a>
+                                </div>
+                            </div>
+                        </div> <!-- ./panel-signup -->
+                        <!-- panel-forget start -->
+                        <div class="authfy-panel panel-forgot">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="authfy-heading">
+                                        <h3 class="auth-title">Recover your password</h3>
+                                        <p>Fill in your e-mail address below and we will send you an email with further instructions.</p>
+                                    </div>
+                                    <form name="forgetForm" class="forgetForm" action="#" method="POST">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" name="username" placeholder="Email address">
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Recover your password</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <a class="lnk-toggler" data-panel=".panel-login" href="#">Already have an account?</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <a class="lnk-toggler" data-panel=".panel-signup" href="#">Don’t have an account?</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> <!-- ./panel-forgot -->
+                    </div> <!-- ./authfy-login -->
+                </div>
             </div>
-        </div>
-    </div>
-    
+        </div> <!-- ./row -->
+    </div> <!-- ./container -->
+    <!-- Javascript Files -->
+    <!-- initialize jQuery Library -->
+    <script src="~/login/js/jquery-2.2.4.min.js"></script>
 
-    <!-- BACKGROUND-IMAGE CLOSED -->
-    <!-- JQUERY SCRIPTS JS-->
-    <script src="~/js/vendors/jquery-3.2.1.min.js"></script>
+    <!-- for Bootstrap js -->
+    <script src="~/login/js/bootstrap.min.js"></script>
 
-    <!-- BOOTSTRAP SCRIPTS JS-->
-    <script src="~/js/vendors/bootstrap.bundle.min.js"></script>
+    <!-- Custom js-->
+    <script src="~/login/js/custom.js"></script>
 
-    <!-- SPARKLINE JS-->
-    <script src="~/js/vendors/jquery.sparkline.min.js"></script>
-
-    <!-- CHART-CIRCLE JS-->
-    <script src="~/js/vendors/circle-progress.min.js"></script>
-
-    <!-- RATING STAR JS-->
-    <script src="~/plugins/rating/rating-stars.js"></script>
-
-    <!-- INPUT MASK JS-->
-    <script src="~/plugins/input-mask/input-mask.min.js"></script>
-
-    <!-- CUSTOM JS-->
-    <script src="~/js/custom.js"></script>
-    <script>
-        function Toggle() {
-            var temp = document.getElementById("typepass");
-            if (temp.type === "password") {
-                temp.type = "text";
-            }
-            else {
-                temp.type = "password";
-            }
-        }
-    </script>
 </body>
 </html>
+
+
 

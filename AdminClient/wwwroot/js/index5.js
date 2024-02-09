@@ -6,8 +6,8 @@
 	myCanvas.height="285";
 	var myCanvasContext = myCanvas.getContext("2d");
 	var gradientStroke1 = myCanvasContext.createLinearGradient(0, 0, 0, 380);
-	gradientStroke1.addColorStop(0, '#FF7743');
-	gradientStroke1.addColorStop(1, '#FF7743');
+	gradientStroke1.addColorStop(0, '#4F77FF');
+	gradientStroke1.addColorStop(1, '#4F77FF');
 
 	var gradientStroke2 = myCanvasContext.createLinearGradient(0, 0, 0, 300);
 	gradientStroke2.addColorStop(0, '#8c8eef');

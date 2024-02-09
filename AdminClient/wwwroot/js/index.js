@@ -345,7 +345,7 @@ $(function(e) {
 				borderColor: "rgba(142, 156, 173,0.2)",
 				borderWidth: "0",
 				barWidth: "1",
-				backgroundColor: "#FF7743"
+				backgroundColor: "#4F77FF"
 			},{
 				label: "Total Sales",
 				data: [54, 78, 60, 58, 78, 65, 80],
