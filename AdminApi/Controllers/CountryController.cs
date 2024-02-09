@@ -59,6 +59,34 @@ namespace AdminApi.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult UpdateCountry(UpdateCountryDTO updateCountryDTO)
+        {
+            try
+            {
+                var objCountry = _context.Countries.SingleOrDefault(opt => opt.CountryId == updateCountryDTO.CountryId);
+
+                // Check if the new country name is not the same as any existing non-deleted country
+                var existingCountry = _context.Countries.SingleOrDefault(opt => opt.CountryName == updateCountryDTO.CountryName && opt.CountryId != updateCountryDTO.CountryId && opt.IsDeleted == false);
+
+                if (existingCountry != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                }
+
+                objCountry.CountryName = updateCountryDTO.CountryName;
+                objCountry.CountryCode = updateCountryDTO.CountryCode;
+                objCountry.UpdatedBy = updateCountryDTO.CreatedBy;
+                objCountry.UpdatedOn = System.DateTime.Now;
+                _context.SaveChanges();
+                return Ok(objCountry);
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
         [HttpGet]
         public ActionResult GetCountryList()
         {
@@ -92,27 +120,6 @@ namespace AdminApi.Controllers
             {
                 var singleCountry = _CountryRepo.SelectById(CountryId);
                 return Ok(singleCountry);
-            }
-            catch (Exception ex)
-            {
-                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-            }
-        }
-
-
-        [HttpPost]
-        public ActionResult UpdateCountry(UpdateCountryDTO updateCountryDTO)
-        {
-            try
-            {
-                var objCountry = _context.Countries.SingleOrDefault(opt => opt.CountryId == updateCountryDTO.CountryId);
-
-                objCountry.CountryName = updateCountryDTO.CountryName;
-                objCountry.CountryCode = updateCountryDTO.CountryCode;
-                objCountry.UpdatedBy = updateCountryDTO.CreatedBy;
-                objCountry.UpdatedOn = System.DateTime.Now;
-                _context.SaveChanges();
-                return Ok(objCountry);
             }
             catch (Exception ex)
             {

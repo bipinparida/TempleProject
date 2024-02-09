@@ -1,6 +1,7 @@
 ﻿using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
+using AdminApi.Models.App.PoojaCategory;
 using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
 using AdminApi.Models.Menu;
@@ -30,6 +31,7 @@ namespace AdminApi.Models
         public virtual DbSet<Temple> Temples { get; set; }
         public virtual DbSet<Pandit> Pandits { get; set; }
         public virtual DbSet<Bhakta> Bhaktas { get; set; }
+        public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
         
 
 
@@ -98,10 +100,19 @@ namespace AdminApi.Models
               .HasDefaultValue(false)
               .ValueGeneratedNever();
 
+			modelBuilder.Entity<PoojaCategory>()
+	  .Property(s => s.CreatedOn)
+	  .HasDefaultValue(System.DateTime.Now);
+
+			modelBuilder.Entity<PoojaCategory>()
+			  .Property(s => s.IsDeleted)
+			  .HasDefaultValue(false)
+			  .ValueGeneratedNever();
 
 
-            #endregion
-        }
+
+			#endregion
+		}
 
     }
 }
