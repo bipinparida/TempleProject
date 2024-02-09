@@ -111,6 +111,9 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 @section scripts {
     <script>
         function CountryList(Id) {
@@ -216,9 +219,9 @@
 
 
 
-        var TempleId = @ViewBag.TempleId
-            loadSinglecity()
-        function loadSinglecity() {
+        var templeId = @ViewBag.TempleId
+            loadSingletemple()
+        function loadSingletemple() {
             $.ajax({
                 type: "GET",
                 url: "@apiUrl/api/Temple/GetSingleTemple/" + templeId,
@@ -229,14 +232,15 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        $('#selectcountry').val(data.countryId);
-                        $('#Statename').val(data.stateName);
-                        $('#SelectCity').val(data.stateId);
-                        $('#TempleName').val(data.TempleName);
-                        $('#GodName').val(data.GodName);
-                        $('#Latitude').val(data.Latitude);
-                        $('#Longitude').val(data.Longitude);
-                        $('#TempleImagee').attr('src', data.image);
+                        CountryList(data.countryId);
+                        StateList(data.stateId);
+                        CityList(data.cityId);
+
+                        $('#TempleName').val(data.templeName);
+                        $('#GodName').val(data.godName);
+                        $('#Latitude').val(data.latitude);
+                        $('#Longitude').val(data.longitude);
+                        $('#TempleImagee').attr('src',data.templeImage);
 
                     }
                     else {
@@ -275,7 +279,7 @@
                     godName: $.trim($("#GodName").val()),
                     latitude: $.trim($("#Latitude").val()),
                     longitude: $.trim($("#Longitude").val()),
-                    image: imgPath,
+                    templeImage: imgPath,
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
@@ -288,24 +292,62 @@
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
                     },
 
+                    //success: function (data, statusText, xhr) {
+                    //    console.log(data)
+                    //    if (xhr.status === 200) {
+                    //        $('#Temple_Tb').DataTable().ajax.reload(null, false);
+                    //        sweetAlert({
+                    //            html: true,
+                    //            icon: "success",
+                    //            title: "Temple Update",
+                    //            text: "Successfully updated!",
+                    //            type: "success"
+                    //        });
+                    //    } else if (data.status === "duplicate") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else if (data.status === "error") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else {
+                    //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    //    }
+                    //},
                     success: function (data, statusText, xhr) {
-                        console.log(data)
                         if (xhr.status === 200) {
-                            $('#Temple_Tb').DataTable().ajax.reload(null, false);
-                            sweetAlert({
-                                html: true,
+                            Swal.fire({
                                 icon: "success",
-                                title: "State Update Order",
+                                title: "Temple Update",
                                 text: "Successfully updated!",
-                                type: "success"
+                            }).then(function () {
+                                location.reload(); // Refresh the page
                             });
-                        } else if (data.status === "duplicate") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Temple Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else if (data.status === "error") {
-                            sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         } else {
-                            sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
                         }
+                        preloader.addClass("d-none");
                     },
                     error: function (data) {
                         console.log(data);

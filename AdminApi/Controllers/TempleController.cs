@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using AdminApi.DTO.App.TempleDTO;
 using AdminApi.Models.App.Temples;
+using AdminApi.DTO.App.LocationDTO;
 
 
 namespace AdminApi.Controllers
@@ -124,6 +125,13 @@ namespace AdminApi.Controllers
             {
                 var objTemple = _context.Temples.SingleOrDefault(opt => opt.TempleId == updateTempleDTO.TempleId);
 
+                // Check if the new country name is not the same as any existing non-deleted country
+                var existingTemple = _context.Temples.SingleOrDefault(opt => opt.TempleName == updateTempleDTO.TempleName && opt.TempleId != updateTempleDTO.TempleId && opt.IsDeleted == false);
+
+                if (existingTemple != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate TempleName..!" });
+                }
                 objTemple.TempleName = updateTempleDTO.TempleName;
                 objTemple.CountryId = updateTempleDTO.CountryId;
                 objTemple.StateId = updateTempleDTO.StateId;
