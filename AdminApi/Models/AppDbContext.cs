@@ -3,6 +3,7 @@ using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
+using AdminApi.Models.App.Questions;
 using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
 using AdminApi.Models.Menu;
@@ -34,6 +35,7 @@ namespace AdminApi.Models
         public virtual DbSet<Bhakta> Bhaktas { get; set; }
         public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
+        public virtual DbSet<Question> Questions { get; set; }
         
 
 
@@ -116,6 +118,15 @@ namespace AdminApi.Models
       .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Feedback>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Question>()
+      .Property(s => s.CreatedOn)
+      .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Question>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
