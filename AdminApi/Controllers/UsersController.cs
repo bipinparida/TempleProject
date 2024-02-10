@@ -538,13 +538,19 @@ namespace AdminApi.Controllers
                 int totalUser = _context.Users.Count();
                 int activeUser = _context.Users.Where(q => q.IsActive == true).Count();
                 int inActiveUser = _context.Users.Where(q => q.IsActive == false).Count();
+
+                int activePandit = _context.Pandits.Where(q => q.IsDeleted == false).Count();
+                int activeBhakta = _context.Bhaktas.Where(q => q.IsDeleted == false).Count();
+                int activeTemple = _context.Temples.Where(q => q.IsDeleted == false).Count();
+
+
                 int adminUser = (from u in _context.Users
                                  join ur in _context.UserRole
                               on u.UserRoleId equals ur.UserRoleId
                                  where ur.RoleName == "Admin"
                                  select new { ur.RoleName }).Count();
 
-                UserStatus objStatus = new UserStatus { TotalUser = totalUser, ActiveUser = activeUser, InActiveUser = inActiveUser, AdminUser = adminUser };
+                UserStatus objStatus = new UserStatus { TotalUser = totalUser, ActiveUser = activeUser, InActiveUser = inActiveUser, AdminUser = adminUser, ActivePandit = activePandit, ActiveBhakta= activeBhakta, ActiveTemple= activeTemple };
                 return Ok(objStatus);
             }
             catch (Exception ex)

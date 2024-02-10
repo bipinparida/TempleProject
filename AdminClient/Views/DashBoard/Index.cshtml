@@ -21,12 +21,14 @@
         <div class="card">
             <div class="card-body d-flex">
                 <div class="card-order">
-                    <h6 class="mb-2">Admin Users</h6>
-                    <h2 class="mb-1"><span class="number-font counter" id="totalUser"></span></h2>
+                    <h6 class="mb-2">Total Pandits</h6>
+                    <h2 class="mb-1"><span class="number-font counter" id="totalPandit"></span></h2>
                     <p class="text-muted fs-12 mb-0"></p>
                 </div>
                 <div class="ml-auto">
-                    <span class="bg-primary-transparent icon-service text-primary"><i class="mdi mdi-account-multiple  fs-2"></i> </span>
+                    <a href="~/Pandit/PanditList">
+                        <span class="bg-primary-transparent icon-service text-primary"><i class="mdi mdi-account-multiple  fs-2"></i> </span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -35,12 +37,14 @@
         <div class="card">
             <div class="card-body d-flex">
                 <div class="card-order">
-                    <h6 class="mb-2">Active users</h6>
-                    <h2 class="mb-1"><span class="number-font counter" id="activeUser"></span></h2>
+                    <h6 class="mb-2">Total Bhaktas</h6>
+                    <h2 class="mb-1"><span class="number-font counter" id="totalBhakta"></span></h2>
                     <p class="text-muted fs-12 mb-0"></p>
                 </div>
                 <div class="ml-auto">
-                    <span class="bg-primary-transparent icon-service text-primary"><i class="mdi mdi-account-multiple  fs-2"></i> </span>
+                    <a href="~/Bhakta/BhaktaList">
+                        <span class="bg-primary-transparent icon-service text-primary"><i class="mdi mdi-account-multiple  fs-2"></i> </span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -49,12 +53,16 @@
         <div class="card">
             <div class="card-body d-flex">
                 <div class="card-order">
-                    <h6 class="mb-2">In-Active users</h6>
-                    <h2 class="mb-1"><span class="number-font counter" id="inActiveUser"></span></h2>
+                    <h6 class="mb-2">Total Temple</h6>
+                    <h2 class="mb-1"><span class="number-font counter" id="totalTemple"></span></h2>
                     <p class="text-muted fs-12 mb-0"></p>
                 </div>
                 <div class="ml-auto">
-                    <span class="bg-primary-transparent icon-service text-primary"><i class="mdi mdi-account-multiple  fs-2"></i> </span>
+                    <div class="ml-auto">
+                        <a href="~/Temple/TempleList">
+                            <span class="bg-primary-transparent icon-service text-primary"><i class="mdi mdi-account-multiple  fs-2"></i> </span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -342,9 +350,9 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        $('#totalUser').text(data.totalUser);
-                        $('#activeUser').text(data.activeUser);
-                        $('#inActiveUser').text(data.inActiveUser);
+                        $('#totalPandit').text(data.activePandit);
+                        $('#totalBhakta').text(data.activeBhakta);
+                        $('#totalTemple').text(data.activeTemple);
                         $('#adminUser').text(data.adminUser);
                     } else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
