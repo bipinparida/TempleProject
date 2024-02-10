@@ -107,6 +107,14 @@ namespace AdminApi.Controllers
             try
             {
                 var objState = _context.States.SingleOrDefault(opt => opt.StateId == updateStateDTO.StateId);
+                // Check if the new country name is not the same as any existing non-deleted country
+                var existingState = _context.States.SingleOrDefault(opt => opt.StateName == updateStateDTO.StateName && opt.StateId != updateStateDTO.StateId && opt.IsDeleted == false);
+
+                if (existingState != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate State Name..!" });
+                }
+
                 objState.StateName = updateStateDTO.StateName;
                 objState.CountryId = updateStateDTO.CountryId;
                 objState.UpdatedBy = updateStateDTO.CreatedBy;

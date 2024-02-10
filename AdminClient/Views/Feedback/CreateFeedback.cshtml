@@ -3,55 +3,63 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "Country";
+    ViewBag.Title = "Feedback";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
+
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
-        <li class="breadcrumb-item active" aria-current="page">State Edit</li>
+        <li class="breadcrumb-item active" aria-current="page">Feedback Create</li>
     </ol>
     <div class="ml-auto">
-        <a href="~/State/StateList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+        <a href="~/Feedback/FeedbackList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
             </span> View
         </a>
     </div>
 </div>
+<!-- PAGE-HEADER END -->
 
 <div class="row">
     <div class="col-md">
         <div class="card overflow-hidden">
             <div class="card-header">
-                <h3 class="card-title">State Edit</h3>
+                <h3 class="card-title">Feedback Create</h3>
             </div>
             <div class="card-body">
                 <form action="#" role="form" class="validate" id="formPost">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Country Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <label class="form-label">Bhakta Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
-                                    <select class="form-control" id="selectcountry">
+                                    <select class="form-control" id="SelectBhakta">
                                     </select>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">State Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="text" class="form-control" id="Statename" placeholder="State Name" required>
+                                <label class="form-label">Pandit Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPandit">
+                                    </select>
+                                </div>
                             </div>
                         </div>
-
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Feedback &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="FeedbackMessage" placeholder="Enter Message" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
-                            <a type="button" href="~/State/StateList" class="btn btn-radius btn-danger">Reset</a>
+                            <button type="button" id="btncreate" class="btn btn-radius btn-success">Create</button>
                         </div>
                     </div>
                 </form>
@@ -64,63 +72,23 @@
 
 @section scripts {
     <script>
-
-        //GetState()
-        //async function GetState(Id) {
-        //    var opt = '';
-        //    $.ajax({
-        //        type: "GET",
-        //        url: "@apiUrl/api/Country/GetCountryList",
-        //        contentType: "application/json; charset=utf-8",
-        //        dataType: "json",
-        //        success: function (res) {
-        //            var options = [];
-        //            options.push('<option value = ""> Select Country </option>');
-        //            for (var i = 0; i < res.data.length; i++) {
-        //                if (Id == res.data[i].countryId) {
-        //                    opt = 'selected'
-        //                } else {
-        //                    opt = '';
-        //                }
-        //                options.push('<option value = "' + res.data[i].countryId + '" ' + opt + ' > ' + res.data[i].countryName + '</option>');
-        //            }
-        //            $("#selectcountry").html(options.join(''));
-        //        },
-
-        //        error: function (data) {
-        //            if (data.status == 401) {
-        //                window.location.replace('/Message/TokenExpire');
-        //            } else if (data.status == 403) {
-        //                window.location.replace('/Message/Unauthorize');
-        //            }
-        //        }
-        //    });
-        //}
-        function CountryList(selectedCountry) {
+        Getbhakta()
+        async function Getbhakta(Id) {
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/Country/GetCountryList",
+                url: "@apiUrl/api/Bhakta/GetBhaktaList",
                 contentType: "application/json; charset=utf-8",
-                headers: {
-                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
-                },
                 dataType: "json",
                 success: function (res) {
                     var options = [];
-                    options.push('<option value="">Select Country</option>');
+                    options.push(' <option value = ""> Select Bhakta </option> ');
                     for (var i = 0; i < res.data.length; i++) {
-                        var countryName = res.data[i].countryName;
-                        var countryId = res.data[i].countryId;
-                        options.push('<option value="' + countryId + '">' + countryName + '</option>');
+                        options.push('<option value = "' + res.data[i].bhaktaId + '" ' + opt + ' > ' + res.data[i].bhaktaName + '</option>');
                     }
-                    $("#selectcountry").html(options.join(''));
-
-                    if (selectedCountry) {
-                        $('#selectcountry').val(selectedCountry);
-                        $('#selectcountry').trigger('change');
-                    }
+                    $("#SelectBhakta").html(options.join(''));
                 },
+
                 error: function (data) {
                     if (data.status == 401) {
                         window.location.replace('/Message/TokenExpire');
@@ -131,28 +99,28 @@
             });
         }
 
-        var stateId = @ViewBag.stateId
-            loadSinglestate()
-        function loadSinglestate() {
+        Getpandit()
+        async function Getpandit(Id) {
+            var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/State/GetSingleState/" + stateId,
+                url: "@apiUrl/api/Pandit/GetPanditList",
                 contentType: "application/json; charset=utf-8",
-                headers: {
-                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
-                },
                 dataType: "json",
-                success: function (data) {
-                    if (data) {
-                        //$('#selectcountry').val(data.countryId);
-                        CountryList(data.countryId);
-                        $('#Statename').val(data.stateName);
-
+                success: function (res) {
+                    var options = [];
+                    options.push(' <option value = ""> Select Pandit </option> ');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].panditId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].panditId + '" ' + opt + ' > ' + res.data[i].panditName + '</option>');
                     }
-                    else {
-                        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
-                    }
+                    $("#SelectPandit").html(options.join(''));
                 },
+
                 error: function (data) {
                     if (data.status == 401) {
                         window.location.replace('/Message/TokenExpire');
@@ -163,51 +131,37 @@
             });
         }
 
-        $("#btnupdate").click(function (e) {
+
+        $("#btncreate").click(function (e) {
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
             } else {
-
+                
                 var model = {
-                    stateId: stateId,
-                    countryId: $.trim($("#selectcountry").val()),
-                    stateName: $.trim($("#Statename").val()),
-                    updatedBy: @Context.Session.GetInt32("UserId"),
-                }
-                console.log(model)
+                    bhaktaId: parseInt($("#SelectBhakta").val()),
+                    panditId: parseInt($("#SelectPandit").val()),
+                    feedbackMessage: $.trim($("#FeedbackMessage").val()),
+                    
+                    createdBy: @Context.Session.GetInt32("UserId"),
+                };
+
+                console.log(model);
+
                 $.ajax({
                     type: "POST",
-                    url: "@apiUrl/api/State/UpdateState",
+                    url: "@apiUrl/api/Feedback/FeedbackCreate",
                     data: JSON.stringify(model),
                     contentType: "application/json; charset=utf-8",
                     headers: {
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
                     },
-                    //success: function (data, statusText, xhr) {
-                    //    console.log(data)
-                    //    if (xhr.status === 200) {
-                    //        $('#State_Tb').DataTable().ajax.reload(null, false);
-                    //        sweetAlert({
-                    //            html: true,
-                    //            icon: "success",
-                    //            title: "State Update",
-                    //            text: "Successfully updated!",
-                    //            type: "success"
-                    //        });
-                    //    } else if (data.status === "duplicate") {
-                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
-                    //    } else if (data.status === "error") {
-                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
-                    //    } else {
-                    //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
-                    //    }
-                    //},
+                    dataType: "json",
                     success: function (data, statusText, xhr) {
                         if (xhr.status === 200) {
                             Swal.fire({
                                 icon: "success",
-                                title: "State Update",
-                                text: "Successfully updated!",
+                                title: "Feedback Create",
+                                text: "Successfully Created!",
                             }).then(function () {
                                 location.reload(); // Refresh the page
                             });
@@ -216,7 +170,7 @@
                         } else if (data.status === "Duplicate") {
                             Swal.fire({
                                 icon: "warning",
-                                title: "State Already Exists!",
+                                title: "Feedback Already Exists!",
                                 text: data.responseMsg,
                             }).then(function () {
                                 location.reload(); // Refresh the page
@@ -241,7 +195,6 @@
                         preloader.addClass("d-none");
                     },
                     error: function (data) {
-                        console.log(data);
                         if (data.status == 401) {
                             window.location.replace('/Message/TokenExpire');
                         } else if (data.status == 403) {
@@ -251,7 +204,11 @@
                         }
                     }
                 });
+
+
             }
         });
+
     </script>
+
 }
