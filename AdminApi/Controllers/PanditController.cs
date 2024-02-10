@@ -188,8 +188,10 @@ namespace AdminApi.Controllers
                 objPandit.Password = updatePanditDTO.Password;
                 objPandit.PanditImage = updatePanditDTO.PanditImage;
                 objPandit.Message = updatePanditDTO.Message;
-                objPandit.IsApprove = updatePanditDTO.IsApprove;
-                objPandit.Reject = updatePanditDTO.Reject;
+                //objPandit.IsApprove = updatePanditDTO.IsApprove;
+                //objPandit.Reject = updatePanditDTO.Reject;
+                //objPandit.IsApprove = false;
+                //objPandit.Reject = false;
 
                 objPandit.UpdatedBy = updatePanditDTO.CreatedBy;
                 objPandit.UpdatedOn = System.DateTime.Now;
@@ -214,6 +216,67 @@ namespace AdminApi.Controllers
                 objabout.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objabout);
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+
+        [HttpGet("{Id}")]
+        public ActionResult ApprovePandit(int Id)
+        {
+            try
+            {
+                var objabout = _context.Pandits.SingleOrDefault(opt => opt.PanditId == Id);
+
+                objabout.IsApprove = true;
+                objabout.Reject = false;
+
+                _context.SaveChanges();
+                return Ok(objabout);
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        [HttpGet("{Id}")]
+        public ActionResult RejectPandit(int Id)
+        {
+            try
+            {
+                var objabout = _context.Pandits.SingleOrDefault(opt => opt.PanditId == Id);
+
+                objabout.IsApprove = false;
+                objabout.Reject = true;
+
+                _context.SaveChanges();
+                return Ok(objabout);
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+
+        [HttpPost]
+        public ActionResult MessagePandit(MessagePanditDTO messagePanditDTO)
+        {
+            try
+            {
+                var objPandit = _context.Pandits.SingleOrDefault(opt => opt.PanditId == messagePanditDTO.PanditId);
+
+                objPandit.Message = messagePanditDTO.Message;
+              
+                _context.SaveChanges();
+                return Ok(objPandit);
             }
             catch (Exception ex)
             {

@@ -59,4 +59,11 @@ namespace AdminApi.DTO.App.PanditDTO
 
         public int CreatedBy { get; set; }
     }
+
+    public class MessagePanditDTO
+    {
+        public int PanditId { get; set; }
+        public string Message { get; set; }
+    }
+
 }

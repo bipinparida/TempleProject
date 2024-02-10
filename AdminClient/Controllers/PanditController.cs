@@ -17,5 +17,14 @@ namespace AdminClient.Controllers
             ViewBag.PanditId = PanditId;
             return View();
         }
+
+        public IActionResult PanditMessage(int PanditId)
+        {
+            ViewBag.PanditId = PanditId;
+            return View();
+        }
+
+
+
     }
 }
