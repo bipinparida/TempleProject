@@ -177,14 +177,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                  @*   <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Message &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="Message" placeholder="Enter Message" required>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
@@ -406,7 +406,7 @@
                         $('#MailId').val(data.mailId);
                         $('#DateOfBirth').val(data.dateOfBirth);
                         $('#Password').val(data.password);
-                        $('#Message').val(data.message);
+                        // $('#Message').val(data.message);
                         $('#PanditImagee').attr('src', data.panditImage);
 
                     }
@@ -459,7 +459,7 @@
                     mailId: $.trim($("#MailId").val()),
                     dateOfBirth: $.trim($("#DateOfBirth").val()) == '' ? null : $.trim($("#DateOfBirth").val().replace(/\//g, '-')),
                     password: $.trim($("#Password").val()),
-                    message: $.trim($("#Message").val()),
+                    // message: $.trim($("#Message").val()),
                     panditImage: imgPath,
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
