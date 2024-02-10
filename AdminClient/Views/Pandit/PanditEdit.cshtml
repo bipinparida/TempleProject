@@ -302,28 +302,32 @@
             });
         }
 
-        GetTemple()
-        async function GetTemple(Id) {
+
+        function TempleList(selectedTemple) {
             var opt = '';
             $.ajax({
                 type: "GET",
                 url: "@apiUrl/api/Temple/GetTempleList",
                 contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
                 dataType: "json",
                 success: function (res) {
                     var options = [];
-                    options.push('<option value = ""> Select Temple </option>');
+                    options.push('<option value="">Select Temple</option>');
                     for (var i = 0; i < res.data.length; i++) {
-                        if (Id == res.data[i].templeId) {
-                            opt = 'selected'
-                        } else {
-                            opt = '';
-                        }
-                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+                        var templeName = res.data[i].templeName;
+                        var templeId = res.data[i].templeId;
+                        options.push('<option value="' + templeId + '">' + templeName + '</option>');
                     }
                     $("#SelectTemple").html(options.join(''));
-                },
 
+                    if (selectedTemple) {
+                        $('#SelectTemple').val(selectedTemple);
+                        $('#SelectTemple').trigger('change');
+                    }
+                },
                 error: function (data) {
                     if (data.status == 401) {
                         window.location.replace('/Message/TokenExpire');
@@ -333,6 +337,40 @@
                 }
             });
         }
+
+
+
+        // GetTemple()
+        // async function GetTemple(Id) {
+        //     var opt = '';
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "@apiUrl/api/Temple/GetTempleList",
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         success: function (res) {
+        //             var options = [];
+        //             options.push('<option value = ""> Select Temple </option>');
+        //             for (var i = 0; i < res.data.length; i++) {
+        //                 if (Id == res.data[i].templeId) {
+        //                     opt = 'selected'
+        //                 } else {
+        //                     opt = '';
+        //                 }
+        //                 options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+        //             }
+        //             $("#SelectTemple").html(options.join(''));
+        //         },
+
+        //         error: function (data) {
+        //             if (data.status == 401) {
+        //                 window.location.replace('/Message/TokenExpire');
+        //             } else if (data.status == 403) {
+        //                 window.location.replace('/Message/Unauthorize');
+        //             }
+        //         }
+        //     });
+        // }
 
         var panditId = @ViewBag.PanditId
             loadSinglepandit()
@@ -350,8 +388,9 @@
                         CountryList(data.countryId);
                         StateList(data.stateId);
                         CityList(data.cityId);
+                        TempleList(data.templeId);
 
-                        $('#SelectTemple').val(data.templeId);
+                        // $('#SelectTemple').val(data.templeId);
                         $('#Experiences').val(data.experiences);
                         $('#PujaCategory').val(data.pujaCategory);
                         $('#Religion').val(data.religion);
