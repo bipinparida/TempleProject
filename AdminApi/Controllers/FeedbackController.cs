@@ -29,11 +29,8 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult FeedbackCreate(CreateFeedbackDTO createFeedbackDTO)
         {
-            //var objcheck = _context.Feedbacks.SingleOrDefault(opt => opt.TempleName == createTempleDTO.TempleName && opt.IsDeleted == false);
             try
             {
-                //if (objcheck == null)
-                //{
                     Feedback feedback = new Feedback();
 
                     feedback.BhaktaId = createFeedbackDTO.BhaktaId;
@@ -44,12 +41,7 @@ namespace AdminApi.Controllers
                     feedback.CreatedOn = System.DateTime.Now;
                     var obj = _FeedbackRepo.Insert(feedback);
                     return Ok(obj);
-                //}
-                //else if (objcheck != null)
-                //{
-                //    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Temple..!" });
-                //}
-                //return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+              
             }
             catch (Exception ex)
             {
@@ -106,13 +98,7 @@ namespace AdminApi.Controllers
             {
                 var objFeedback = _context.Feedbacks.SingleOrDefault(opt => opt.FeedbackId == updateFeedbackDTO.FeedbackId);
 
-                // Check if the new country name is not the same as any existing non-deleted country
-                //var existingTemple = _context.Temples.SingleOrDefault(opt => opt.TempleName == updateTempleDTO.TempleName && opt.TempleId != updateTempleDTO.TempleId && opt.IsDeleted == false);
-
-                //if (existingTemple != null)
-                //{
-                //    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate TempleName..!" });
-                //}
+               
                 objFeedback.BhaktaId = updateFeedbackDTO.BhaktaId;
                 objFeedback.PanditId = updateFeedbackDTO.PanditId;
                 objFeedback.FeedbackMessage = updateFeedbackDTO.FeedbackMessage;
@@ -146,5 +132,70 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        [HttpGet("{PanditId}")]
+        public ActionResult GetFeedbackListbyPanditId(int PanditId)
+        {
+            try
+            {
+                var list = (from u in _context.Feedbacks
+                            join c in _context.Bhaktas on u.BhaktaId equals c.BhaktaId
+                            join d in _context.Pandits on u.PanditId equals d.PanditId
+
+                            select new
+                            {
+                                u.FeedbackId,
+                                u.BhaktaId,
+                                u.PanditId,
+                                c.BhaktaName,
+                                d.PanditName,
+                                u.FeedbackMessage,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        [HttpGet("{BhaktaId}")]
+        public ActionResult GetFeedbackListbyBhaktaId(int BhaktaId)
+        {
+            try
+            {
+                var list = (from u in _context.Feedbacks
+                            join c in _context.Bhaktas on u.BhaktaId equals c.BhaktaId
+                            join d in _context.Pandits on u.PanditId equals d.PanditId
+
+                            select new
+                            {
+                                u.FeedbackId,
+                                u.BhaktaId,
+                                u.PanditId,
+                                c.BhaktaName,
+                                d.PanditName,
+                                u.FeedbackMessage,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.BhaktaId == BhaktaId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+
     }
 }

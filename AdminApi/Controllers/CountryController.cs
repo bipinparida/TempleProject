@@ -66,7 +66,6 @@ namespace AdminApi.Controllers
             {
                 var objCountry = _context.Countries.SingleOrDefault(opt => opt.CountryId == updateCountryDTO.CountryId);
 
-                // Check if the new country name is not the same as any existing non-deleted country
                 var existingCountry = _context.Countries.SingleOrDefault(opt => opt.CountryName == updateCountryDTO.CountryName && opt.CountryId != updateCountryDTO.CountryId && opt.IsDeleted == false);
 
                 if (existingCountry != null)

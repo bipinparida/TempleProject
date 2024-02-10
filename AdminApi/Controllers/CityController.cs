@@ -112,7 +112,7 @@ namespace AdminApi.Controllers
             try
             {
                 var objCity = _context.Cities.SingleOrDefault(opt => opt.CityId == updateCityDTO.CityId);
-                // Check if the new country name is not the same as any existing non-deleted country
+
                 var existingCity = _context.Cities.SingleOrDefault(opt => opt.CityName == updateCityDTO.CityName && opt.CityId != updateCityDTO.CityId && opt.IsDeleted == false);
 
                 if (existingCity != null)

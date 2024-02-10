@@ -107,7 +107,7 @@ namespace AdminApi.Controllers
             try
             {
                 var objState = _context.States.SingleOrDefault(opt => opt.StateId == updateStateDTO.StateId);
-                // Check if the new country name is not the same as any existing non-deleted country
+
                 var existingState = _context.States.SingleOrDefault(opt => opt.StateName == updateStateDTO.StateName && opt.StateId != updateStateDTO.StateId && opt.IsDeleted == false);
 
                 if (existingState != null)
