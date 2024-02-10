@@ -1,4 +1,5 @@
 ﻿using AdminApi.DTO.App.LocationDTO;
+using AdminApi.DTO.App.PanditDTO;
 using AdminApi.Models;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.Helper;
@@ -111,6 +112,14 @@ namespace AdminApi.Controllers
             try
             {
                 var objCity = _context.Cities.SingleOrDefault(opt => opt.CityId == updateCityDTO.CityId);
+                // Check if the new country name is not the same as any existing non-deleted country
+                var existingCity = _context.Cities.SingleOrDefault(opt => opt.CityName == updateCityDTO.CityName && opt.CityId != updateCityDTO.CityId && opt.IsDeleted == false);
+
+                if (existingCity != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate City Name..!" });
+                }
+
                 objCity.CityName = updateCityDTO.CityName;
                 objCity.StateId = updateCityDTO.StateId;
                 objCity.CountryId = updateCityDTO.CountryId;
