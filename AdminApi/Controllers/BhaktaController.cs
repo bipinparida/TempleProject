@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System;
 using AdminApi.DTO.App.BhaktaDTO;
+using AdminApi.DTO.App.LocationDTO;
 
 namespace AdminApi.Controllers
 {
@@ -118,6 +119,13 @@ namespace AdminApi.Controllers
             try
             {
                 var objBhakta = _context.Bhaktas.SingleOrDefault(opt => opt.BhaktaId == updateBhaktaDTO.BhaktaId);
+
+                var existingBhakta = _context.Bhaktas.SingleOrDefault(opt => opt.PrimaryPhone == updateBhaktaDTO.PrimaryPhone && opt.BhaktaId != updateBhaktaDTO.BhaktaId && opt.IsDeleted == false);
+
+                if (existingBhakta != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Primary Phone..!" });
+                }
 
                 objBhakta.BhaktaName = updateBhaktaDTO.BhaktaName;
                 objBhakta.Address = updateBhaktaDTO.Address;
