@@ -39,7 +39,7 @@
                                 <th>Latitude</th>
                                 <th>Longitude</th>
                                 <th>God Name</th>
-                                <th>TempleImage</th>
+                                <th>Temple Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -94,8 +94,7 @@
                             if (row.templeImage === '')
                                 return '';
                             else
-                                return '<img style="max-width: 65%;" src="' + row.templeImage + '"/>'
-
+                                return '<a href="#" data-toggle="modal" data-target="#photoModal" data-photo="' + row.templeImage + '"><img style="margin-left: 28px;" class="avatar avatar-md rounded-circle" src="' + row.templeImage + '"/></a>'
                         }
                     },
                     {
@@ -154,5 +153,30 @@
                 });
             });
         });
+
+        // JavaScript function for opening profile photo in a modal
+        $(document).on('click', 'a[data-toggle="modal"]', function () {
+            var photoUrl = $(this).data('photo');
+            $('#profilePhotoModal').attr('src', photoUrl);
+        });
+
     </script>
 }
+
+<!-- Modal for displaying profile photo -->
+<div id="photoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Temple Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Center the content -->
+                <img id="profilePhotoModal" class="img-fluid mx-auto" src="" alt="Profile Photo">
+            </div>
+        </div>
+    </div>
+</div>
