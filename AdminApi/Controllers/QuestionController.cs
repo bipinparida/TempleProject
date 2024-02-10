@@ -27,6 +27,7 @@ namespace AdminApi.Controllers
             _context = context;
             _QuestionRepo = questionRepo;
         }
+
         [HttpPost]
         public IActionResult QuestionCreate(CreateQuestionDTO createQuestionDTO)
         {
@@ -46,7 +47,7 @@ namespace AdminApi.Controllers
                 }
                 else if (objcheck != null)
                 {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Question..!" });
                 }
                 return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
             }
@@ -56,6 +57,7 @@ namespace AdminApi.Controllers
             }
 
         }
+
         [HttpPost]
         public ActionResult UpdateQuestion(UpdateQuestionDTO updateQuestionDTO)
         {
@@ -63,12 +65,11 @@ namespace AdminApi.Controllers
             {
                 var objQuestion = _context.Questions.SingleOrDefault(opt => opt.QuestionId == updateQuestionDTO.QuestionId);
 
-                // Check if the new country name is not the same as any existing non-deleted country
                 var existingQuestion = _context.Questions.SingleOrDefault(opt => opt.QuestionName == updateQuestionDTO.QuestionName && opt.QuestionId != updateQuestionDTO.QuestionId && opt.IsDeleted == false);
 
                 if (existingQuestion != null)
                 {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Question..!" });
                 }
 
                 objQuestion.QuestionName = updateQuestionDTO.QuestionName;
@@ -82,6 +83,7 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
         [HttpGet]
         public ActionResult GetQuestionList()
         {
@@ -105,6 +107,7 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
         [HttpGet("{QuestionId}")]
         public ActionResult GetSingleQuestion(int QuestionId)
         {
