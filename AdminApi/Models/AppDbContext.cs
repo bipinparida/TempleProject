@@ -1,4 +1,5 @@
 ﻿using AdminApi.Models.App.Bhaktas;
+using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
@@ -32,6 +33,7 @@ namespace AdminApi.Models
         public virtual DbSet<Pandit> Pandits { get; set; }
         public virtual DbSet<Bhakta> Bhaktas { get; set; }
         public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
         
 
 
