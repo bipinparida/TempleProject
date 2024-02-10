@@ -111,10 +111,19 @@ namespace AdminApi.Models
 			  .HasDefaultValue(false)
 			  .ValueGeneratedNever();
 
+            modelBuilder.Entity<Feedback>()
+      .Property(s => s.CreatedOn)
+      .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Feedback>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
 
 
-			#endregion
-		}
+
+            #endregion
+        }
 
     }
 }
