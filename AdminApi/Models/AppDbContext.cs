@@ -1,4 +1,5 @@
 ﻿using AdminApi.Models.App.Bhaktas;
+using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
@@ -32,6 +33,7 @@ namespace AdminApi.Models
         public virtual DbSet<Pandit> Pandits { get; set; }
         public virtual DbSet<Bhakta> Bhaktas { get; set; }
         public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
         
 
 
@@ -109,10 +111,19 @@ namespace AdminApi.Models
 			  .HasDefaultValue(false)
 			  .ValueGeneratedNever();
 
+            modelBuilder.Entity<Feedback>()
+      .Property(s => s.CreatedOn)
+      .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Feedback>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
 
 
-			#endregion
-		}
+
+            #endregion
+        }
 
     }
 }
