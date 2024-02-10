@@ -125,7 +125,6 @@ namespace AdminApi.Controllers
             {
                 var objTemple = _context.Temples.SingleOrDefault(opt => opt.TempleId == updateTempleDTO.TempleId);
 
-                // Check if the new country name is not the same as any existing non-deleted country
                 var existingTemple = _context.Temples.SingleOrDefault(opt => opt.TempleName == updateTempleDTO.TempleName && opt.TempleId != updateTempleDTO.TempleId && opt.IsDeleted == false);
 
                 if (existingTemple != null)

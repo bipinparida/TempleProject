@@ -159,7 +159,6 @@ namespace AdminApi.Controllers
             {
                 var objPandit = _context.Pandits.SingleOrDefault(opt => opt.PanditId == updatePanditDTO.PanditId);
 
-                // Check if the new country name is not the same as any existing non-deleted country
                 var existingPandit = _context.Pandits.SingleOrDefault(opt => opt.PrimaryPhone == updatePanditDTO.PrimaryPhone && opt.PanditId != updatePanditDTO.PanditId && opt.IsDeleted == false);
 
                 if (existingPandit != null)
