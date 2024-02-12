@@ -24,6 +24,12 @@ namespace AdminClient.Controllers
             return View();
         }
 
+        public IActionResult PanditLiveTestList(int PanditId)
+        {
+            ViewBag.PanditId = PanditId;
+            return View();
+        }
+
 
 
     }
