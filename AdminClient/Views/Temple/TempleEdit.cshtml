@@ -70,6 +70,15 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">GodName &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="GodName" placeholder="Enter GodName" required>
                             </div>
@@ -87,6 +96,8 @@
                                 <input type="text" class="form-control" id="Longitude" placeholder="Enter Longitude" required>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">TempleImage &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -217,6 +228,41 @@
             });
         }
 
+        function PoojaCategoryList(selectedPoojaCategory) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Temple/GetTempleList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value="">Select Temple</option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        var poojaCategoryName = res.data[i].poojaCategoryName;
+                        var poojaCategoryId = res.data[i].poojaCategoryId;
+                        options.push('<option value="' + poojaCategoryId + '">' + poojaCategoryName + '</option>');
+                    }
+                    $("#SelectPoojaCategory").html(options.join(''));
+
+                    if (selectedPoojaCategory) {
+                        $('#SelectPoojaCategory').val(selectedPoojaCategory);
+                        $('#SelectPoojaCategory').trigger('change');
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
 
 
         var templeId = @ViewBag.TempleId
@@ -235,6 +281,7 @@
                         CountryList(data.countryId);
                         StateList(data.stateId);
                         CityList(data.cityId);
+                        PoojaCategoryList(data.poojaCategoryId);
 
                         $('#TempleName').val(data.templeName);
                         $('#GodName').val(data.godName);
@@ -276,6 +323,7 @@
                     stateId: $.trim($("#Selectstate").val()),
                     cityId: $.trim($("#SelectCity").val()),
                     templeName: $.trim($("#TempleName").val()),
+                    poojaCategoryId: $.trim($("#SelectPoojaCategory").val()),
                     godName: $.trim($("#GodName").val()),
                     latitude: $.trim($("#Latitude").val()),
                     longitude: $.trim($("#Longitude").val()),

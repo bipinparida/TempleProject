@@ -41,6 +41,7 @@ namespace AdminApi.Controllers
                     temple.CountryId = createTempleDTO.CountryId;
                     temple.StateId = createTempleDTO.StateId;
                     temple.CityId = createTempleDTO.CityId;
+                    temple.PoojaCategoryId= createTempleDTO.PoojaCategoryId;
                     temple.Latitude = createTempleDTO.Latitude;
                     temple.Longitude = createTempleDTO.Longitude;
                     temple.GodName = createTempleDTO.GodName;
@@ -74,6 +75,7 @@ namespace AdminApi.Controllers
                             join c in _context.Countries on u.CountryId equals c.CountryId
                             join s in _context.States on u.StateId equals s.StateId
                             join d in _context.Cities on u.CityId equals d.CityId
+                            join a in _context.PoojaCategories on u.PoojaCategoryId equals a.PoojaCategoryId
 
                             select new
                             {
@@ -85,6 +87,8 @@ namespace AdminApi.Controllers
                                 s.StateName,
                                 u.CityId,
                                 d.CityName,
+                                a.PoojaCategoryName,
+                                u.PoojaCategoryId,
                                 u.Latitude,
                                 u.Longitude,
                                 u.GodName,
@@ -135,6 +139,7 @@ namespace AdminApi.Controllers
                 objTemple.CountryId = updateTempleDTO.CountryId;
                 objTemple.StateId = updateTempleDTO.StateId;
                 objTemple.CityId = updateTempleDTO.CityId;
+                objTemple.PoojaCategoryId = updateTempleDTO.PoojaCategoryId;
                 objTemple.Latitude = updateTempleDTO.Latitude;
                 objTemple.Longitude = updateTempleDTO.Longitude;
                 objTemple.GodName = updateTempleDTO.GodName;
