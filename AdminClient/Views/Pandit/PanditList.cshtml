@@ -216,7 +216,50 @@
                         }
                     },
                     { "data": "password", "orderable": true, "visible": true },
-                    { "data": "message", "orderable": true, "visible": true }
+                    // { "data": "message", "orderable": true, "visible": true }
+
+                    {
+                        "data": "message",
+                        "render": function (data, type, row) {
+                            if (typeof data !== 'string' || !data.trim()) {
+                                return ''; // Return an empty string if data is not a string or empty
+                            }
+
+                            var words = data.trim().split(" ");
+                            var brokenMessage = "";
+                            var wordCount = 0;
+
+                            for (var i = 0; i < words.length; i++) {
+                                if (wordCount == 5) {
+                                    brokenMessage += "<br>";  // Add a new line after every 5 words
+                                    wordCount = 0;
+                                }
+                                brokenMessage += words[i] + " ";
+                                wordCount++;
+                            }
+
+                            // Add CSS style for text justification
+                            return '<div style="text-align: justify;">' + brokenMessage.trim() + '</div>';
+                        }
+                    }
+
+                    // {
+                    //     "data": "message",
+                    //     "render": function (data, type, row) {
+                    //         if (typeof data !== 'string' || !data.trim()) {
+                    //             return ''; // Return an empty string if data is not a string or empty
+                    //         }
+
+                    //         var sentences = data.trim().split(". "); // Assuming sentences end with a period followed by a space
+                    //         var justifiedSentences = sentences.map(function (sentence) {
+                    //             return '<div style="text-align: justify;">' + sentence + '.</div>';
+                    //         });
+
+                    //         return justifiedSentences.join('');
+                    //     }
+                    // }
+
+                   
                    
 
                     // {
