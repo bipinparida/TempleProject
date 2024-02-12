@@ -1,5 +1,6 @@
 ﻿using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Feedbacks;
+using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
@@ -36,6 +37,7 @@ namespace AdminApi.Models
         public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<LiveTest> LiveTests { get; set; }
         
 
 
@@ -127,6 +129,15 @@ namespace AdminApi.Models
       .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Question>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<LiveTest>()
+      .Property(s => s.CreatedOn)
+      .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<LiveTest>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
