@@ -122,7 +122,7 @@
 
                     {
                         "render": function (data, type, row) {
-                            if (row.liveTestAnswer === 'string') {
+                            if (row.liveTestAnswer === null || row.liveTestAnswer === '') {
                                 return '<div style="color:red;">No Video</div>';
                             } else {
                                 return '<button class="btn btn-sm btn-primary open-video-modal" data-video-url="' + row.liveTestAnswer + '"><i class="fa fa-play"></i> Watch Video</button>';

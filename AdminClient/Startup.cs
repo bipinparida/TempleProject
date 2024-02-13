@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminClient.Model.Bhakta;
+using AdminClient.Model.LiveTest;
 using AdminClient.Model.Pandit;
 using AdminClient.Model.Utility;
 using Microsoft.AspNetCore.Builder;
@@ -34,8 +35,10 @@ namespace AdminClient
             services.AddControllersWithViews();
 
 			services.AddScoped<IHttpWebClients, HttpWebClients>();
+
 			services.AddScoped<IPandit, PanditProvider>();
 			services.AddScoped<IBhakta, BhaktaProvider>();
+			services.AddScoped<ILiveTest, LiveTestProvider>();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
