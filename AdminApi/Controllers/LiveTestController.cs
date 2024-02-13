@@ -31,38 +31,77 @@ namespace AdminApi.Controllers
         }
 
 
+        //[HttpPost]
+        //public IActionResult LiveTestCreate(CreateLiveTestDTO createLiveTestDTO)
+        //{
+        //    //var objcheck = _context.LiveTests.SingleOrDefault(opt => opt.QuestionId == createLiveTestDTO.QuestionId && opt.IsDeleted == false);
+        //    try
+        //    {
+        //        //if (objcheck == null)
+        //        //{
+        //            LiveTest liveTest = new LiveTest();
+
+        //            liveTest.PanditId = createLiveTestDTO.PanditId;
+        //            liveTest.QuestionId = createLiveTestDTO.QuestionId;
+        //            liveTest.LiveTestAnswer = createLiveTestDTO.LiveTestAnswer;
+
+        //            liveTest.CreatedBy = createLiveTestDTO.CreatedBy;
+        //            liveTest.CreatedOn = System.DateTime.Now;
+        //            var obj = _LiveTestRepo.Insert(liveTest);
+        //            return Ok(obj);
+        //        //}
+        //        //else if (objcheck != null)
+        //        //{
+        //        //    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Question..!" });
+        //        //}
+        //        //return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+
+        //}
+
+
+
+
         [HttpPost]
         public IActionResult LiveTestCreate(CreateLiveTestDTO createLiveTestDTO)
         {
-            //var objcheck = _context.LiveTests.SingleOrDefault(opt => opt.QuestionId == createLiveTestDTO.QuestionId && opt.IsDeleted == false);
             try
             {
-                //if (objcheck == null)
-                //{
-                    LiveTest liveTest = new LiveTest();
+                // Check if a live test already exists for the given question and pandit
+                var existingLiveTest = _context.LiveTests.SingleOrDefault(opt => opt.QuestionId == createLiveTestDTO.QuestionId && opt.PanditId == createLiveTestDTO.PanditId && opt.IsDeleted == false);
 
+                if (existingLiveTest == null)
+                {
+                    // No existing live test found for the given pandit and question, proceed to create a new one
+                    LiveTest liveTest = new LiveTest();
                     liveTest.PanditId = createLiveTestDTO.PanditId;
                     liveTest.QuestionId = createLiveTestDTO.QuestionId;
                     liveTest.LiveTestAnswer = createLiveTestDTO.LiveTestAnswer;
-
                     liveTest.CreatedBy = createLiveTestDTO.CreatedBy;
                     liveTest.CreatedOn = System.DateTime.Now;
+
                     var obj = _LiveTestRepo.Insert(liveTest);
                     return Ok(obj);
-                //}
-                //else if (objcheck != null)
-                //{
-                //    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Question..!" });
-                //}
-                //return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+                }
+                else
+                {
+                    // A live test already exists for the given pandit and question
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "A live test for this question has already been created by this pandit." });
+                }
             }
-
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
-
         }
+
+
+
 
 
         [HttpGet]
