@@ -88,7 +88,7 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.Pandits
-                            join a in _context.Temples on u.TempleId equals a.TempleId
+                            join p in _context.Temples on u.TempleId equals p.TempleId
                             join c in _context.Countries on u.CountryId equals c.CountryId
                             join s in _context.States on u.StateId equals s.StateId
                             join d in _context.Cities on u.CityId equals d.CityId
@@ -96,8 +96,8 @@ namespace AdminApi.Controllers
                             select new
                             {
                                 u.PanditId,
-                                a.TempleId,
-                                a.TempleName,
+                                u.TempleId,
+                                p.TempleName,
                                 u.CountryId,
                                 c.CountryName,
                                 u.StateId,
