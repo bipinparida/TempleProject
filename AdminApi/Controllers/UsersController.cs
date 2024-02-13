@@ -76,7 +76,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Create Log History after login
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult CreateLoginHistory(LogHistory model)
         {
@@ -98,7 +98,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Update Login History
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpGet("{logCode}")]
         public ActionResult UpdateLoginHistory(string logCode)
         {
@@ -239,7 +239,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Get Role List
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpGet]
         public ActionResult GetUserRoleList()
         {
@@ -265,7 +265,7 @@ namespace AdminApi.Controllers
         ///Get Single Role by ID
         ///</summary>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         public ActionResult GetSingleRole(int id)
         {
             try
@@ -283,7 +283,7 @@ namespace AdminApi.Controllers
         ///Delete Single Role by ID
         ///</summary>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         public ActionResult DeleteSingleRole(int id)
         {
             try
@@ -300,7 +300,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Create User Role
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult CreateUserRole(UserRole model)
         {
@@ -331,7 +331,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Update User Role
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult UpdateUserRole(UserRole model)
         {
@@ -356,7 +356,7 @@ namespace AdminApi.Controllers
         ///Get User List
         ///</summary>
         [HttpGet]
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         public ActionResult GetUserList()
         {
             try
@@ -382,7 +382,7 @@ namespace AdminApi.Controllers
         ///Get Single User by ID
         ///</summary>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         public ActionResult GetSingleUser(int id)
         {
             try
@@ -400,7 +400,7 @@ namespace AdminApi.Controllers
         ///Delete Single User by ID
         ///</summary>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         public ActionResult DeleteSingleUser(int id)
         {
             try
@@ -417,7 +417,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Create User
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult CreateUser(Users model)
         {
@@ -450,7 +450,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Update User
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult UpdateUser(Users model)
         {
@@ -480,7 +480,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Update User Profile
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult UpdateUserProfile(UserInfo model)
         {
@@ -506,7 +506,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Change User Password
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpPost]
         public ActionResult ChangeUserPassword(UserInfo model)
         {
@@ -529,7 +529,7 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Dashboard User Status
         ///</summary>
-        [Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin,User")]
         [HttpGet]
         public ActionResult UserStatus()
         {
@@ -539,10 +539,6 @@ namespace AdminApi.Controllers
                 int activeUser = _context.Users.Where(q => q.IsActive == true).Count();
                 int inActiveUser = _context.Users.Where(q => q.IsActive == false).Count();
 
-                int activePandit = _context.Pandits.Where(q => q.IsDeleted == false).Count();
-                int activeBhakta = _context.Bhaktas.Where(q => q.IsDeleted == false).Count();
-                int activeTemple = _context.Temples.Where(q => q.IsDeleted == false).Count();
-
 
                 int adminUser = (from u in _context.Users
                                  join ur in _context.UserRole
@@ -550,7 +546,7 @@ namespace AdminApi.Controllers
                                  where ur.RoleName == "Admin"
                                  select new { ur.RoleName }).Count();
 
-                UserStatus objStatus = new UserStatus { TotalUser = totalUser, ActiveUser = activeUser, InActiveUser = inActiveUser, AdminUser = adminUser, ActivePandit = activePandit, ActiveBhakta= activeBhakta, ActiveTemple= activeTemple };
+                UserStatus objStatus = new UserStatus { TotalUser = totalUser, ActiveUser = activeUser, InActiveUser = inActiveUser, AdminUser = adminUser };
                 return Ok(objStatus);
             }
             catch (Exception ex)

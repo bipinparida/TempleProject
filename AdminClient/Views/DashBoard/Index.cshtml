@@ -350,9 +350,9 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        $('#totalPandit').text(data.activePandit);
-                        $('#totalBhakta').text(data.activeBhakta);
-                        $('#totalTemple').text(data.activeTemple);
+                        $('#totalUser').text(data.totalUser);
+                        $('#activeUser').text(data.activeUser);
+                        $('#inActiveUser').text(data.inActiveUser);
                         $('#adminUser').text(data.adminUser);
                     } else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -367,6 +367,69 @@
                 }
             });
         }
+    </script>
+
+
+    <script>
+
+        totalPandit()
+        function totalPandit() {
+            $.ajax({
+                "url": '@apiUrl/api/Pandit/GetPanditList',
+                type: "GET",
+                success: function (data) {
+                    //console.log(data);
+                    var x = '';
+                    var recordsTotal = data.recordsTotal;
+                    x = x + '<h2>' + recordsTotal + '</h2>';
+                    $('#totalPandit').html(x);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        totalBhakta()
+        function totalBhakta() {
+            $.ajax({
+                "url": '@apiUrl/api/Bhakta/GetBhaktaList',
+                type: "GET",
+                success: function (data) {
+                    //console.log(data);
+                    var x = '';
+                    var recordsTotal = data.recordsTotal;
+                    x = x + '<h2>' + recordsTotal + '</h2>';
+                    $('#totalBhakta').html(x);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        totalTemple()
+        function totalTemple() {
+            $.ajax({
+                "url": '@apiUrl/api/Temple/GetTempleList',
+                type: "GET",
+                success: function (data) {
+                    //console.log(data);
+                    var x = '';
+                    var recordsTotal = data.recordsTotal;
+                    x = x + '<h2>' + recordsTotal + '</h2>';
+                    $('#totalTemple').html(x);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+
+
+
+
     </script>
 
 }
