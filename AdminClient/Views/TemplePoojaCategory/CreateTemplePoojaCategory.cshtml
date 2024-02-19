@@ -1,0 +1,248 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "TemplePoojaCategory";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">TemplePoojaCategory Create</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/TemplePoojaCategory/TemplePoojaCategoryList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+<!-- PAGE-HEADER END -->
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">TemplePoojaCategory Create</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectTemple">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group overflow-hidden" id="ifv">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategory Name</label>
+                                <select multiple="multiple" class="form-control select2 w-100" id="SelectPoojaCategory"  data-placeholder="Select PoojaCategory" required></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btncreate" class="btn btn-radius btn-success">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        var selectedSeller = [];
+        Gettemple()
+        async function Gettemple(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Temple/GetTempleList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push(' <option value = ""> Select Temple </option> ');
+                    for (var i = 0; i < res.data.length; i++) {
+                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+                    }
+                    $("#SelectTemple").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        //var selectedSeller = [];
+        GetSubscriptionType()
+        async function GetSubscriptionType(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryList',
+
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    console.log(data)
+
+                    for (var i = 0; i < data['data'].length; i++) {
+                        if (Id == data['data'][i].poojaCategoryId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value="__select_all__">Select All</option>');
+                        for (var i = 0; i < data['data'].length; i++)
+                        {
+                            options.push('<option value="' + data['data'][i].poojaCategoryId + '" ' + opt + '>' + data['data'][i].poojaCategoryName + '</option>');
+                        }
+                    }
+                    $("#SelectPoojaCategory").html(options.join(''));
+                    $('#SelectPoojaCategory').change(function () {
+
+                        selectedSeller = $(this).val()
+                        //console.log(selectedSeller);
+                    }).multipleSelect({
+                        width: '100%'
+                    });
+                    $('#SelectPoojaCategory').on('change', function () {
+                        if ($(this).val() && $(this).val().includes('__select_all__')) {
+                            // Select all options except "__select_all__"
+                            var allOptions = data['data'].map(category => category.poojaCategoryId);
+                            $('#SelectPoojaCategory').val(allOptions).trigger('change');
+                        }
+                    });
+                },
+               
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+        
+        $("#btncreate").click(function (e) {
+            if (!document.getElementById("formPost").checkValidity()) {
+                e.preventDefault();
+            } else {
+                for (l = 0; l < selectedSeller.length; l++) {
+                    var model = {
+                        templeId: parseInt($("#SelectTemple").val()),
+                        poojaCategoryId: parseInt(selectedSeller[l]),
+                        //poojaCategoryIds: selectedSeller.map(Number),
+
+                        createdBy: @Context.Session.GetInt32("UserId"),
+                    }
+
+                    //console.log(model);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@apiUrl/api/TemplePoojaCategory/TemplePoojaCategoryCreate",
+                        data: JSON.stringify(model),
+                        contentType: "application/json; charset=utf-8",
+                        headers: {
+                            "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                        },
+                        dataType: "json",
+                         success: function (data, statusText, xhr) {
+                             if (xhr.status === 200) {
+
+                                 sweetAlert({
+                                     html: true,
+                                     icon: "success",
+                                     title: "TemplePoojacategory",
+                                     text: "Successfully created!",
+                                     type: "success"
+                                 });
+                             } else if (data.status === "Duplicate") {
+                                 sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                             } else if (data.status === "Error") {
+                                 sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                             } else {
+                                 sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                             }
+                         },
+                        //success: function (data, statusText, xhr) {
+                        //    if (xhr.status === 200) {
+                        //        Swal.fire({
+                        //            icon: "success",
+                        //            title: "TemplePoojaCategory Create",
+                        //            text: "Successfully Created!",
+                        //        }).then(function () {
+                        //            location.reload(); // Refresh the page
+                        //        });
+
+                        //        //preloader.addClass("d-none");
+                        //    } else if (data.status === "Duplicate") {
+                        //        Swal.fire({
+                        //            icon: "warning",
+                        //            title: "TemplePoojaCategory Already Exists!",
+                        //            text: data.responseMsg,
+                        //        }).then(function () {
+                        //            location.reload(); // Refresh the page
+                        //        });
+                        //    } else if (data.status === "error") {
+                        //        Swal.fire({
+                        //            icon: "warning",
+                        //            title: "Validation Alert!",
+                        //            text: data.responseMsg,
+                        //        }).then(function () {
+                        //            location.reload(); // Refresh the page
+                        //        });
+                        //    } else {
+                        //        Swal.fire({
+                        //            icon: "warning",
+                        //            title: "Validation Alert!",
+                        //            text: "Something unexpected!",
+                        //        }).then(function () {
+                        //            location.reload(); // Refresh the page
+                        //        });
+                        //    }
+                        //    preloader.addClass("d-none");
+                        //},
+                        error: function (data) {
+                            if (data.status == 401) {
+                                window.location.replace('/Message/TokenExpire');
+                            } else if (data.status == 403) {
+                                window.location.replace('/Message/Unauthorize');
+                            } else if (data.status == 400) {
+                                sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        $('#SelectPoojaCategory').on('change', function () {
+            if ($(this).val() && $(this).val().includes('__select_all__')) {
+                // Select all options except "__select_all__"
+                $(this).find('option[value!=__select_all__]').prop('selected', true);
+            }
+        });
+
+    </script>
+}
