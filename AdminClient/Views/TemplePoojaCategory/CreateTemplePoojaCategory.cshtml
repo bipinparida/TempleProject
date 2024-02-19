@@ -129,7 +129,7 @@
                         if ($(this).val() && $(this).val().includes('__select_all__')) {
                             // Select all options except "__select_all__"
                             var allOptions = data['data'].map(category => category.poojaCategoryId);
-                            $('#SelectPoojaCategory').val(allOptions).trigger('change.select2');
+                            $('#SelectPoojaCategory').val(allOptions).trigger('change');
                         }
                     });
                 },
