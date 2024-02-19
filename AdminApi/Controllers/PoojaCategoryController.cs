@@ -46,7 +46,7 @@ namespace AdminApi.Controllers
                 }
                 else if (objcheck != null)
                 {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate PoojaCategoryName..!" });
                 }
                 return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
             }

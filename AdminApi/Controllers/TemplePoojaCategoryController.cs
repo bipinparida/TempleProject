@@ -29,18 +29,26 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult TemplePoojaCategoryCreate(CreateTemplePoojaCategoryDTO createTemplePoojaCategoryDTO)
         {
+            var objcheck = _context.TemplePoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryId == createTemplePoojaCategoryDTO.PoojaCategoryId && opt.IsDeleted == false);
             try
             {
-                TemplePoojaCategory templePoojaCategory = new TemplePoojaCategory();
+                if (objcheck == null)
+                {
+                    TemplePoojaCategory templePoojaCategory = new TemplePoojaCategory();
 
-                templePoojaCategory.TempleId = createTemplePoojaCategoryDTO.TempleId;
-                templePoojaCategory.PoojaCategoryId = createTemplePoojaCategoryDTO.PoojaCategoryId;
+                    templePoojaCategory.TempleId = createTemplePoojaCategoryDTO.TempleId;
+                    templePoojaCategory.PoojaCategoryId = createTemplePoojaCategoryDTO.PoojaCategoryId;
 
-                templePoojaCategory.CreatedBy = createTemplePoojaCategoryDTO.CreatedBy;
-                templePoojaCategory.CreatedOn = System.DateTime.Now;
-                var obj = _TemplePoojaCategoryRepo.Insert(templePoojaCategory);
-                return Ok(obj);
-
+                    templePoojaCategory.CreatedBy = createTemplePoojaCategoryDTO.CreatedBy;
+                    templePoojaCategory.CreatedOn = System.DateTime.Now;
+                    var obj = _TemplePoojaCategoryRepo.Insert(templePoojaCategory);
+                    return Ok(obj);
+                }
+                else if (objcheck != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate PoojaCategoryName..!" });
+                }
+                return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
             }
             catch (Exception ex)
             {
@@ -48,6 +56,7 @@ namespace AdminApi.Controllers
             }
 
         }
+
         [HttpGet]
         public ActionResult GetTemplePoojaCategoryList()
         {
