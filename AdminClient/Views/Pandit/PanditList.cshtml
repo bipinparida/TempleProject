@@ -34,7 +34,7 @@
                             <tr>
                                 <th>Action</th>
                                 <th>IsApprove</th>
-                                <th>Reject</th>
+                               @*  <th>Reject</th> *@
                                 <th>Image</th>
                                 <th>Pandit Name</th>
                                 <th>Temple Name</th>
@@ -50,7 +50,7 @@
                                 <th>Gothram</th>
                                 <th>AadharCard</th>
                                 <th>Qualification</th>
-                              
+
                                 <th>Address</th>
                                 <th>AlternatePhone No</th>
                                 <th>MailId</th>
@@ -121,8 +121,13 @@
                         "render": function (data, type, row) {
                             if (row.isApprove == 1) {
                                 return '<div style="background-color:green; padding:1px; border-radius:15px;text-align:center; "><span style="color:white;">Approved</span></div>';
-                            } else if (row.isApprove == 0) {
-                                return '<div style="background-color:red; padding:1px; border-radius: 15px; text-align:center;"><span style="color:white;">Not Approved</span></div>';
+                            } else if (row.isApprove == 0 && row.reject == 0) {
+                                return '<div style="background-color:blue; padding:1px; border-radius: 15px; text-align:center;"><span style="color:white;">Not Approved</span></div>';
+                            }
+                            else if (row.reject == 1) {
+                                return '<div style="background-color:red; padding:1px; border-radius:15px;text-align:center; "><span style="color:white;">Rejected</span></div>';
+                            } else if (row.reject == 0) {
+                                return '';
                             }
                         }
                     },
@@ -141,15 +146,15 @@
 
 
 
-                    {
-                        "render": function (data, type, row) {
-                            if (row.reject == 1) {
-                                return '<div style="background-color:red; padding:1px; border-radius:15px;text-align:center; "><span style="color:white;">Rejected</span></div>';
-                            } else if (row.reject == 0) {
-                                return '';
-                            }
-                        }
-                    },
+                    // {
+                    //     "render": function (data, type, row) {
+                    //         if (row.reject == 1) {
+                    //             return '<div style="background-color:red; padding:1px; border-radius:15px;text-align:center; "><span style="color:white;">Rejected</span></div>';
+                    //         } else if (row.reject == 0) {
+                    //             return '';
+                    //         }
+                    //     }
+                    // },
 
                     {
                         "render": function (data, type, row) {
@@ -161,8 +166,9 @@
                     },
 
                     { "data": "panditName", "orderable": true, "visible": true },
-                    { "data": "primaryPhone", "orderable": true, "visible": true },
                     { "data": "templeName", "orderable": true, "visible": true },
+                    { "data": "primaryPhone", "orderable": true, "visible": true },
+
 
                     { "data": "countryName", "orderable": true, "visible": true },
                     { "data": "stateName", "orderable": true, "visible": true },
@@ -175,10 +181,10 @@
                     { "data": "gothram", "orderable": true, "visible": true },
                     { "data": "aadharCard", "orderable": true, "visible": true },
                     { "data": "qualification", "orderable": true, "visible": true },
-                 
-                  
+
+
                     { "data": "address", "orderable": true, "visible": true },
-                    
+
                     { "data": "alternatePhone", "orderable": true, "visible": true },
                     { "data": "mailId", "orderable": true, "visible": true },
                     {
@@ -259,8 +265,8 @@
                     //     }
                     // }
 
-                   
-                   
+
+
 
                     // {
                     //     "render": function (data, type, row) {
@@ -273,7 +279,7 @@
                     // }
 
 
-                   
+
 
                 ]
             });

@@ -1,4 +1,5 @@
 ﻿using AdminApi.Models.App.Bhaktas;
+using AdminApi.Models.App.Booking;
 using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
@@ -39,6 +40,7 @@ namespace AdminApi.Models
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<LiveTest> LiveTests { get; set; }
         public virtual DbSet<TemplePoojaCategory> TemplePoojaCategories { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
         
 
 
@@ -146,6 +148,15 @@ namespace AdminApi.Models
             modelBuilder.Entity<TemplePoojaCategory>()
      .Property(s => s.CreatedOn)
      .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<TemplePoojaCategory>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<TemplePoojaCategory>()
+    .Property(s => s.CreatedOn)
+    .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<TemplePoojaCategory>()
               .Property(s => s.IsDeleted)

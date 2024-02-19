@@ -27,6 +27,10 @@ namespace AdminApi.Controllers
             _context = context;
             _TempleRepo = templeRepo;
         }
+
+        ///<summary>
+        ///Create Temple
+        ///</summary>
         [HttpPost]
         public IActionResult TempleCreate(CreateTempleDTO createTempleDTO)
         {
@@ -65,7 +69,9 @@ namespace AdminApi.Controllers
 
         }
 
-
+        ///<summary>
+        ///Get Temple List
+        ///</summary>
         [HttpGet]
         public ActionResult GetTempleList()
         {
@@ -106,7 +112,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Get Single Temple by ID
+        ///</summary>
         [HttpGet("{TempleId}")]
         public ActionResult GetSingleTemple(int TempleId)
         {
@@ -121,7 +129,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Update Temple
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateTemple(UpdateTempleDTO updateTempleDTO)
         {
@@ -157,6 +167,10 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Delete Single Temple by ID
+        ///</summary>
+
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteTemple(int Id, int DeletedBy)
         {
@@ -174,6 +188,110 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Get Temple List by CountryId
+        ///</summary>
+        [HttpGet("{CountryId}")]
+        public ActionResult GetTempleListbyCountryId(int CountryId)
+        {
+            try
+            {
+                var list = (from u in _context.Temples
+                            join c in _context.Countries on u.CountryId equals c.CountryId
+
+                            select new
+                            {
+                                u.TempleId,
+                                u.TempleName,
+                                u.CountryId,
+                                c.CountryName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.CountryId == CountryId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        ///<summary>
+        ///Get Temple List by StateId
+        ///</summary>
+        [HttpGet("{StateId}")]
+        public ActionResult GetTempleListbyStateId(int StateId)
+        {
+            try
+            {
+                var list = (from u in _context.Temples
+                            join c in _context.Countries on u.CountryId equals c.CountryId
+                            join s in _context.States on u.StateId equals s.StateId
+
+                            select new
+                            {
+                                u.TempleId,
+                                u.TempleName,
+                                s.CountryId,
+                                c.CountryName,
+                                u.StateId,
+                                s.StateName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.StateId == StateId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        ///<summary>
+        ///Get Temple List by CityId
+        ///</summary>
+        [HttpGet("{CityId}")]
+        public ActionResult GetTempleListbyCityId(int CityId)
+        {
+            try
+            {
+                var list = (from u in _context.Temples
+                            join c in _context.Countries on u.CountryId equals c.CountryId
+                            join s in _context.States on u.StateId equals s.StateId
+                            join e in _context.Cities on u.CityId equals e.CityId
+
+                            select new
+                            {
+                                u.TempleId,
+                                u.TempleName,
+                                s.CountryId,
+                                c.CountryName,
+                                u.StateId,
+                                s.StateName,
+                                u.CityId,
+                                e.CityName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.CityId == CityId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
 
     }
 }
