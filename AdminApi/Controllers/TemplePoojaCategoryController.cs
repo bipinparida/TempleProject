@@ -29,7 +29,7 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult TemplePoojaCategoryCreate(CreateTemplePoojaCategoryDTO createTemplePoojaCategoryDTO)
         {
-            var objcheck = _context.TemplePoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryId == createTemplePoojaCategoryDTO.PoojaCategoryId && opt.IsDeleted == false);
+            var objcheck = _context.TemplePoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryId == createTemplePoojaCategoryDTO.PoojaCategoryId && opt.TempleId==createTemplePoojaCategoryDTO.TempleId && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
@@ -91,7 +91,12 @@ namespace AdminApi.Controllers
             try
             {
                 var objTemplePoojaCategory = _context.TemplePoojaCategories.SingleOrDefault(opt => opt.TemplePoojaCategoryId == updateTemplePoojaCategoryDTO.TemplePoojaCategoryId);
+                var existingTemplePoojaCategory = _context.TemplePoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryId == updateTemplePoojaCategoryDTO.PoojaCategoryId && opt.TempleId != updateTemplePoojaCategoryDTO.TempleId && opt.TemplePoojaCategoryId != updateTemplePoojaCategoryDTO.TemplePoojaCategoryId && opt.IsDeleted == false);
 
+                if (existingTemplePoojaCategory != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Name..!" });
+                }
 
                 objTemplePoojaCategory.TempleId = updateTemplePoojaCategoryDTO.TempleId;
                 objTemplePoojaCategory.PoojaCategoryId = updateTemplePoojaCategoryDTO.PoojaCategoryId;
