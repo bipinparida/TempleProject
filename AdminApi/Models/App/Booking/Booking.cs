@@ -9,7 +9,6 @@ namespace AdminApi.Models.App.Booking
         public int TempleId { get; set; }
         public int PanditId { get; set; }
         public int PoojaCategoryId { get; set; }
-
         public DateTime? BookingDate { get; set; }
 
 
