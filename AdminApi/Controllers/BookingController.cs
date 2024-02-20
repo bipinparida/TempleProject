@@ -32,30 +32,22 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult BookingCreate(CreateBookingDTO createBookingDTO)
         {
-            var objcheck = _context.Bookings.SingleOrDefault(opt => /*opt.PrimaryPhone == createBhaktaDTO.PrimaryPhone && */opt.IsDeleted == false);
             try
             {
-                if (objcheck == null)
-                {
-                    Booking booking = new Booking();
+                Booking booking = new Booking();
 
-                    booking.BhaktaId = createBookingDTO.BhaktaId;
-                    booking.TempleId = createBookingDTO.TempleId;
-                    booking.PanditId = createBookingDTO.PanditId;
-                    booking.PoojaCategoryId = createBookingDTO.PoojaCategoryId;
-                    booking.BookingDate = createBookingDTO.BookingDate;
-                  
+                booking.BhaktaId = createBookingDTO.BhaktaId;
+                booking.TempleId = createBookingDTO.TempleId;
+                booking.PanditId = createBookingDTO.PanditId;
+                booking.PoojaCategoryId = createBookingDTO.PoojaCategoryId;
+                booking.BookingDate = createBookingDTO.BookingDate;
 
-                    booking.CreatedBy = createBookingDTO.CreatedBy;
-                    booking.CreatedOn = System.DateTime.Now;
-                    var obj = _BookingRepo.Insert(booking);
-                    return Ok(obj);
-                }
-                else if (objcheck != null)
-                {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate..!" });
-                }
-                return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+
+                booking.CreatedBy = createBookingDTO.CreatedBy;
+                booking.CreatedOn = System.DateTime.Now;
+                var obj = _BookingRepo.Insert(booking);
+                return Ok(obj);
+
             }
             catch (Exception ex)
             {
@@ -87,7 +79,7 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryId,
                                 c.PoojaCategoryName,
                                 u.BookingDate,
-                               
+
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
