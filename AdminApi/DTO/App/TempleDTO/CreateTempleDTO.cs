@@ -8,9 +8,7 @@ namespace AdminApi.DTO.App.TempleDTO
         public int CountryId { get; set; }
         public int StateId { get; set; }
         public int CityId { get; set; }
-        public int PoojaCategoryId { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+      
         public string GodName { get; set; }
         public string TempleImage { get; set; }
 
@@ -24,9 +22,7 @@ namespace AdminApi.DTO.App.TempleDTO
         public int CountryId { get; set; }
         public int StateId { get; set; }
         public int CityId { get; set; }
-        public int PoojaCategoryId { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+      
         public string GodName { get; set; }
         public string TempleImage { get; set; }
 
