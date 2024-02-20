@@ -112,23 +112,54 @@
         }
 
 
-        Getquestion()
-        async function Getquestion(Id) {
+        // Getquestion()
+        // async function Getquestion(Id) {
+        //     var opt = '';
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "@apiUrl/api/Question/GetQuestionList",
+        //         contentType: "application/json; charset=utf-8",
+        //         dataType: "json",
+        //         success: function (res) {
+        //             var options = [];
+        //             options.push(' <option value = ""> Select Question </option> ');
+        //             for (var i = 0; i < res.data.length; i++) {
+        //                 options.push('<option value = "' + res.data[i].questionId + '" ' + opt + ' > ' + res.data[i].questionName + '</option>');
+        //             }
+        //             $("#SelectQuestion").html(options.join(''));
+        //         },
+
+        //         error: function (data) {
+        //             if (data.status == 401) {
+        //                 window.location.replace('/Message/TokenExpire');
+        //             } else if (data.status == 403) {
+        //                 window.location.replace('/Message/Unauthorize');
+        //             }
+        //         }
+        //     });
+        // }
+
+        $("#SelectPandit").change(function () {
+            var vpanditId = $("#SelectPandit").val()
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/Question/GetQuestionList",
-                contentType: "application/json; charset=utf-8",
+                url: '@apiUrl/api/Question/GetQuestionListbyPanditId/' + vpanditId,
                 dataType: "json",
-                success: function (res) {
+                success: function (data) {
                     var options = [];
-                    options.push(' <option value = ""> Select Question </option> ');
-                    for (var i = 0; i < res.data.length; i++) {
-                        options.push('<option value = "' + res.data[i].questionId + '" ' + opt + ' > ' + res.data[i].questionName + '</option>');
+                    options.push('<option>Select Question</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].questionId + '" ' + opt + '>' + data['data'][i].questionName + '</option>');
                     }
                     $("#SelectQuestion").html(options.join(''));
-                },
 
+                },
                 error: function (data) {
                     if (data.status == 401) {
                         window.location.replace('/Message/TokenExpire');
@@ -137,9 +168,7 @@
                     }
                 }
             });
-        }
-
-      
+        });
 
 
         $("#btncreate").click(function (e) {
