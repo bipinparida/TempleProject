@@ -3,17 +3,17 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "PoojaCategoryMapping";
+    ViewBag.Title = "QuestionMapping";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
-        <li class="breadcrumb-item active" aria-current="page">PoojaCategoryMapping Edit</li>
+        <li class="breadcrumb-item active" aria-current="page">QuestionMapping Edit</li>
     </ol>
     <div class="ml-auto">
-        <a href="~/PoojaCategoryMapping/PoojaCategoryMappingList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+        <a href="~/QuestionMapping/QuestionMappingList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
             </span> View
@@ -25,31 +25,31 @@
     <div class="col-md">
         <div class="card overflow-hidden">
             <div class="card-header">
-                <h3 class="card-title">PoojaCategoryMapping Edit</h3>
+                <h3 class="card-title">QuestionMapping Edit</h3>
             </div>
             <div class="card-body">
                 <form action="#" role="form" class="validate" id="formPost">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <label class="form-label">Pandit Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
-                                    <select class="form-control" id="SelectTemple">
+                                    <select class="form-control" id="SelectPandit">
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3 form-group overflow-hidden" id="ifv">
                             <div class="form-group">
-                                <label class="form-label">PoojaCategory Name</label>
-                                <select multiple="multiple" class="form-control select2 w-100" id="SelectPoojaCategory" data-placeholder="Select PoojaCategory" required></select>
+                                <label class="form-label">Question Name</label>
+                                <select multiple="multiple" class="form-control select2 w-100" id="SelectQuestion" data-placeholder="Select Question" required></select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
-                            <a type="button" href="~/PoojaCategoryMapping/PoojaCategoryMappingList" class="btn btn-radius btn-danger">Reset</a>
+                            <a type="button" href="~/QuestionMapping/QuestionMappingList" class="btn btn-radius btn-danger">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -62,25 +62,25 @@
 
 @section scripts {
     <script>
-        function TempleList(Id) {
+        function PanditList(Id) {
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/Temple/GetTempleList",
+                url: "@apiUrl/api/Pandit/GetPanditList",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (res) {
                     var options = [];
-                    options.push('<option value = ""> Select Temple </option>');
+                    options.push('<option value = ""> Select Pandit </option>');
                     for (var i = 0; i < res.data.length; i++) {
-                        if (Id == res.data[i].templeId) {
+                        if (Id == res.data[i].panditId) {
                             opt = 'selected'
                         } else {
                             opt = '';
                         }
-                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+                        options.push('<option value = "' + res.data[i].panditId + '" ' + opt + ' > ' + res.data[i].panditName + '</option>');
                     }
-                    $("#SelectTemple").html(options.join(''));
+                    $("#SelectPandit").html(options.join(''));
                 },
 
                 error: function (data) {
@@ -93,11 +93,11 @@
             });
         }
 
-        function PoojaCategoryList(selectedPoojaCategoryId) {
+        function QuestionList(selectedQuestionId) {
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/PoojaCategory/GetPoojaCategoryList",
+                url: "@apiUrl/api/Question/GetQuestionList",
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -105,17 +105,17 @@
                 dataType: "json",
                 success: function (res) {
                     var options = [];
-                    options.push('<option value="">Select PoojaCategory</option>');
+                    options.push('<option value="">Select Question</option>');
                     for (var i = 0; i < res.data.length; i++) {
-                        var poojaCategoryName = res.data[i].poojaCategoryName;
-                        var poojaCategoryId = res.data[i].poojaCategoryId;
-                        options.push('<option value="' + poojaCategoryId + '">' + poojaCategoryName + '</option>');
+                        var questionName = res.data[i].questionName;
+                        var questionId = res.data[i].questionId;
+                        options.push('<option value="' + questionId + '">' + questionName + '</option>');
                     }
-                    $("#SelectPoojaCategory").html(options.join(''));
+                    $("#SelectQuestion").html(options.join(''));
 
-                    if (selectedPoojaCategoryId) {
-                        $('#SelectPoojaCategory').val(selectedPoojaCategoryId);
-                        $('#SelectPoojaCategory').trigger('change');
+                    if (selectedQuestionId) {
+                        $('#SelectQuestion').val(selectedQuestionId);
+                        $('#SelectQuestion').trigger('change');
                     }
                 },
                 error: function (data) {
@@ -128,12 +128,12 @@
             });
         }
 
-        var poojaCategoryMappingId = @ViewBag.PoojaCategoryMappingId
-            loadSinglepoojaCategoryMapping()
-        function loadSinglepoojaCategoryMapping() {
+        var questionMappingId = @ViewBag.QuestionMappingId
+            loadSinglequestionMapping()
+        function loadSinglequestionMapping() {
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/PoojaCategoryMapping/GetSinglePoojaCategoryMapping/" + poojaCategoryMappingId,
+                url: "@apiUrl/api/QuestionMapping/GetSingleQuestionMapping/" + questionMappingId,
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -141,8 +141,8 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        TempleList(data.templeId);
-                        PoojaCategoryList(data.poojaCategoryId);
+                        PanditList(data.panditId);
+                        QuestionList(data.questionId);
                     }
                     else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -164,15 +164,15 @@
             } else {
 
                 var model = {
-                    poojaCategoryMappingId: poojaCategoryMappingId,
-                    templeId: $.trim($("#SelectTemple").val()),
-                    poojaCategoryId: $.trim($("#SelectPoojaCategory").val()),
+                    questionMappingId: questionMappingId,
+                    panditId: $.trim($("#SelectPandit").val()),
+                    questionId: $.trim($("#SelectQuestion").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
                 $.ajax({
                     type: "POST",
-                    url: "@apiUrl/api/PoojaCategoryMapping/UpdatePoojaCategoryMapping",
+                    url: "@apiUrl/api/QuestionMapping/UpdateQuestionMapping",
                     data: JSON.stringify(model),
                     contentType: "application/json; charset=utf-8",
                     headers: {
@@ -201,7 +201,7 @@
                         if (xhr.status === 200) {
                             Swal.fire({
                                 icon: "success",
-                                title: "PoojaCategoryMapping Update",
+                                title: "QuestionMapping Update",
                                 text: "Successfully updated!",
                             }).then(function () {
                                 location.reload(); // Refresh the page
@@ -211,7 +211,7 @@
                         } else if (data.status === "Duplicate") {
                             Swal.fire({
                                 icon: "warning",
-                                title: "PoojaCategoryMapping Already Exists!",
+                                title: "QuestionMapping Already Exists!",
                                 text: data.responseMsg,
                             }).then(function () {
                                 location.reload(); // Refresh the page
