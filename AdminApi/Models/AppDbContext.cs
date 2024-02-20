@@ -41,6 +41,7 @@ namespace AdminApi.Models
         public virtual DbSet<LiveTest> LiveTests { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<PoojaCategoryMapping> PoojaCategoryMappings { get; set; }
+        public virtual DbSet<QuestionMapping> QuestionMappings { get; set; }
         
 
 
@@ -159,6 +160,15 @@ namespace AdminApi.Models
    .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<PoojaCategoryMapping>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<QuestionMapping>()
+  .Property(s => s.CreatedOn)
+  .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<QuestionMapping>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();

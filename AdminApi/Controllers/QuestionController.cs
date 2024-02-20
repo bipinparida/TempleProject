@@ -139,5 +139,37 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+
+        [HttpGet("{PanditId}")]
+        public ActionResult GetQuestionListbyPanditId(int PanditId)
+        {
+            try
+            {
+                var list = (from u in _context.QuestionMappings
+                            join p in _context.Pandits on u.PanditId equals p.PanditId
+                            join q in _context.Questions on u.QuestionId equals q.QuestionId
+
+                            select new
+                            {
+                                u.PanditId,
+                                u.QuestionMappingId,
+                                u.QuestionId,
+                                p.PanditName,
+                                q.QuestionName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
     }
 }
