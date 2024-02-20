@@ -14,7 +14,7 @@ namespace AdminApi.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class PoojaCategoryController : Controller
-	{
+    {
         private readonly IConfiguration _config;
         private readonly AppDbContext _context;
         private readonly ISqlRepository<PoojaCategory> _PoojaCategoryRepo;
@@ -134,6 +134,36 @@ namespace AdminApi.Controllers
                 objabout.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objabout);
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        [HttpGet("{TempleId}")]
+        public ActionResult GetPoojaCategoryListbyTempleId(int TempleId)
+        {
+            try
+            {
+                var list = (from u in _context.PoojaCategoryMappings
+                            join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
+                            join t in _context.Temples on u.TempleId equals t.TempleId
+
+                            select new
+                            {
+                                u.TempleId,
+                                u.PoojaCategoryMappingId,
+                                u.PoojaCategoryId,
+                                p.PoojaCategoryName,
+                                t.TempleName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
             }
             catch (Exception ex)
             {
