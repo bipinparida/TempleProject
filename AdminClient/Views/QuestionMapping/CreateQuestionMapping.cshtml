@@ -7,6 +7,23 @@
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
 
+
+<style>
+    .select2-container--default .select2-selection--single {
+        background-color: none;
+        border: none;
+    }
+
+    .select2-container .select2-selection--single {
+        box-sizing: unset;
+        cursor: none;
+        display: none;
+        height: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+</style>
+
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
