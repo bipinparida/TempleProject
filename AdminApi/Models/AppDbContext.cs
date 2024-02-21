@@ -5,6 +5,7 @@ using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
+using AdminApi.Models.App.PoojaCategoryItems;
 using AdminApi.Models.App.Questions;
 using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
@@ -42,6 +43,7 @@ namespace AdminApi.Models
         public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<PoojaCategoryMapping> PoojaCategoryMappings { get; set; }
         public virtual DbSet<QuestionMapping> QuestionMappings { get; set; }
+        public virtual DbSet<PoojaCategoryItem> PoojaCategoryItems { get; set; }
         
 
 
@@ -169,6 +171,15 @@ namespace AdminApi.Models
   .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<QuestionMapping>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<PoojaCategoryItem>()
+ .Property(s => s.CreatedOn)
+ .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<PoojaCategoryItem>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
