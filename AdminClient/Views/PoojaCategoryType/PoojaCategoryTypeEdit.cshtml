@@ -3,7 +3,7 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "PoojaCategory";
+    ViewBag.Title = "PoojaCategoryType";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
 <!-- PAGE-HEADER -->
@@ -13,7 +13,7 @@
         <li class="breadcrumb-item active" aria-current="page">PoojaCategory Edit</li>
     </ol>
     <div class="ml-auto">
-        <a href="~/PoojaCategory/PoojaCategoryList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+        <a href="~/PoojaCategoryType/PoojaCategoryTypeList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
             </span> View
@@ -25,32 +25,22 @@
     <div class="col-md">
         <div class="card overflow-hidden">
             <div class="card-header">
-                <h3 class="card-title">PoojaCategory Edit</h3>
+                <h3 class="card-title">PoojaCategoryType Edit</h3>
             </div>
             <div class="card-body">
                 <form action="#" role="form" class="validate" id="formPost">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">PoojaCategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <div class="input-box">
-                                    <select class="form-control" id="SelectPoojaCategoryType">
-                                    </select>
-                                </div>
+                                <label class="form-label">PoojaCategoryName &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PoojaCategoryTypeName" placeholder="Enter PoojaCategoryName" required>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="text" class="form-control" id="PoojaCategoryName" placeholder="Enter PoojaCategoryName" required>
-                            </div>
-                        </div>
-
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
-                            <a type="button" href="~/PoojaCategory/PoojaCategoryList" class="btn btn-radius btn-danger">Reset</a>
+                            <a type="button" href="~/PoojaCategoryType/PoojaCategoryTypeList" class="btn btn-radius btn-danger">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -63,42 +53,12 @@
 
 @section scripts {
     <script>
-        function PoojacategoryTypeList(Id) {
-            var opt = '';
+        var poojaCategoryTypeId = @ViewBag.PoojaCategoryTypeId
+            loadSinglePoojaCategoryType()
+        function loadSinglePoojaCategoryType() {
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/PoojaCategoryType/GetPoojaCategoryTypeList",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (res) {
-                    var options = [];
-                    options.push('<option value = ""> Select PoojaCategory </option>');
-                    for (var i = 0; i < res.data.length; i++) {
-                        if (Id == res.data[i].poojaCategoryTypeId) {
-                            opt = 'selected'
-                        } else {
-                            opt = '';
-                        }
-                        options.push('<option value = "' + res.data[i].poojaCategoryTypeId + '" ' + opt + ' > ' + res.data[i].poojaCategoryTypeName + '</option>');
-                    }
-                    $("#SelectPoojaCategoryType").html(options.join(''));
-                },
-
-                error: function (data) {
-                    if (data.status == 401) {
-                        window.location.replace('/Message/TokenExpire');
-                    } else if (data.status == 403) {
-                        window.location.replace('/Message/Unauthorize');
-                    }
-                }
-            });
-        }
-        var poojaCategoryId = @ViewBag.PoojaCategoryId
-            loadSinglePoojaCategory()
-        function loadSinglePoojaCategory() {
-            $.ajax({
-                type: "GET",
-                url: "@apiUrl/api/PoojaCategory/GetSinglePoojaCategory/" + poojaCategoryId,
+                url: "@apiUrl/api/PoojaCategoryType/GetSinglePoojaCategoryType/" + poojaCategoryTypeId,
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -106,8 +66,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        PoojacategoryTypeList(data.poojaCategoryTypeId);
-                        $('#PoojaCategoryName').val(data.poojaCategoryName);
+                        $('#PoojaCategoryTypeName').val(data.poojaCategoryTypeName);
                     }
                     else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -129,16 +88,15 @@
             } else {
 
                 var model = {
-                    poojaCategoryId: poojaCategoryId,
-                    poojaCategoryTypeId: $.trim($("#SelectPoojaCategoryType").val()),
-                    poojaCategoryName: $.trim($("#PoojaCategoryName").val()),
+                    poojaCategoryTypeId: poojaCategoryTypeId,
+                    poojaCategoryTypeName: $.trim($("#PoojaCategoryTypeName").val()),
 
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
                 $.ajax({
                     type: "POST",
-                    url: "@apiUrl/api/PoojaCategory/UpdatePoojaCategory",
+                    url: "@apiUrl/api/PoojaCategoryType/UpdatePoojaCategoryType",
                     data: JSON.stringify(model),
                     contentType: "application/json; charset=utf-8",
                     headers: {
@@ -169,7 +127,7 @@
                         if (xhr.status === 200) {
                             Swal.fire({
                                 icon: "success",
-                                title: "PoojaCategory Update",
+                                title: "PoojaCategoryType Update",
                                 text: "Successfully updated!",
                             }).then(function () {
                                 location.reload(); // Refresh the page
@@ -179,7 +137,7 @@
                         } else if (data.status === "Duplicate") {
                             Swal.fire({
                                 icon: "warning",
-                                title: "PoojaCategory Already Exists!",
+                                title: "PoojaCategoryType Already Exists!",
                                 text: data.responseMsg,
                             }).then(function () {
                                 location.reload(); // Refresh the page

@@ -37,6 +37,7 @@ namespace AdminApi.Controllers
                 {
                     PoojaCategory poojaCategory = new PoojaCategory();
 
+                    poojaCategory.PoojaCategoryTypeId = createPoojaCategoryDTO.PoojaCategoryTypeId;
                     poojaCategory.PoojaCategoryName = createPoojaCategoryDTO.PoojaCategoryName;
 
                     poojaCategory.CreatedBy = createPoojaCategoryDTO.CreatedBy;
@@ -72,6 +73,7 @@ namespace AdminApi.Controllers
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
                 }
 
+                objPoojaCategory.PoojaCategoryTypeId = updatePoojaCategoryDTO.PoojaCategoryTypeId;
                 objPoojaCategory.PoojaCategoryName = updatePoojaCategoryDTO.PoojaCategoryName;
                 objPoojaCategory.UpdatedBy = updatePoojaCategoryDTO.CreatedBy;
                 objPoojaCategory.UpdatedOn = System.DateTime.Now;
@@ -89,11 +91,14 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.PoojaCategories
+                            join p in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals p.PoojaCategoryTypeId
 
                             select new
                             {
                                 u.PoojaCategoryName,
                                 u.PoojaCategoryId,
+                                u.PoojaCategoryTypeId,
+                                p.PoojaCategoryTypeName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
