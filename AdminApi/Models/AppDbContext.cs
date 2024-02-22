@@ -36,13 +36,15 @@ namespace AdminApi.Models
         public virtual DbSet<Temple> Temples { get; set; }
         public virtual DbSet<Pandit> Pandits { get; set; }
         public virtual DbSet<Bhakta> Bhaktas { get; set; }
-        public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<QuestionMapping> QuestionMappings { get; set; }
         public virtual DbSet<LiveTest> LiveTests { get; set; }
         public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<PoojaCategoryType> PoojaCategoryTypes { get; set; }
+        public virtual DbSet<PoojaCategory> PoojaCategories { get; set; }
         public virtual DbSet<PoojaCategoryMapping> PoojaCategoryMappings { get; set; }
-        public virtual DbSet<QuestionMapping> QuestionMappings { get; set; }
+       
         public virtual DbSet<PoojaCategoryItem> PoojaCategoryItems { get; set; }
         
 
@@ -121,6 +123,26 @@ namespace AdminApi.Models
 			  .HasDefaultValue(false)
 			  .ValueGeneratedNever();
 
+            modelBuilder.Entity<PoojaCategoryType>()
+      .Property(s => s.CreatedOn)
+      .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<PoojaCategoryType>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
+            modelBuilder.Entity<PoojaCategoryMapping>()
+ .Property(s => s.CreatedOn)
+ .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<PoojaCategoryMapping>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
             modelBuilder.Entity<Feedback>()
       .Property(s => s.CreatedOn)
       .HasDefaultValue(System.DateTime.Now);
@@ -135,6 +157,15 @@ namespace AdminApi.Models
       .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Question>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<QuestionMapping>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<QuestionMapping>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
@@ -157,23 +188,6 @@ namespace AdminApi.Models
               .HasDefaultValue(false)
               .ValueGeneratedNever();
 
-            modelBuilder.Entity<PoojaCategoryMapping>()
-   .Property(s => s.CreatedOn)
-   .HasDefaultValue(System.DateTime.Now);
-
-            modelBuilder.Entity<PoojaCategoryMapping>()
-              .Property(s => s.IsDeleted)
-              .HasDefaultValue(false)
-              .ValueGeneratedNever();
-
-            modelBuilder.Entity<QuestionMapping>()
-  .Property(s => s.CreatedOn)
-  .HasDefaultValue(System.DateTime.Now);
-
-            modelBuilder.Entity<QuestionMapping>()
-              .Property(s => s.IsDeleted)
-              .HasDefaultValue(false)
-              .ValueGeneratedNever();
 
             modelBuilder.Entity<PoojaCategoryItem>()
  .Property(s => s.CreatedOn)
