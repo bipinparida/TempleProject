@@ -129,36 +129,36 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-        [HttpGet("{PoojaCategoryId}")]
-        public ActionResult GetPoojaCategoryItemListFromPoojacategoryId(int PoojacategoryId)
-        {
-            try
-            {
-                var list = (from u in _context.PoojaCategoryItems
-                            where u.PoojaCategoryId == PoojacategoryId
-                            join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
+        //[HttpGet("{PoojaCategoryId}")]
+        //public ActionResult GetPoojaCategoryItemListFromPoojacategoryId(int PoojacategoryId)
+        //{
+        //    try
+        //    {
+        //        var list = (from u in _context.PoojaCategoryItems
+        //                    where u.PoojaCategoryId == PoojacategoryId
+        //                    join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
 
 
-                            select new
-                            {
-                                p.PoojaCategoryId,
-                                p.PoojaCategoryName,
-                                u.PoojaCategoryItemId,
-                                u.ItemName,
-                                u.ItemPrice,
-                                u.IsDeleted
-                            }).Where(x => x.IsDeleted == false).ToList();
+        //                    select new
+        //                    {
+        //                        p.PoojaCategoryId,
+        //                        p.PoojaCategoryName,
+        //                        u.PoojaCategoryItemId,
+        //                        u.ItemName,
+        //                        u.ItemPrice,
+        //                        u.IsDeleted
+        //                    }).Where(x => x.IsDeleted == false).ToList();
 
-                int totalRecords = list.Count();
+        //        int totalRecords = list.Count();
 
-                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-            }
+        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //    }
 
-            catch (Exception ex)
-            {
-                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
         //[HttpGet]
         //public ActionResult GetPoojacategoryItemListFromPoojacategoryId()
         //{
