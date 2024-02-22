@@ -1,0 +1,225 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "PoojaCategoryItem";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">PoojaCategoryItem Edit</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/PoojaCategoryItem/PoojaCategoryItemList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">PoojaCategoryItem Create</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">ItemName &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="ItemName" placeholder="Enter ItemName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">ItemPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="ItemPrice" placeholder="Enter ItemPrice" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
+                            <a type="button" href="~/PoojaCategoryItem/PoojaCategoryItemList" class="btn btn-radius btn-danger">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        function PoojaCategoryList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategory/GetPoojaCategoryList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select PoojaCategory </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].poojaCategoryId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].poojaCategoryId + '" ' + opt + ' > ' + res.data[i].poojaCategoryName + '</option>');
+                    }
+                    $("#SelectPoojaCategory").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        var poojaCategoryItemId = @ViewBag.PoojaCategoryItemId
+            loadSinglebooking()
+        function loadSinglebooking() {
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategoryItem/GetSinglePoojaCategoryItem/" + poojaCategoryItemId,
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        PoojaCategoryList(data.poojaCategoryId);
+                        $('#ItemName').val(data.itemName);
+                        $('#ItemPrice').val(data.itemPrice);
+                    }
+                    else {
+                        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#btnupdate").click(function (e) {
+            if (!document.getElementById("formPost").checkValidity()) {
+                e.preventDefault();
+            } else {
+                var model = {
+                    poojaCategoryItemId: poojaCategoryItemId,
+                    poojaCategoryId: $.trim($("#SelectPoojaCategory").val()),
+                    itemName: $.trim($("#ItemName").val()),
+                    itemPrice: $.trim($("#ItemPrice").val()),
+                    updatedBy: @Context.Session.GetInt32("UserId"),
+                }
+                console.log(model)
+                $.ajax({
+                    type: "POST",
+                    url: "@apiUrl/api/PoojaCategoryItem/UpdatePoojaCategoryItem",
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    headers: {
+                        "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                    },
+                    //success: function (data, statusText, xhr) {
+                    //    console.log(data)
+                    //    if (xhr.status === 200) {
+                    //        $('#Temple_Tb').DataTable().ajax.reload(null, false);
+                    //        sweetAlert({
+                    //            html: true,
+                    //            icon: "success",
+                    //            title: "Temple Update",
+                    //            text: "Successfully updated!",
+                    //            type: "success"
+                    //        });
+                    //    } else if (data.status === "duplicate") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else if (data.status === "error") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else {
+                    //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    //    }
+                    //},
+                    success: function (data, statusText, xhr) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "PoojaCategoryItem Update",
+                                text: "Successfully updated!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "PoojaCategoryItem Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else if (data.status === "error") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        }
+                        preloader.addClass("d-none");
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        if (data.status == 401) {
+                            window.location.replace('/Message/TokenExpire');
+                        } else if (data.status == 403) {
+                            window.location.replace('/Message/Unauthorize');
+                        } else if (data.status == 400) {
+                            sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
+}

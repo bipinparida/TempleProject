@@ -1,0 +1,298 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "PoojaCategoryItem";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+<style>
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+</style>
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">PoojaCategoryItem Create</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/PoojaCategoryItem/PoojaCategoryItemList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+<!-- PAGE-HEADER END -->
+<div id="preloader" class="d-none">
+    <div class="spinner"></div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">PoojaCategoryItem Create</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" name="myForm" role="form" class="validate" id="formPost">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">ItemName &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="ItemName" placeholder="Enter ItemName">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">ItemPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="ItemPrice" placeholder="Enter ItemPrice">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" id="Add_Optn" class="btn btn-radius btn-info">Add PoojacategoryItem</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="table-responsive">
+                        <table id="Optnn" class="table table-bordered table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>PoojaCategory Name</th>
+                                    <th>Item Name</th>
+                                    <th>Item Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="PoojaCategoryItem_Tb">
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <button type="button" id="btnSave" class="btn btn-radius btn-success">Save</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        $(function () {
+            $("#btnSave").click(function (e) {
+                if (!document.getElementById("formPost").checkValidity()) {
+                    e.preventDefault();
+                }
+                else {
+                    var OptionDetails = [];
+
+
+                    $.each($("#Optnn tbody tr"), function () {
+                        var $irow = $(this),
+                            rowObj = {};
+
+
+                        // Retrieve the data-value attributes
+                        var PoojaCategoryName = parseInt($irow.find("td:eq(0)").data("value"));
+                        var ItemName = $irow.find("td:eq(1)").data("value");
+                        var ItemPrice = parseFloat($irow.find("td:eq(2)").data("value"));
+
+
+                        var a = {
+                            "poojaCategoryId": PoojaCategoryName,
+                            "itemName": ItemName,
+                            "itemPrice": ItemPrice
+                        }
+                        OptionDetails.push(a);
+                    });
+                                                                            
+                    var preloader = $("#preloader");
+                    preloader.removeClass("d-none");
+                    var model = {
+                        "poojaCategoryId": parseInt($("#SelectPoojaCategory").val()),
+                        "itemName": $.trim($("#ItemName").val()),
+                        //"itemPrice": $.trim($("#ItemPrice").val()),
+                        "itemPrice": parseFloat($("#ItemPrice").val()),
+                        createPoojaCategoryItemDTOs: OptionDetails,
+                        createdBy: @Context.Session.GetInt32("UserId"),
+                    }
+                    console.log(model)
+                    $.ajax({
+                        type: "POST",
+                        url: "@apiUrl/api/PoojaCategoryItem/PoojaCategoryItemCreate",
+                        data: JSON.stringify(model),
+                        contentType: "application/json; charset=utf-8",
+                        headers: {
+                            "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                        },
+                        dataType: "json",
+                        success: function (data, statusText, xhr) {
+                            if (xhr.status === 200) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "PoojaCategoryItem",
+                                    text: "Successfully created!",
+                                }).then(function () {
+                                    location.reload(); // Refresh the page
+                                });
+
+                                //preloader.addClass("d-none");
+                            } else if (data.status === "Duplicate") {
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Validation Alert!",
+                                    text: data.responseMsg,
+                                }).then(function () {
+                                    location.reload(); // Refresh the page
+                                });
+                            } else if (data.status === "error") {
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Validation Alert!",
+                                    text: data.responseMsg,
+                                }).then(function () {
+                                    location.reload(); // Refresh the page
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Validation Alert!",
+                                    text: "Something unexpected!",
+                                }).then(function () {
+                                    location.reload(); // Refresh the page
+                                });
+                            }
+                            preloader.addClass("d-none");
+                        },
+                        error: function (data) {
+                            if (data.status == 401) {
+                                window.location.replace('/Message/TokenExpire');
+                            } else if (data.status == 403) {
+                                window.location.replace('/Message/Unauthorize');
+                            } else if (data.status == 400) {
+                                sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        GetItem()
+        function GetItem(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategory/GetPoojaCategoryList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    var options = [];
+                    options.push('<option value="">Please Select </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].poojaCategoryId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value="' + res.data[i].poojaCategoryId + '" ' + opt + '>' + res.data[i].poojaCategoryName + '</option>');
+                    }
+                    $("#SelectPoojaCategory").html(options.join(''));
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $(function () {
+
+            $("#Add_Optn").click(function (e) {
+                var Qsn = $('#SelectPoojaCategory').val();
+                var QsnText = $('#SelectPoojaCategory option:selected').text();
+                var Optn = $('#ItemName').val();
+                var price = $('#ItemPrice').val();
+
+                var row = "<tr><td data-value='" + Qsn + "'>" + QsnText + "</td><td data-value='" + Optn + "'>" + Optn + "</td><td data-value='" + price + "'>" + price + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+
+                $('#PoojaCategoryItem_Tb').append(row);
+
+                $(document.body).delegate(".delRowBtn", "click", function () {
+                    $(this).closest("tr").remove();
+                });
+
+                $('#SelectPoojaCategory').val('');
+                $('#ItemName').val('');
+                $('#ItemPrice').val('');
+            });
+
+            $(document).on("click", ".delRowBtn", function () {
+                $(this).closest("tr").remove();
+            });
+
+        });
+
+    </script>
+
+}
