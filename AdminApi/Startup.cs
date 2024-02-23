@@ -63,7 +63,7 @@ namespace AdminApi
             {
                 options.AddPolicy(name:AllowSpecificOrigins,builder=>
                     {
-                        builder.WithOrigins("http://localhost:53580","http://localhost:5000", "https://demo3.appman.in")
+                        builder.WithOrigins("http://localhost:53580","http://localhost:5000", "https://demo32.appman.in")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });

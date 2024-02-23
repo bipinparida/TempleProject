@@ -195,6 +195,8 @@ namespace AdminApi.Controllers
                             {
                                 u.TempleId,
                                 u.TempleName,
+                                u.GodName,
+                                u.TempleImage,
                                 u.CountryId,
                                 c.CountryName,
                                 u.IsDeleted
@@ -227,6 +229,8 @@ namespace AdminApi.Controllers
                             {
                                 u.TempleId,
                                 u.TempleName,
+                                u.GodName,
+                                u.TempleImage,
                                 s.CountryId,
                                 c.CountryName,
                                 u.StateId,
@@ -262,6 +266,8 @@ namespace AdminApi.Controllers
                             {
                                 u.TempleId,
                                 u.TempleName,
+                                u.GodName,
+                                u.TempleImage,
                                 s.CountryId,
                                 c.CountryName,
                                 u.StateId,
@@ -336,6 +342,8 @@ namespace AdminApi.Controllers
                             {
                                 u.TempleId,
                                 u.TempleName,
+                                u.GodName,
+                                u.TempleImage,
                                 s.CountryId,
                                 c.CountryName,
                                 u.StateId,
