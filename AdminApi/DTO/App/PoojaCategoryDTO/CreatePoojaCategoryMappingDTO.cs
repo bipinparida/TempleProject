@@ -3,6 +3,7 @@
     public class CreatePoojaCategoryMappingDTO
     {
         public int TempleId { get; set; }
+        public int PoojaCategoryTypeId { get; set; }
         public int PoojaCategoryId { get; set; }
         public int CreatedBy { get; set; }
     }
@@ -10,6 +11,7 @@
     {
         public int PoojaCategoryMappingId { get; set; }
         public int TempleId { get; set; }
+        public int PoojaCategoryTypeId { get; set; }
         public int PoojaCategoryId { get; set; }
         public int CreatedBy { get; set; }
     }

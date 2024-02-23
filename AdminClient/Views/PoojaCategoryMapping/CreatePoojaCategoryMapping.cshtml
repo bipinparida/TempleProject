@@ -56,6 +56,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategoryType">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-3 form-group overflow-hidden" id="ifv">
                             <div class="form-group">
                                 <label class="form-label">PoojaCategory Name</label>
@@ -106,13 +115,42 @@
             });
         }
 
+
+
+        GetpoojaCategory()
+        async function GetpoojaCategory(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategoryType/GetPoojaCategoryTypeList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push(' <option value = ""> Select PoojaCategory </option> ');
+                    for (var i = 0; i < res.data.length; i++) {
+                        options.push('<option value = "' + res.data[i].poojaCategoryTypeId + '" ' + opt + ' > ' + res.data[i].poojaCategoryTypeName + '</option>');
+                    }
+                    $("#SelectPoojaCategoryType").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
         //var selectedSeller = [];
         GetSubscriptionType()
         async function GetSubscriptionType(Id) {
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryList',
+                    url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryList',
 
                 dataType: "json",
                 success: function (data) {
@@ -157,6 +195,44 @@
             });
         }
 
+        //$("#SelectPoojaCategoryType").change(function () {
+        //    var vtempleId = $("#SelectPoojaCategoryType").val();
+        //    var opt = '';
+        //    $.ajax({
+        //        type: "GET",
+        //        url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyPoojaCategoryTypeId/' + vtempleId,
+        //        dataType: "json",
+        //        success: function (data) {
+        //            var options = [];
+        //            options.push('<option value="__select_all__">Select All</option>'); // Add select all option
+        //            for (var i = 0; i < data['data'].length; i++) {
+        //                options.push('<option value="' + data['data'][i].poojaCategoryId + '">' + data['data'][i].poojaCategoryName + '</option>');
+        //            }
+        //            $("#SelectPoojaCategory").html(options.join(''));
+
+        //            $('#SelectPoojaCategory').change(function () {
+        //                if ($(this).val() && $(this).val().includes('__select_all__')) {
+        //                    // Select all options except "__select_all__"
+        //                    var allOptions = data['data'].map(category => category.poojaCategoryId);
+        //                    $('#SelectPoojaCategory').val(allOptions).trigger('change');
+        //                }
+        //            }).multipleSelect({
+        //                width: '100%'
+        //            });
+        //        },
+        //        error: function (data) {
+        //            if (data.status == 401) {
+        //                window.location.replace('/Message/TokenExpire');
+        //            } else if (data.status == 403) {
+        //                window.location.replace('/Message/Unauthorize');
+        //            }
+        //        }
+        //    });
+        //});
+
+
+
+
         $("#btncreate").click(function (e) {
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
@@ -164,6 +240,7 @@
                 for (l = 0; l < selectedSeller.length; l++) {
                     var model = {
                         templeId: parseInt($("#SelectTemple").val()),
+                        poojaCategoryTypeId: parseInt($("#SelectPoojaCategoryType").val()),
                         poojaCategoryId: parseInt(selectedSeller[l]),
                         //poojaCategoryIds: selectedSeller.map(Number),
 

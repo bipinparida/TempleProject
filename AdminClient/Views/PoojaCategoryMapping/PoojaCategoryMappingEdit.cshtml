@@ -39,6 +39,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategoryType">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-3 form-group overflow-hidden" id="ifv">
                             <div class="form-group">
                                 <label class="form-label">PoojaCategory Name</label>
@@ -81,6 +90,37 @@
                         options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
                     }
                     $("#SelectTemple").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        function PoojacategoryTypeList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategoryType/GetPoojaCategoryTypeList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select PoojaCategory </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].poojaCategoryTypeId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].poojaCategoryTypeId + '" ' + opt + ' > ' + res.data[i].poojaCategoryTypeName + '</option>');
+                    }
+                    $("#SelectPoojaCategoryType").html(options.join(''));
                 },
 
                 error: function (data) {
@@ -142,6 +182,7 @@
                 success: function (data) {
                     if (data) {
                         TempleList(data.templeId);
+                        PoojacategoryTypeList(data.poojaCategoryTypeId);
                         PoojaCategoryList(data.poojaCategoryId);
                     }
                     else {
@@ -166,6 +207,7 @@
                 var model = {
                     poojaCategoryMappingId: poojaCategoryMappingId,
                     templeId: $.trim($("#SelectTemple").val()),
+                    poojaCategoryTypeId: $.trim($("#SelectPoojaCategoryType").val()),
                     poojaCategoryId: $.trim($("#SelectPoojaCategory").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }

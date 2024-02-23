@@ -70,7 +70,7 @@ namespace AdminApi.Controllers
 
                 if (existingPoojaCategory != null)
                 {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate CountryName..!" });
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate PoojaCategoryName..!" });
                 }
 
                 objPoojaCategory.PoojaCategoryTypeId = updatePoojaCategoryDTO.PoojaCategoryTypeId;
@@ -175,5 +175,35 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        [HttpGet("{PoojaCategoryTypeId}")]
+        public ActionResult GetPoojaCategoryListbyPoojaCategoryTypeId(int PoojaCategoryTypeId)
+        {
+            try
+            {
+                var list = (from u in _context.PoojaCategoryMappings
+                            join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
+                            join t in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals t.PoojaCategoryTypeId
+
+                            select new
+                            {
+                                u.PoojaCategoryTypeId,
+                                u.PoojaCategoryMappingId,
+                                u.PoojaCategoryId,
+                                p.PoojaCategoryName,
+                                t.PoojaCategoryTypeName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PoojaCategoryTypeId == PoojaCategoryTypeId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
     }
 }

@@ -27,7 +27,8 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult PoojaCategoryMappingCreate(CreatePoojaCategoryMappingDTO createPoojaCategoryMappingDTO)
         {
-            var objcheck = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId == createPoojaCategoryMappingDTO.PoojaCategoryId && opt.TempleId == createPoojaCategoryMappingDTO.TempleId && opt.IsDeleted == false);
+            //var objcheck = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId == createPoojaCategoryMappingDTO.PoojaCategoryId && opt.TempleId == createPoojaCategoryMappingDTO.TempleId && opt.IsDeleted == false);
+            var objcheck = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.TempleId == createPoojaCategoryMappingDTO.TempleId && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
@@ -35,6 +36,7 @@ namespace AdminApi.Controllers
                     PoojaCategoryMapping poojaCategoryMapping = new PoojaCategoryMapping();
 
                     poojaCategoryMapping.TempleId = createPoojaCategoryMappingDTO.TempleId;
+                    poojaCategoryMapping.PoojaCategoryTypeId = createPoojaCategoryMappingDTO.PoojaCategoryTypeId;
                     poojaCategoryMapping.PoojaCategoryId = createPoojaCategoryMappingDTO.PoojaCategoryId;
 
                     poojaCategoryMapping.CreatedBy = createPoojaCategoryMappingDTO.CreatedBy;
@@ -60,14 +62,15 @@ namespace AdminApi.Controllers
             try
             {
                 var objPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryMappingId == updatePoojaCategoryMappingDTO.PoojaCategoryMappingId);
-                var existingPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId == updatePoojaCategoryMappingDTO.PoojaCategoryId && opt.TempleId != updatePoojaCategoryMappingDTO.TempleId && opt.PoojaCategoryMappingId != updatePoojaCategoryMappingDTO.PoojaCategoryMappingId && opt.IsDeleted == false);
-
+                //var existingPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId == updatePoojaCategoryMappingDTO.PoojaCategoryId && opt.TempleId != updatePoojaCategoryMappingDTO.TempleId && opt.PoojaCategoryMappingId != updatePoojaCategoryMappingDTO.PoojaCategoryMappingId && opt.IsDeleted == false);
+                var existingPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.TempleId != updatePoojaCategoryMappingDTO.TempleId && opt.PoojaCategoryMappingId != updatePoojaCategoryMappingDTO.PoojaCategoryMappingId && opt.IsDeleted == false);
                 if (existingPoojaCategoryMapping != null)
                 {
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Name..!" });
                 }
 
                 objPoojaCategoryMapping.TempleId = updatePoojaCategoryMappingDTO.TempleId;
+                objPoojaCategoryMapping.PoojaCategoryTypeId = updatePoojaCategoryMappingDTO.PoojaCategoryTypeId;
                 objPoojaCategoryMapping.PoojaCategoryId = updatePoojaCategoryMappingDTO.PoojaCategoryId;
 
                 objPoojaCategoryMapping.UpdatedBy = updatePoojaCategoryMappingDTO.CreatedBy;
@@ -88,6 +91,7 @@ namespace AdminApi.Controllers
                 var list = (from u in _context.PoojaCategoryMappings
                             join c in _context.Temples on u.TempleId equals c.TempleId
                             join d in _context.PoojaCategories on u.PoojaCategoryId equals d.PoojaCategoryId
+                            join p in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals p.PoojaCategoryTypeId
 
                             select new
                             {
@@ -95,6 +99,8 @@ namespace AdminApi.Controllers
                                 u.TempleId,
                                 u.PoojaCategoryId,
                                 c.TempleName,
+                                u.PoojaCategoryTypeId,
+                                p.PoojaCategoryTypeName,
                                 d.PoojaCategoryName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
