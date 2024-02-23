@@ -59,7 +59,7 @@
                         <!-- panel-login start -->
                         <div class="authfy-panel panel-login text-center active">
                             <div class="authfy-heading">
-                                <h3 class="auth-title">Sanatan Mandir</h3>
+                                <h3 class="auth-title" style="color:blue">SANATAN MANDIR</h3>
                                 @* <p>Don’t have an account? <a class="lnk-toggler" data-panel=".panel-signup" href="#">Sign Up Free!</a></p>*@
                             </div>
 
@@ -84,7 +84,7 @@
                                         <div class="row remember-row">
                                             <div class="col-xs-6 col-sm-6">
                                                 <label class="checkbox text-left">
-                                                    <input type="checkbox" value="remember-me" id="remember-check">
+                                                    <input type="checkbox" value="remember-me" id="remember-check" onclick="handleRememberMe()">
                                                     <span class="label-text">Remember me</span>
                                                 </label>
                                             </div>
@@ -183,60 +183,58 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          
-            var rememberCheckbox = document.getElementById("remember-check");
-            var emailInput = document.getElementById("username");
-            var passwordInput = document.getElementById("typepass");
-            var loginForm = document.getElementById("loginForm");
+        // Function to set cookie
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
 
-            var rememberMeValue = getCookie("rememberMe");
+        // Function to get cookie
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
-            rememberCheckbox.checked = rememberMeValue === "true";
+        // Function to handle remember me checkbox
+        function handleRememberMe() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('typepass').value;
+            var rememberCheckbox = document.getElementById('remember-check');
 
             if (rememberCheckbox.checked) {
-                var storedEmail = getCookie("storedEmail");
-                var storedPassword = getCookie("storedPassword");
-
-                if (storedEmail) {
-                    emailInput.value = storedEmail;
-                }
-
-                if (storedPassword) {
-                    passwordInput.value = storedPassword;
-                }
+                setCookie('rememberedUsername', username, 30); // Cookie will expire in 30 days
+                setCookie('rememberedPassword', password, 30); // Cookie will expire in 30 days
+            } else {
+                // Clear previously set cookies if the checkbox is unchecked
+                setCookie('rememberedUsername', '', -1);
+                setCookie('rememberedPassword', '', -1);
             }
+        }
 
-            loginForm.addEventListener("submit", function () {
-                setCookie("rememberMe", rememberCheckbox.checked, 7); // 7 days expiration
+        // Check if there's a remembered username and password
+        window.onload = function () {
+            var rememberedUsername = getCookie('rememberedUsername');
+            var rememberedPassword = getCookie('rememberedPassword');
 
-                if (rememberCheckbox.checked) {
-                    setCookie("storedEmail", emailInput.value, 7);
-                    setCookie("storedPassword", passwordInput.value, 7);
-                }
-            });
-
-            function setCookie(name, value, days) {
-                var expires = "";
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                    expires = "; expires=" + date.toUTCString();
-                }
-                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            if (rememberedUsername !== "" && rememberedPassword !== "") {
+                document.getElementById('username').value = rememberedUsername;
+                document.getElementById('typepass').value = rememberedPassword;
+                document.getElementById('remember-check').checked = true;
             }
-
-            function getCookie(name) {
-                var nameEQ = name + "=";
-                var ca = document.cookie.split(';');
-                for (var i = 0; i < ca.length; i++) {
-                    var c = ca[i];
-                    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-                }
-                return null;
-            }
-        });
+        }
     </script>
 
 
