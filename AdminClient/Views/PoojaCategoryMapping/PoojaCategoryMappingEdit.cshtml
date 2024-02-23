@@ -41,6 +41,15 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">Pandit Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPandit">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">PoojaCategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectPoojaCategoryType">
@@ -207,6 +216,7 @@
                 var model = {
                     poojaCategoryMappingId: poojaCategoryMappingId,
                     templeId: $.trim($("#SelectTemple").val()),
+                    panditId: $.trim($("#SelectPandit").val()),
                     poojaCategoryTypeId: $.trim($("#SelectPoojaCategoryType").val()),
                     poojaCategoryId: $.trim($("#SelectPoojaCategory").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
