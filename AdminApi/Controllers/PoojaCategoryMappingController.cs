@@ -38,6 +38,7 @@ namespace AdminApi.Controllers
                     poojaCategoryMapping.TempleId = createPoojaCategoryMappingDTO.TempleId;
                     poojaCategoryMapping.PoojaCategoryTypeId = createPoojaCategoryMappingDTO.PoojaCategoryTypeId;
                     poojaCategoryMapping.PoojaCategoryId = createPoojaCategoryMappingDTO.PoojaCategoryId;
+                    poojaCategoryMapping.PanditId = createPoojaCategoryMappingDTO.PanditId;
 
                     poojaCategoryMapping.CreatedBy = createPoojaCategoryMappingDTO.CreatedBy;
                     poojaCategoryMapping.CreatedOn = System.DateTime.Now;
@@ -72,6 +73,7 @@ namespace AdminApi.Controllers
                 objPoojaCategoryMapping.TempleId = updatePoojaCategoryMappingDTO.TempleId;
                 objPoojaCategoryMapping.PoojaCategoryTypeId = updatePoojaCategoryMappingDTO.PoojaCategoryTypeId;
                 objPoojaCategoryMapping.PoojaCategoryId = updatePoojaCategoryMappingDTO.PoojaCategoryId;
+                objPoojaCategoryMapping.PanditId = updatePoojaCategoryMappingDTO.PanditId;
 
                 objPoojaCategoryMapping.UpdatedBy = updatePoojaCategoryMappingDTO.CreatedBy;
                 objPoojaCategoryMapping.UpdatedOn = System.DateTime.Now;
@@ -92,6 +94,7 @@ namespace AdminApi.Controllers
                             join c in _context.Temples on u.TempleId equals c.TempleId
                             join d in _context.PoojaCategories on u.PoojaCategoryId equals d.PoojaCategoryId
                             join p in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals p.PoojaCategoryTypeId
+                            join v in _context.Pandits on u.PanditId equals v.PanditId
 
                             select new
                             {
@@ -102,6 +105,8 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryTypeId,
                                 p.PoojaCategoryTypeName,
                                 d.PoojaCategoryName,
+                                u.PanditId,
+                                v.PanditName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 

@@ -356,5 +356,35 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        [HttpGet("{TempleId}")]
+        public ActionResult GetPanditListbyTempleId(int TempleId)
+        {
+            try
+            {
+                var list = (from u in _context.Pandits
+                            join t in _context.Temples on u.TempleId equals t.TempleId
+
+                            select new
+                            {
+                               u.PanditId,
+                               u.PanditName,
+                               u.PanditImage,
+                               t.TempleId,
+                               t.TempleName,
+                               
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
     }
 }
