@@ -5,11 +5,10 @@ namespace AdminApi.Models.App.Pandits
     public class Pandit
     {
         public int PanditId { get; set; }
-        public int CountryId { get; set; }
-        public int StateId { get; set; }
-        public int CityId { get; set; }
+        public int? CountryId { get; set; }
+        public int? StateId { get; set; }
+        public int? CityId { get; set; }
         public string Experiences { get; set; }
-        public string PujaCategory { get; set; }
         public string Religion { get; set; }
         public string MotherTongue { get; set; }
         public string Caste { get; set; }

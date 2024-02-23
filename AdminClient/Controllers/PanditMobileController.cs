@@ -39,7 +39,6 @@ namespace AdminClient.Controllers
                 ag.StateId = panditDTO.StateId;
                 ag.CityId = panditDTO.CityId;
                 ag.Experiences = panditDTO.Experiences;
-                ag.PujaCategory = panditDTO.PujaCategory;
                 ag.Religion = panditDTO.Religion;
                 ag.MotherTongue = panditDTO.MotherTongue;
                 ag.Caste = panditDTO.Caste;
@@ -63,6 +62,9 @@ namespace AdminClient.Controllers
 
                 var a = _pandit.PanditCreate(ag);
 
+
+
+
                 return Ok(a);
             }
             else
@@ -73,7 +75,6 @@ namespace AdminClient.Controllers
                 ag.StateId = panditDTO.StateId;
                 ag.CityId = panditDTO.CityId;
                 ag.Experiences = panditDTO.Experiences;
-                ag.PujaCategory = panditDTO.PujaCategory;
                 ag.Religion = panditDTO.Religion;
                 ag.MotherTongue = panditDTO.MotherTongue;
                 ag.Caste = panditDTO.Caste;

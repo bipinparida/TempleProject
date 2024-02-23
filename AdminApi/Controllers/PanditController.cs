@@ -9,6 +9,7 @@ using System;
 using AdminApi.DTO.App.PanditDTO;
 using AdminApi.DTO.App.BhaktaDTO;
 using Pandit = AdminApi.Models.App.Pandits.Pandit;
+using AdminApi.Models.App.PoojaCategory;
 
 namespace AdminApi.Controllers
 {
@@ -30,10 +31,65 @@ namespace AdminApi.Controllers
         }
 
 
+        //[HttpPost]
+        //public IActionResult PanditCreate(CreatePanditDTO createPanditDTO)
+        //{
+        //    var objcheck = _context.Pandits.SingleOrDefault(opt => opt.PrimaryPhone == createPanditDTO.PrimaryPhone && opt.IsDeleted == false);
+        //    try
+        //    {
+        //        if (objcheck == null)
+        //        {
+        //            Pandit pandit = new Pandit();
+
+        //            pandit.CountryId = createPanditDTO.CountryId;
+        //            pandit.StateId = createPanditDTO.StateId;
+        //            pandit.CityId = createPanditDTO.CityId;
+        //            pandit.Experiences = createPanditDTO.Experiences;
+        //            pandit.PujaCategory = createPanditDTO.PujaCategory;
+        //            pandit.Religion = createPanditDTO.Religion;
+        //            pandit.MotherTongue = createPanditDTO.MotherTongue;
+        //            pandit.Caste = createPanditDTO.Caste;
+        //            pandit.Gothram = createPanditDTO.Gothram;
+        //            pandit.AadharCard = createPanditDTO.AadharCard;
+        //            pandit.Qualification = createPanditDTO.Qualification;
+        //            pandit.TempleId = createPanditDTO.TempleId;
+        //            pandit.PanditName = createPanditDTO.PanditName;
+        //            pandit.Address = createPanditDTO.Address;
+        //            pandit.PrimaryPhone = createPanditDTO.PrimaryPhone;
+        //            pandit.AlternatePhone = createPanditDTO.AlternatePhone;
+        //            pandit.MailId = createPanditDTO.MailId;
+        //            pandit.DateOfBirth = createPanditDTO.DateOfBirth;
+        //            pandit.Password = createPanditDTO.Password;
+        //            pandit.PanditImage = createPanditDTO.PanditImage;
+        //            pandit.Message = createPanditDTO.Message;
+        //            pandit.IsApprove = false;
+        //            pandit.Reject = false;
+
+        //            pandit.CreatedBy = createPanditDTO.CreatedBy;
+        //            pandit.CreatedOn = System.DateTime.Now;
+        //            var obj = _PanditRepo.Insert(pandit);
+        //            return Ok(obj);
+        //        }
+        //        else if (objcheck != null)
+        //        {
+        //            return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Pandit Mobile Number..!" });
+        //        }
+        //        return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+
+        //}
+
+
+
         [HttpPost]
         public IActionResult PanditCreate(CreatePanditDTO createPanditDTO)
         {
             var objcheck = _context.Pandits.SingleOrDefault(opt => opt.PrimaryPhone == createPanditDTO.PrimaryPhone && opt.IsDeleted == false);
+
             try
             {
                 if (objcheck == null)
@@ -44,7 +100,6 @@ namespace AdminApi.Controllers
                     pandit.StateId = createPanditDTO.StateId;
                     pandit.CityId = createPanditDTO.CityId;
                     pandit.Experiences = createPanditDTO.Experiences;
-                    pandit.PujaCategory = createPanditDTO.PujaCategory;
                     pandit.Religion = createPanditDTO.Religion;
                     pandit.MotherTongue = createPanditDTO.MotherTongue;
                     pandit.Caste = createPanditDTO.Caste;
@@ -63,10 +118,29 @@ namespace AdminApi.Controllers
                     pandit.Message = createPanditDTO.Message;
                     pandit.IsApprove = false;
                     pandit.Reject = false;
-
                     pandit.CreatedBy = createPanditDTO.CreatedBy;
                     pandit.CreatedOn = System.DateTime.Now;
+
                     var obj = _PanditRepo.Insert(pandit);
+
+                    if (createPanditDTO.PoojaCategoryMappings != null)
+                    {
+                        foreach (var mappingDto in createPanditDTO.PoojaCategoryMappings)
+                        {
+                            PoojaCategoryMapping poojaCategoryMapping = new PoojaCategoryMapping();
+                            poojaCategoryMapping.TempleId = obj.TempleId;
+                            poojaCategoryMapping.PanditId = obj.PanditId;
+                            poojaCategoryMapping.PoojaCategoryTypeId = mappingDto.PoojaCategoryTypeId;
+                            poojaCategoryMapping.PoojaCategoryId = mappingDto.PoojaCategoryId;
+                            poojaCategoryMapping.CreatedBy = mappingDto.CreatedBy;
+
+                            _context.PoojaCategoryMappings.Add(poojaCategoryMapping);
+                        }
+
+                        _context.SaveChanges();
+                    }
+
+
                     return Ok(obj);
                 }
                 else if (objcheck != null)
@@ -79,8 +153,9 @@ namespace AdminApi.Controllers
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
-
         }
+
+
 
         [HttpGet]
         public ActionResult GetPanditList()
@@ -105,7 +180,6 @@ namespace AdminApi.Controllers
                                 u.CityId,
                                 d.CityName,
                                 u.Experiences,
-                                u.PujaCategory,
                                 u.Religion,
                                 u.MotherTongue,
                                 u.Caste,
@@ -170,7 +244,6 @@ namespace AdminApi.Controllers
                 objPandit.StateId = updatePanditDTO.StateId;
                 objPandit.CityId = updatePanditDTO.CityId;
                 objPandit.Experiences = updatePanditDTO.Experiences;
-                objPandit.PujaCategory = updatePanditDTO.PujaCategory;
                 objPandit.Religion = updatePanditDTO.Religion;
                 objPandit.MotherTongue = updatePanditDTO.MotherTongue;
                 objPandit.Caste = updatePanditDTO.Caste;

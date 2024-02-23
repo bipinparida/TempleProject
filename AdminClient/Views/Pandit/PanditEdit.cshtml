@@ -80,12 +80,12 @@
                                 <input type="text" class="form-control" id="Experiences" placeholder="Enter Experiences" required>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                      @*   <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">PujaCategory &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="PujaCategory" placeholder="Enter PujaCategory" required>
                             </div>
-                        </div>
+                        </div> *@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Religion &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -392,7 +392,7 @@
 
                         // $('#SelectTemple').val(data.templeId);
                         $('#Experiences').val(data.experiences);
-                        $('#PujaCategory').val(data.pujaCategory);
+                        // $('#PujaCategory').val(data.pujaCategory);
                         $('#Religion').val(data.religion);
                         $('#MotherTongue').val(data.motherTongue);
                         $('#Caste').val(data.caste);
@@ -445,7 +445,7 @@
                     cityId: $.trim($("#SelectCity").val()),
                     templeId: $.trim($("#SelectTemple").val()),
                     experiences: $.trim($("#Experiences").val()),
-                    pujaCategory: $.trim($("#PujaCategory").val()),
+                    // pujaCategory: $.trim($("#PujaCategory").val()),
                     religion: $.trim($("#Religion").val()),
                     motherTongue: $.trim($("#MotherTongue").val()),
                     caste: $.trim($("#Caste").val()),
