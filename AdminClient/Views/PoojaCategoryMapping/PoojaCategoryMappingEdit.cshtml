@@ -110,7 +110,40 @@
                 }
             });
         }
+        function PanditList(selectedPandit) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Pandit/GetPanditList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value="">Select Pandit</option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        var panditName = res.data[i].panditName;
+                        var panditId = res.data[i].panditId;
+                        options.push('<option value="' + panditId + '">' + panditName + '</option>');
+                    }
+                    $("#SelectPandit").html(options.join(''));
 
+                    if (selectedPandit) {
+                        $('#SelectPandit').val(selectedPandit);
+                        $('#SelectPandit').trigger('change');
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
         function PoojacategoryTypeList(Id) {
             var opt = '';
             $.ajax({
@@ -191,6 +224,7 @@
                 success: function (data) {
                     if (data) {
                         TempleList(data.templeId);
+                        PanditList(data.panditId);
                         PoojacategoryTypeList(data.poojaCategoryTypeId);
                         PoojaCategoryList(data.poojaCategoryId);
                     }
