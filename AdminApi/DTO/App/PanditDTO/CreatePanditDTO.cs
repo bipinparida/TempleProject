@@ -21,7 +21,7 @@ namespace AdminApi.DTO.App.PanditDTO
         public string PrimaryPhone { get; set; }
         public string AlternatePhone { get; set; }
         public string MailId { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string Password { get; set; }
         public string? PanditImage { get; set; }
         public string Message { get; set; }
@@ -50,7 +50,7 @@ namespace AdminApi.DTO.App.PanditDTO
         public string PrimaryPhone { get; set; }
         public string AlternatePhone { get; set; }
         public string MailId { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string Password { get; set; }
         public string? PanditImage { get; set; }
         public string Message { get; set; }

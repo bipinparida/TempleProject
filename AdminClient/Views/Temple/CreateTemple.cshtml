@@ -307,6 +307,29 @@
 
         }
 
+
+        $("#btncreate").click(function (e) {
+            // Prevent form submission if fields are empty
+            var selectcountry = $.trim($("#Selectcountry").val());
+            var selectState = $.trim($("#SelectState").val());
+            var selectCity = $.trim($("#SelectCity").val());
+            var templeName = $.trim($("#TempleName").val());
+            var godName = $.trim($("#GodName").val());
+            var templeImage = $.trim($("#TempleImage").val());
+
+            if (selectcountry === "" || selectState === "" || selectCity === "" || templeName === "" || godName === "" || templeImage === "") {
+                e.preventDefault();
+                Swal.fire({
+                    icon: "warning",
+                    title: "Validation Alert!",
+                    text: "Please fill all fields!",
+                });
+                return;
+            }
+
+
+        });
+
     </script>
 
 }
