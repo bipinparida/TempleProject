@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System;
 using AdminApi.DTO.App.PoojaCategoryDTO;
+using AdminApi.DTO.App.PoojaCategoryItemDTO;
 
 namespace AdminApi.Controllers
 {
@@ -28,36 +29,57 @@ namespace AdminApi.Controllers
             _PoojaCategoryRepo = poojaCategoryRepo;
         }
         [HttpPost]
-        public IActionResult PoojaCategoryCreate(CreatePoojaCategoryDTO createPoojaCategoryDTO)
+        //public IActionResult PoojaCategoryCreate(CreatePoojaCategoryDTO createPoojaCategoryDTO)
+        //{
+        //    var objcheck = _context.PoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryName == createPoojaCategoryDTO.PoojaCategoryName && opt.IsDeleted == false);
+        //    try
+        //    {
+        //        if (objcheck == null)
+        //        {
+        //            PoojaCategory poojaCategory = new PoojaCategory();
+
+        //            poojaCategory.PoojaCategoryTypeId = createPoojaCategoryDTO.PoojaCategoryTypeId;
+        //            poojaCategory.PoojaCategoryName = createPoojaCategoryDTO.PoojaCategoryName;
+
+        //            poojaCategory.CreatedBy = createPoojaCategoryDTO.CreatedBy;
+        //            poojaCategory.CreatedOn = System.DateTime.Now;
+        //            var obj = _PoojaCategoryRepo.Insert(poojaCategory);
+        //            return Ok(obj);
+        //        }
+        //        else if (objcheck != null)
+        //        {
+        //            return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate PoojaCategoryName..!" });
+        //        }
+        //        return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+
+        //}
+        public IActionResult PoojaCategoryCreate(PoojaCategoryMasterDTO poojaCategoryMasterDTO)
         {
-            var objcheck = _context.PoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryName == createPoojaCategoryDTO.PoojaCategoryName && opt.IsDeleted == false);
+
             try
             {
-                if (objcheck == null)
+                for (int i = 0; i < poojaCategoryMasterDTO.CreatePoojaCategoryDTOs.Count; i++)
                 {
-                    PoojaCategory poojaCategory = new PoojaCategory();
-
-                    poojaCategory.PoojaCategoryTypeId = createPoojaCategoryDTO.PoojaCategoryTypeId;
-                    poojaCategory.PoojaCategoryName = createPoojaCategoryDTO.PoojaCategoryName;
-
-                    poojaCategory.CreatedBy = createPoojaCategoryDTO.CreatedBy;
-                    poojaCategory.CreatedOn = System.DateTime.Now;
-                    var obj = _PoojaCategoryRepo.Insert(poojaCategory);
-                    return Ok(obj);
+                    PoojaCategory opt = new PoojaCategory();
+                    opt.PoojaCategoryTypeId = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].PoojaCategoryTypeId;
+                    opt.PoojaCategoryName = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].PoojaCategoryName;
+                    opt.CreatedBy = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].CreatedBy;
+                    opt.CreatedOn = System.DateTime.Now;
+                    _PoojaCategoryRepo.Insert(opt);
                 }
-                else if (objcheck != null)
-                {
-                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate PoojaCategoryName..!" });
-                }
-                return Accepted(new Confirmation { Status = "Error", ResponseMsg = "Something unexpected!" });
+
+                return Ok(poojaCategoryMasterDTO);
             }
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
-
         }
-
 
         [HttpPost]
         public ActionResult UpdatePoojaCategory(UpdatePoojaCategoryDTO updatePoojaCategoryDTO)
