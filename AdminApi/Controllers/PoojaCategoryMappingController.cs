@@ -28,7 +28,7 @@ namespace AdminApi.Controllers
         public IActionResult PoojaCategoryMappingCreate(CreatePoojaCategoryMappingDTO createPoojaCategoryMappingDTO)
         {
             //var objcheck = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId == createPoojaCategoryMappingDTO.PoojaCategoryId && opt.TempleId == createPoojaCategoryMappingDTO.TempleId && opt.IsDeleted == false);
-            var objcheck = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.TempleId == createPoojaCategoryMappingDTO.TempleId && opt.IsDeleted == false);
+            var objcheck = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.TempleId == createPoojaCategoryMappingDTO.TempleId && opt.PanditId==createPoojaCategoryMappingDTO.PanditId && opt.PoojaCategoryId==createPoojaCategoryMappingDTO.PoojaCategoryId && opt.PoojaCategoryTypeId==createPoojaCategoryMappingDTO.PoojaCategoryTypeId && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
@@ -64,7 +64,7 @@ namespace AdminApi.Controllers
             {
                 var objPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryMappingId == updatePoojaCategoryMappingDTO.PoojaCategoryMappingId);
                 //var existingPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId == updatePoojaCategoryMappingDTO.PoojaCategoryId && opt.TempleId != updatePoojaCategoryMappingDTO.TempleId && opt.PoojaCategoryMappingId != updatePoojaCategoryMappingDTO.PoojaCategoryMappingId && opt.IsDeleted == false);
-                var existingPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.TempleId != updatePoojaCategoryMappingDTO.TempleId && opt.PoojaCategoryMappingId != updatePoojaCategoryMappingDTO.PoojaCategoryMappingId && opt.IsDeleted == false);
+                var existingPoojaCategoryMapping = _context.PoojaCategoryMappings.SingleOrDefault(opt => opt.PoojaCategoryId==updatePoojaCategoryMappingDTO.PoojaCategoryId && opt.PoojaCategoryMappingId != updatePoojaCategoryMappingDTO.PoojaCategoryMappingId && opt.IsDeleted == false);
                 if (existingPoojaCategoryMapping != null)
                 {
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate Name..!" });
