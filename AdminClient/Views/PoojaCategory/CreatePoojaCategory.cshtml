@@ -258,30 +258,64 @@
             });
         }
 
+        //$(function () {
+
+        //    $("#Add_Optn").click(function (e) {
+        //        var PoojaCategoryTypeValue = $('#SelectPoojaCategoryType').val();
+        //        var PoojaCategoryTypeText = $('#SelectPoojaCategoryType option:selected').text();
+        //        var PoojaCategoryName = $('#PoojaCategoryName').val();
+
+        //        //var row = "<tr><td data-value='" + Qsn + "'>" + QsnText + "</td><td data-value='" + Optn + "'>" + Optn +"</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+        //        if (PoojaCategoryTypeValue && PoojaCategoryName) {
+        //            var row = "<tr><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+        //            $('#PoojaCategory_Tb').append(row);
+        //        }
+
+        //        $('#PoojaCategory_Tb').append(row);
+
+        //        $(document.body).delegate(".delRowBtn", "click", function () {
+        //            $(this).closest("tr").remove();
+        //        });
+
+        //        //$('#SelectPoojaCategoryType').val('');
+        //        $('#PoojaCategoryName').val('');
+        //    });
+
+        //    $(document).on("click", ".delRowBtn", function () {
+        //        $(this).closest("tr").remove();
+        //    });
+
+        //});
+
         $(function () {
-
             $("#Add_Optn").click(function (e) {
-                var Qsn = $('#SelectPoojaCategoryType').val();
-                var QsnText = $('#SelectPoojaCategoryType option:selected').text();
-                var Optn = $('#PoojaCategoryName').val();
+                // Get the selected PoojaCategoryType value and text
+                var PoojaCategoryTypeValue = $('#SelectPoojaCategoryType').val();
+                var PoojaCategoryTypeText = $('#SelectPoojaCategoryType option:selected').text();
+                // Get the PoojaCategoryName
+                var PoojaCategoryName = $('#PoojaCategoryName').val();
 
-                var row = "<tr><td data-value='" + Qsn + "'>" + QsnText + "</td><td data-value='" + Optn + "'>" + Optn +"</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                // Check if both fields are not empty before adding the row
+                if (PoojaCategoryTypeValue && PoojaCategoryName) {
+                    var row = "<tr><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                    $('#PoojaCategory_Tb').append(row);
+                }
 
-                $('#PoojaCategory_Tb').append(row);
-
+                // Event delegation for delete button
                 $(document.body).delegate(".delRowBtn", "click", function () {
                     $(this).closest("tr").remove();
                 });
 
-                $('#SelectPoojaCategoryType').val('');
+                // Clear the input fields after adding or if not added due to empty fields
                 $('#PoojaCategoryName').val('');
             });
 
+            // Event delegation for delete button
             $(document).on("click", ".delRowBtn", function () {
                 $(this).closest("tr").remove();
             });
-
         });
+
 
     </script>
 

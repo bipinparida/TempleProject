@@ -266,31 +266,63 @@
             });
         }
 
+        //$(function () {
+
+        //    $("#Add_Optn").click(function (e) {
+        //        var Qsn = $('#SelectPoojaCategory').val();
+        //        var QsnText = $('#SelectPoojaCategory option:selected').text();
+        //        var Optn = $('#ItemName').val();
+        //        var price = $('#ItemPrice').val();
+
+        //        var row = "<tr><td data-value='" + Qsn + "'>" + QsnText + "</td><td data-value='" + Optn + "'>" + Optn + "</td><td data-value='" + price + "'>" + price + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+
+        //        $('#PoojaCategoryItem_Tb').append(row);
+
+        //        $(document.body).delegate(".delRowBtn", "click", function () {
+        //            $(this).closest("tr").remove();
+        //        });
+
+        //        //$('#SelectPoojaCategory').val('');
+        //        $('#ItemName').val('');
+        //        $('#ItemPrice').val('');
+        //    });
+
+        //    $(document).on("click", ".delRowBtn", function () {
+        //        $(this).closest("tr").remove();
+        //    });
+
+        //});
+
+
         $(function () {
-
             $("#Add_Optn").click(function (e) {
-                var Qsn = $('#SelectPoojaCategory').val();
-                var QsnText = $('#SelectPoojaCategory option:selected').text();
-                var Optn = $('#ItemName').val();
-                var price = $('#ItemPrice').val();
+                // Get the selected PoojaCategoryType value and text
+                var PoojaCategoryValue = $('#SelectPoojaCategory').val();
+                var PoojaCategoryText = $('#SelectPoojaCategory option:selected').text();
+                // Get the PoojaCategoryName
+                var ItemName = $('#ItemName').val();
+                var ItemPrice = $('#ItemPrice').val();
 
-                var row = "<tr><td data-value='" + Qsn + "'>" + QsnText + "</td><td data-value='" + Optn + "'>" + Optn + "</td><td data-value='" + price + "'>" + price + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                // Check if both fields are not empty before adding the row
+                if (PoojaCategoryValue && ItemName && ItemPrice) {
+                    var row = "<tr><td data-value='" + PoojaCategoryValue + "'>" + PoojaCategoryText + "</td><td data-value='" + ItemName + "'>" + ItemName + "</td><td data-value='" + ItemPrice + "'>" + ItemPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                    $('#PoojaCategoryItem_Tb').append(row);
+                }
 
-                $('#PoojaCategoryItem_Tb').append(row);
-
+                // Event delegation for delete button
                 $(document.body).delegate(".delRowBtn", "click", function () {
                     $(this).closest("tr").remove();
                 });
 
-                $('#SelectPoojaCategory').val('');
+                // Clear the input fields after adding or if not added due to empty fields
                 $('#ItemName').val('');
                 $('#ItemPrice').val('');
             });
 
+            // Event delegation for delete button
             $(document).on("click", ".delRowBtn", function () {
                 $(this).closest("tr").remove();
             });
-
         });
 
     </script>
