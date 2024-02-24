@@ -37,8 +37,8 @@
                                 <th>City Name</th>
                                 <th>Temple Name</th>
                                 <th>God Name</th>
-                                <th>Temple Image</th>
-                                <th>Action</th>
+                                <th class="exclude">Temple Image</th>
+                                <th class="exclude">Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -58,7 +58,22 @@
             table = $('#Temple_Tb').dataTable({
                 "paginationType": "full_numbers",
                 "dom": 'Bfrtip',
-                "buttons": ['excel', 'print'],
+                // "buttons": ['excel', 'print'],
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':not(.exclude)'
+                        }
+                    },
+                    // 'print'
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible:not(.exclude)' 
+                        }
+                    }
+                ],
                 "searching": true,
                 "paging": true,
                 "sort": true,
