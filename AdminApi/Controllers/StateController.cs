@@ -26,7 +26,9 @@ namespace AdminApi.Controllers
             _StateRepo = StateRepo;
         }
 
-
+        ///<summary>
+        ///Create State
+        ///</summary>
         [HttpPost]
         public IActionResult StateCreate(CreateStateDTO createStateDTO)
         {
@@ -57,7 +59,10 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Get State List
+        ///</summary>
+        ///
         [HttpGet]
         public ActionResult GetStateList()
         {
@@ -86,7 +91,10 @@ namespace AdminApi.Controllers
             }
         }
 
-        //single list
+        ///<summary>
+        ///Get Single State by ID
+        ///</summary>
+        ///
         [HttpGet("{StateId}")]
         public ActionResult GetSingleState(int StateId)
         {
@@ -100,7 +108,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-        //update
+
+        ///<summary>
+        ///Update State
+        ///</summary>
+        ///
         [HttpPost]
         public ActionResult UpdateState(UpdateStateDTO updateStateDTO)
         {
@@ -127,6 +139,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Delete Single State by ID
+        ///</summary>
+        ///
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteState(int Id, int DeletedBy)
         {
@@ -145,6 +162,10 @@ namespace AdminApi.Controllers
             }
         }
 
+        ///<summary>
+        ///Get State List by Countryid
+        ///</summary>
+        ///
         [HttpGet("{Countryid}")]
         public ActionResult GetStateListbyCountryid(int Countryid)
         {

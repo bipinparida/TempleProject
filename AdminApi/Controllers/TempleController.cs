@@ -325,7 +325,9 @@ namespace AdminApi.Controllers
 
 
 
-
+        ///<summary>
+        ///Filter Temple By CountryId , StateId ,CityId
+        ///</summary>
 
         //[HttpGet("{CountryId?}/{StateId?}/{CityId?}")]
 

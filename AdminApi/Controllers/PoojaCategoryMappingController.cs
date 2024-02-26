@@ -213,5 +213,38 @@ namespace AdminApi.Controllers
         }
 
 
+        [HttpGet("{PoojaCategoryId}")]
+        public ActionResult GetPanditListbyPoojaCategoryId(int PoojaCategoryId)
+        {
+            try
+            {
+                var list = (from u in _context.PoojaCategoryMappings
+                            join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
+                            //join t in _context.Temples on u.TempleId equals t.TempleId
+                            join v in _context.Pandits on u.PanditId equals v.PanditId
+
+                            select new
+                            {
+                                v.PanditId,
+                                v.PanditName,
+                                u.TempleId,
+                                u.PoojaCategoryMappingId,
+                                u.PoojaCategoryId,
+                                p.PoojaCategoryName,
+                                //t.TempleName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
     }
 }

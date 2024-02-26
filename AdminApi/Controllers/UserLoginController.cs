@@ -236,6 +236,9 @@ namespace AdminApi.Controllers
         //}
 
 
+        ///<summary>
+        ///UserLogin by Mobile Number and Password
+        ///</summary>
         [HttpGet("{UserMobileNumber}/{Password}")]
         public IActionResult UserLogin(string UserMobileNumber, string Password)
         {
@@ -337,7 +340,9 @@ namespace AdminApi.Controllers
         //}
 
 
-
+        ///<summary>
+        ///Change Password
+        ///</summary>
         [HttpPost]
 		public IActionResult ChangePassword(ChangePasswordDTO changePasswordDTO)
 		{
