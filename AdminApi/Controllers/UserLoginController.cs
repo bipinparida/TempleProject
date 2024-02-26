@@ -152,6 +152,90 @@ namespace AdminApi.Controllers
         //}
 
 
+        //[HttpGet("{UserMobileNumber}/{Password}")]
+        //public IActionResult UserLogin(string UserMobileNumber, string Password)
+        //{
+        //    var pandit = _context.Pandits.FirstOrDefault(x => x.PrimaryPhone == UserMobileNumber);
+        //    var bhakta = _context.Bhaktas.FirstOrDefault(x => x.PrimaryPhone == UserMobileNumber);
+
+        //    if (pandit == null && bhakta == null)
+        //    {
+        //        return BadRequest("UserMobileNumber is incorrect or Number not in use");
+        //    }
+
+        //    else if (pandit != null && bhakta != null)
+        //    {
+        //        // Both pandit and bhakta have the same mobile number
+        //        if (pandit.Password == Password || bhakta.Password == Password)
+        //        {
+        //            if (pandit.Password == Password)
+        //            {
+        //                if (pandit.IsApprove == true)
+        //                {
+        //                    return Ok(new { pandit = pandit });
+        //                }
+        //                else if (pandit.Reject == true)
+        //                {
+        //                    return BadRequest("Pandit is rejected");
+        //                }
+        //                else
+        //                {
+        //                    return BadRequest("Pandit is not approved");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return Ok(new { bhakta = bhakta });
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return BadRequest("Mobile Number is correct but the Password is wrong");
+        //        }
+        //    }
+
+        //    else if (pandit != null)
+        //    {
+        //        if (pandit.IsApprove == true)
+        //        {
+        //            if (pandit.Password == Password)
+        //            {
+        //                return Ok(new { pandit = pandit });
+        //            }
+        //            else
+        //            {
+        //                return BadRequest("Mobile Number is correct but the Password is wrong");
+        //            }
+        //        }
+        //        else if (pandit.Reject == true)
+        //        {
+        //            return BadRequest("Pandit is rejected");
+        //        }
+        //        else
+        //        {
+        //            return BadRequest("Pandit is not approved");
+        //        }
+        //    }
+
+        //    else if (bhakta != null)
+        //    {
+        //        if (bhakta.Password == Password)
+        //        {
+        //            return Ok(new { bhakta = bhakta });
+        //        }
+        //        else
+        //        {
+        //            return BadRequest("Mobile Number is correct but the Password is wrong");
+        //        }
+        //    }
+
+        //    else
+        //    {
+        //        return BadRequest("Mobile Number is correct but the Password is wrong");
+        //    }
+        //}
+
+
         [HttpGet("{UserMobileNumber}/{Password}")]
         public IActionResult UserLogin(string UserMobileNumber, string Password)
         {
@@ -162,61 +246,33 @@ namespace AdminApi.Controllers
             {
                 return BadRequest("UserMobileNumber is incorrect or Number not in use");
             }
-
             else if (pandit != null && bhakta != null)
             {
                 // Both pandit and bhakta have the same mobile number
-                if (pandit.Password == Password || bhakta.Password == Password)
+                if (pandit.Password == Password)
                 {
-                    if (pandit.Password == Password)
-                    {
-                        if (pandit.IsApprove == true)
-                        {
-                            return Ok(new { pandit = pandit });
-                        }
-                        else if (pandit.Reject == true)
-                        {
-                            return BadRequest("Pandit is rejected");
-                        }
-                        else
-                        {
-                            return BadRequest("Pandit is not approved");
-                        }
-                    }
-                    else
-                    {
-                        return Ok(new { bhakta = bhakta });
-                    }
+                    return Ok(new { pandit = pandit });
+                }
+                else if (bhakta.Password == Password)
+                {
+                    return Ok(new { bhakta = bhakta });
                 }
                 else
                 {
                     return BadRequest("Mobile Number is correct but the Password is wrong");
                 }
             }
-
             else if (pandit != null)
             {
-                if (pandit.IsApprove == true)
+                if (pandit.Password == Password)
                 {
-                    if (pandit.Password == Password)
-                    {
-                        return Ok(new { pandit = pandit });
-                    }
-                    else
-                    {
-                        return BadRequest("Mobile Number is correct but the Password is wrong");
-                    }
-                }
-                else if (pandit.Reject == true)
-                {
-                    return BadRequest("Pandit is rejected");
+                    return Ok(new { pandit = pandit });
                 }
                 else
                 {
-                    return BadRequest("Pandit is not approved");
+                    return BadRequest("Mobile Number is correct but the Password is wrong");
                 }
             }
-
             else if (bhakta != null)
             {
                 if (bhakta.Password == Password)
@@ -228,17 +284,11 @@ namespace AdminApi.Controllers
                     return BadRequest("Mobile Number is correct but the Password is wrong");
                 }
             }
-
             else
             {
                 return BadRequest("Mobile Number is correct but the Password is wrong");
             }
         }
-
-
-
-
-
 
 
 
@@ -285,7 +335,6 @@ namespace AdminApi.Controllers
 
         //	return Ok("Password changed successfully");
         //}
-
 
 
 
