@@ -89,7 +89,9 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Bhakta Image &nbsp;</label>
-                                <input type="file" class="form-control" id="BhaktaImage">
+                                <input type="file" class="form-control" id="BhaktaImage" accept=".jpg, .jpeg">
+                                <small @* class="form-text text-muted"*@ style="color:red" >Only JPG files are allowed.</small>
+
                             </div>
                         </div>
 
@@ -248,6 +250,25 @@
                 }
 
             }
+
+        });
+
+        $("#btncreate").click(function (e) {
+            // Prevent form submission if fields are empty
+            var bhaktaName = $.trim($("#BhaktaName").val());
+            var primaryPhone = $.trim($("#PrimaryPhone").val());
+            var password = $.trim($("#Password").val());
+
+            if (bhaktaName === "" || primaryPhone === "" || password === "" ) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: "warning",
+                    title: "Validation Alert!",
+                    text: "Please complete Name , Mobile Number & Password fields!",
+                });
+                return;
+            }
+
 
         });
 
