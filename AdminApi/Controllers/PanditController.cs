@@ -164,9 +164,9 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Pandits
                             join p in _context.Temples on u.TempleId equals p.TempleId
-                            join c in _context.Countries on u.CountryId equals c.CountryId
-                            join s in _context.States on u.StateId equals s.StateId
-                            join d in _context.Cities on u.CityId equals d.CityId
+                            //join c in _context.Countries on u.CountryId equals c.CountryId
+                            //join s in _context.States on u.StateId equals s.StateId
+                            //join d in _context.Cities on u.CityId equals d.CityId
 
                             select new
                             {
@@ -174,11 +174,11 @@ namespace AdminApi.Controllers
                                 u.TempleId,
                                 p.TempleName,
                                 u.CountryId,
-                                c.CountryName,
+                                //c.CountryName,
                                 u.StateId,
-                                s.StateName,
+                                //s.StateName,
                                 u.CityId,
-                                d.CityName,
+                                //d.CityName,
                                 u.Experiences,
                                 u.Religion,
                                 u.MotherTongue,
