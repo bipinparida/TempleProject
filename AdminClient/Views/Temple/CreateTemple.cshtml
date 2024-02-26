@@ -76,10 +76,18 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                      @*   <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">TempleImage &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="file" class="form-control" id="TempleImage" placeholder="Temple Image" required>
+                            </div>
+                        </div> *@
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">TempleImage &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="file" class="form-control" id="TempleImage" placeholder="Temple Image" accept=".png, .jpg, .jpeg" required>
+                                <small class="form-text text-muted">Only PNG and JPG files are allowed.</small>
                             </div>
                         </div>
                        
@@ -322,7 +330,7 @@
                 Swal.fire({
                     icon: "warning",
                     title: "Validation Alert!",
-                    text: "Please fill all fields!",
+                    text: "Please complete all fields!",
                 });
                 return;
             }
