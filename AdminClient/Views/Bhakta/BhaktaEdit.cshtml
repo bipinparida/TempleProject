@@ -305,5 +305,24 @@
             }
         }
 
+        $("#btnupdate").click(function (e) {
+            // Prevent form submission if fields are empty
+            var bhaktaName = $.trim($("#BhaktaName").val());
+            var primaryPhone = $.trim($("#PrimaryPhone").val());
+            var password = $.trim($("#Password").val());
+
+            if (bhaktaName === "" || primaryPhone === "" || password === "") {
+                e.preventDefault();
+                Swal.fire({
+                    icon: "warning",
+                    title: "Validation Alert!",
+                    text: "Please complete Name , Mobile Number & Password fields!",
+                });
+                return;
+            }
+
+
+        });
+
     </script>
 }
