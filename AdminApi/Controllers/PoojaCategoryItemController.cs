@@ -54,18 +54,96 @@ namespace AdminApi.Controllers
         //    }
         //}
 
+
+
+        //[HttpPost]
+        //public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
+        //{
+        //    try
+        //    {
+        //        var existingItemNames = _PoojaCategoryItemRepo.SelectAll().Select(item => item.ItemName).ToList();
+
+        //        foreach (var itemDTO in poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs)
+        //        {
+        //            if (existingItemNames.Contains(itemDTO.ItemName))
+        //            {
+        //                return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' already exists!." });
+        //            }
+
+        //            PoojaCategoryItem newItem = new PoojaCategoryItem
+        //            {
+        //                PoojaCategoryId = itemDTO.PoojaCategoryId,
+        //                ItemName = itemDTO.ItemName,
+        //                ItemPrice = itemDTO.ItemPrice,
+        //                CreatedBy = itemDTO.CreatedBy,
+        //                CreatedOn = DateTime.Now
+        //            };
+
+        //            _PoojaCategoryItemRepo.Insert(newItem);
+
+        //            existingItemNames.Add(itemDTO.ItemName);
+        //        }
+
+        //        return Ok(poojaCategoryItemMasterDTO);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
+
+        //[HttpPost]
+        //public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
+        //{
+        //    try
+        //    {
+        //        var existingItemNames = _PoojaCategoryItemRepo.SelectAll().ToDictionary(item => (item.PoojaCategoryId, item.ItemName));
+
+        //        foreach (var itemDTO in poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs)
+        //        {
+        //            if (existingItemNames.ContainsKey((itemDTO.PoojaCategoryId, itemDTO.ItemName)))
+        //            {
+        //                return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' already exists in the category!" });
+        //            }
+
+        //            PoojaCategoryItem newItem = new PoojaCategoryItem
+        //            {
+        //                PoojaCategoryId = itemDTO.PoojaCategoryId,
+        //                ItemName = itemDTO.ItemName,
+        //                ItemPrice = itemDTO.ItemPrice,
+        //                CreatedBy = itemDTO.CreatedBy,
+        //                CreatedOn = DateTime.Now
+        //            };
+
+        //            _PoojaCategoryItemRepo.Insert(newItem);
+
+        //            existingItemNames.Add((itemDTO.PoojaCategoryId, itemDTO.ItemName), newItem);
+        //        }
+
+        //        return Ok(poojaCategoryItemMasterDTO);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
         [HttpPost]
         public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
         {
             try
             {
-                var existingItemNames = _PoojaCategoryItemRepo.SelectAll().Select(item => item.ItemName).ToList();
+                var existingItemNames = _PoojaCategoryItemRepo.SelectAll().ToDictionary(item => (item.PoojaCategoryId, item.ItemName));
 
                 foreach (var itemDTO in poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs)
                 {
-                    if (existingItemNames.Contains(itemDTO.ItemName))
+                    // Update existingItemNames before duplicate check
+                    if (existingItemNames.ContainsKey((itemDTO.PoojaCategoryId, itemDTO.ItemName)))
                     {
-                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' already exists!." });
+                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' already exists in the category!" });
                     }
 
                     PoojaCategoryItem newItem = new PoojaCategoryItem
@@ -79,7 +157,8 @@ namespace AdminApi.Controllers
 
                     _PoojaCategoryItemRepo.Insert(newItem);
 
-                    existingItemNames.Add(itemDTO.ItemName);
+                    // Update existingItemNames after inserting new item
+                    existingItemNames.Add((itemDTO.PoojaCategoryId, itemDTO.ItemName), newItem);
                 }
 
                 return Ok(poojaCategoryItemMasterDTO);
@@ -89,9 +168,6 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-
-
-
 
 
 
@@ -144,7 +220,7 @@ namespace AdminApi.Controllers
             {
                 var objItems = _context.PoojaCategoryItems.SingleOrDefault(opt => opt.PoojaCategoryItemId == updatePoojaCategoryItemDTO.PoojaCategoryItemId);
 
-                var existingPoojaCategory = _context.PoojaCategoryItems.SingleOrDefault(opt => opt.PoojaCategoryId == updatePoojaCategoryItemDTO.PoojaCategoryId && opt.ItemName==updatePoojaCategoryItemDTO.ItemName && opt.PoojaCategoryItemId != updatePoojaCategoryItemDTO.PoojaCategoryItemId && opt.IsDeleted == false);
+                var existingPoojaCategory = _context.PoojaCategoryItems.SingleOrDefault(opt => opt.PoojaCategoryId == updatePoojaCategoryItemDTO.PoojaCategoryId && opt.ItemName == updatePoojaCategoryItemDTO.ItemName && opt.PoojaCategoryItemId != updatePoojaCategoryItemDTO.PoojaCategoryItemId && opt.IsDeleted == false);
 
                 if (existingPoojaCategory != null)
                 {
@@ -180,83 +256,39 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-        //[HttpGet("{PoojaCategoryId}")]
-        //public ActionResult GetPoojaCategoryItemListFromPoojacategoryId(int PoojacategoryId)
-        //{
-        //    try
-        //    {
-        //        var list = (from u in _context.PoojaCategoryItems
-        //                    where u.PoojaCategoryId == PoojacategoryId
-        //                    join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
 
 
-        //                    select new
-        //                    {
-        //                        p.PoojaCategoryId,
-        //                        p.PoojaCategoryName,
-        //                        u.PoojaCategoryItemId,
-        //                        u.ItemName,
-        //                        u.ItemPrice,
-        //                        u.IsDeleted
-        //                    }).Where(x => x.IsDeleted == false).ToList();
 
-        //        int totalRecords = list.Count();
+        [HttpGet("{PoojaCategoryId}")]
+        public ActionResult GetPoojaCategoryItemListByPoojacategoryId(int PoojaCategoryId)
+        {
+            try
+            {
+                var list = (from u in _context.PoojaCategoryItems
+                            join q in _context.PoojaCategories on u.PoojaCategoryId equals q.PoojaCategoryId
 
-        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-        //    }
+                            select new
+                            {
+                                u.PoojaCategoryItemId,
+                                u.PoojaCategoryId,
+                                q.PoojaCategoryName,
+                                u.ItemName,
 
-        //    catch (Exception ex)
-        //    {
-        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-        //    }
-        //}
-        //[HttpGet]
-        //public ActionResult GetPoojacategoryItemListFromPoojacategoryId()
-        //{
-        //    try
-        //    {
-        //        var poojacategorys = (from p in _context.PoojaCategories
-        //                         select new
-        //                         {
-        //                             p.PoojaCategoryId,
-        //                             p.PoojaCategoryName
-        //                         }).ToList();
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
 
 
-        //        var poojacategoryitems = (from u in _context.PoojaCategoryItems
-        //                       where u.IsDeleted == false
-        //                       select new
-        //                       {
-        //                           u.PoojaCategoryId,
-        //                           u.PoojaCategoryItemId,
-        //                           u.ItemName,
-        //                           u.ItemPrice,
-        //                       }).ToList();
 
 
-        //        var combinedList = poojacategorys.Select(q => new
-        //        {
-        //            PoojaCategoryId = q.PoojaCategoryId,
-        //            PoojaCategoryName = q.PoojaCategoryName,
-        //            Poojacategoryitems = poojacategoryitems.Where(o => o.PoojaCategoryId == q.PoojaCategoryId)
-        //                              .Select(poojacategoryitem => new
-        //                              {
-        //                                  PoojaCategoryItemId = poojacategoryitem.PoojaCategoryItemId,
-        //                                  PoojaCategoryId = poojacategoryitem.PoojaCategoryId,
-        //                                  poojacategoryitem = poojacategoryitem.ItemName,
-        //                                  poojacategoryitems = poojacategoryitem.ItemPrice,
-        //                                  IsDeleted = poojacategoryitem.IsDeleted
-        //                              }).ToList()
-        //        }).ToList();
-
-        //        int totalRecords = combinedList.Count();
-
-        //        return Ok(new { data = combinedList, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-        //    }
-        //}
     }
 }
