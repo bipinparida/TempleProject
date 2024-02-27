@@ -65,7 +65,7 @@ namespace AdminApi.Controllers
                 {
                     if (existingItemNames.Contains(itemDTO.ItemName))
                     {
-                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' duplicate entry." });
+                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' already exists!." });
                     }
 
                     PoojaCategoryItem newItem = new PoojaCategoryItem

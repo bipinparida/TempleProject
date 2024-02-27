@@ -6,7 +6,7 @@
     ViewBag.Title = "PoojaCategoryItem";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
-<style>
+@* <style>
     #preloader {
         position: fixed;
         top: 0;
@@ -39,7 +39,8 @@
         }
     }
 
-</style>
+</style> *@
+
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
@@ -196,7 +197,7 @@
                                     title: "Validation Alert!",
                                     text: data.responseMsg,
                                 }).then(function () {
-                                    location.reload(); // Refresh the page
+                                    // location.reload(); // Refresh the page
                                 });
                             } else if (data.status === "error") {
                                 Swal.fire({
