@@ -99,6 +99,13 @@ namespace AdminApi.Controllers
             try
             {
                 var objItems = _context.PoojaCategoryItems.SingleOrDefault(opt => opt.PoojaCategoryItemId == updatePoojaCategoryItemDTO.PoojaCategoryItemId);
+
+                var existingPoojaCategory = _context.PoojaCategoryItems.SingleOrDefault(opt => opt.PoojaCategoryId == updatePoojaCategoryItemDTO.PoojaCategoryId && opt.ItemName==updatePoojaCategoryItemDTO.ItemName && opt.PoojaCategoryItemId != updatePoojaCategoryItemDTO.PoojaCategoryItemId && opt.IsDeleted == false);
+
+                if (existingPoojaCategory != null)
+                {
+                    return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate ItemName..!" });
+                }
                 objItems.PoojaCategoryId = updatePoojaCategoryItemDTO.PoojaCategoryId;
                 objItems.ItemName = updatePoojaCategoryItemDTO.ItemName;
                 objItems.ItemPrice = updatePoojaCategoryItemDTO.ItemPrice;
