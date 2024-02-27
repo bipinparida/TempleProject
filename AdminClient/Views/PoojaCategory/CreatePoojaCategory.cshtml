@@ -297,14 +297,22 @@
 
                 // Check if both fields are not empty before adding the row
                 if (PoojaCategoryTypeValue && PoojaCategoryName) {
-                    var row = "<tr><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
-                    $('#PoojaCategory_Tb').append(row);
+
+                    var existingRow = $('#PoojaCategory_Tb').find('td[data-value="' + PoojaCategoryName + '"]').closest('tr');
+                    if (existingRow.length) {
+                        // Row already exists, alert the user
+                        alert('Item already added!');
+                    } else {
+                        var row = "<tr><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                        $('#PoojaCategory_Tb').append(row);
+                    }
                 }
 
-                // Event delegation for delete button
-                $(document.body).delegate(".delRowBtn", "click", function () {
-                    $(this).closest("tr").remove();
-                });
+                //// Event delegation for delete button
+                //$(document.body).delegate(".delRowBtn", "click", function () {
+                //    $(this).closest("tr").remove();
+                //});
+
 
                 // Clear the input fields after adding or if not added due to empty fields
                 $('#PoojaCategoryName').val('');
