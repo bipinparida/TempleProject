@@ -273,6 +273,7 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryId,
                                 q.PoojaCategoryName,
                                 u.ItemName,
+                                u.ItemPrice,
 
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
