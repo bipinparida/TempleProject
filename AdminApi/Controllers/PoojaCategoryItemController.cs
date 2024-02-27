@@ -28,21 +28,58 @@ namespace AdminApi.Controllers
             _context = context;
             _PoojaCategoryItemRepo = poojaCategoryItemRepo;
         }
+
+        //[HttpPost]
+        //public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
+        //{
+        //    try
+        //    {
+
+        //        for (int i = 0; i < poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs.Count; i++)
+        //        {
+        //            PoojaCategoryItem opt = new PoojaCategoryItem();
+        //            opt.PoojaCategoryId = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].PoojaCategoryId;
+        //            opt.ItemName = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].ItemName;
+        //            opt.ItemPrice = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].ItemPrice;
+        //            opt.CreatedBy = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].CreatedBy;
+        //            opt.CreatedOn = System.DateTime.Now;
+        //            _PoojaCategoryItemRepo.Insert(opt);
+        //        }
+
+        //        return Ok(poojaCategoryItemMasterDTO);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
         [HttpPost]
         public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
         {
             try
             {
+                var existingItemNames = _PoojaCategoryItemRepo.SelectAll().Select(item => item.ItemName).ToList();
 
-                for (int i = 0; i < poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs.Count; i++)
+                foreach (var itemDTO in poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs)
                 {
-                    PoojaCategoryItem opt = new PoojaCategoryItem();
-                    opt.PoojaCategoryId = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].PoojaCategoryId;
-                    opt.ItemName = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].ItemName;
-                    opt.ItemPrice = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].ItemPrice;
-                    opt.CreatedBy = poojaCategoryItemMasterDTO.CreatePoojaCategoryItemDTOs[i].CreatedBy;
-                    opt.CreatedOn = System.DateTime.Now;
-                    _PoojaCategoryItemRepo.Insert(opt);
+                    if (existingItemNames.Contains(itemDTO.ItemName))
+                    {
+                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Item with name '{itemDTO.ItemName}' duplicate entry." });
+                    }
+
+                    PoojaCategoryItem newItem = new PoojaCategoryItem
+                    {
+                        PoojaCategoryId = itemDTO.PoojaCategoryId,
+                        ItemName = itemDTO.ItemName,
+                        ItemPrice = itemDTO.ItemPrice,
+                        CreatedBy = itemDTO.CreatedBy,
+                        CreatedOn = DateTime.Now
+                    };
+
+                    _PoojaCategoryItemRepo.Insert(newItem);
+
+                    existingItemNames.Add(itemDTO.ItemName);
                 }
 
                 return Ok(poojaCategoryItemMasterDTO);
@@ -52,6 +89,13 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+
+
+
+
+
         [HttpGet]
         public ActionResult GetPoojaCategoryItemList()
         {

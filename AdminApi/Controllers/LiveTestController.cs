@@ -102,6 +102,52 @@ namespace AdminApi.Controllers
 
 
 
+        //[HttpPost]
+        //public IActionResult LiveTestCreate(CreateLiveTestDTOs createLiveTestDTO)
+        //{
+        //    try
+        //    {
+        //        foreach (var pair in createLiveTestDTO.QuestionAnswerPairs)
+        //        {
+        //            // Check if a live test already exists for the given question and pandit
+        //            var existingLiveTest = _context.LiveTests.SingleOrDefault(opt =>
+        //                opt.QuestionId == pair.QuestionId &&
+        //                opt.PanditId == createLiveTestDTO.PanditId &&
+        //                opt.IsDeleted == false);
+
+        //            if (existingLiveTest == null)
+        //            {
+        //                // No existing live test found for the given pandit and question, proceed to create a new one
+        //                LiveTest liveTest = new LiveTest
+        //                {
+        //                    PanditId = createLiveTestDTO.PanditId,
+        //                    QuestionId = pair.QuestionId,
+        //                    LiveTestAnswer = pair.LiveTestAnswer,
+        //                    CreatedBy = createLiveTestDTO.CreatedBy,
+        //                    CreatedOn = System.DateTime.Now
+        //                };
+
+        //                var obj = _LiveTestRepo.Insert(liveTest);
+        //                // You may want to collect the created objects and return them after the loop completes
+        //            }
+        //            else
+        //            {
+        //                // A live test already exists for the given pandit and question
+        //                return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "A live test for this question has already been created by this pandit." });
+        //            }
+        //        }
+
+        //        // Return success response after all tests are created
+        //        return Ok(new Confirmation { Status = "Success", ResponseMsg = "Live tests created successfully." });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
+
 
 
         [HttpGet]
