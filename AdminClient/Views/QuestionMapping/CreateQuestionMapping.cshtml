@@ -199,11 +199,11 @@
                                 sweetAlert("Validation Alert!", "Something unexpected!", "warning");
                             }
                         },
-                        //success: function (data, statusText, xhr) {
+                        // success: function (data, statusText, xhr) {
                         //    if (xhr.status === 200) {
                         //        Swal.fire({
                         //            icon: "success",
-                        //            title: "TemplePoojaCategory Create",
+                        //             title: "QuestionMapping",
                         //            text: "Successfully Created!",
                         //        }).then(function () {
                         //            location.reload(); // Refresh the page
@@ -213,7 +213,7 @@
                         //    } else if (data.status === "Duplicate") {
                         //        Swal.fire({
                         //            icon: "warning",
-                        //            title: "TemplePoojaCategory Already Exists!",
+                        //             title: "QuestionMapping Already Exists!",
                         //            text: data.responseMsg,
                         //        }).then(function () {
                         //            location.reload(); // Refresh the page
@@ -236,7 +236,7 @@
                         //        });
                         //    }
                         //    preloader.addClass("d-none");
-                        //},
+                        // },
                         error: function (data) {
                             if (data.status == 401) {
                                 window.location.replace('/Message/TokenExpire');

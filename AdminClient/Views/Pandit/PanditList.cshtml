@@ -30,7 +30,7 @@
 
             <div class="card-header">
 
-              @*   <div class="card-title">Pandit List</div> &nbsp;&nbsp; *@
+                @*   <div class="card-title">Pandit List</div> &nbsp;&nbsp; *@
 
                 <button class="btn btn-success btn-icon btn-sm text-white mr-2">
                     <span>
@@ -38,10 +38,22 @@
                     </span> Approve
                 </button>
 
-                <button  class="btn btn-danger btn-icon btn-sm text-white mr-2">
+                <button class="btn btn-danger btn-icon btn-sm text-white mr-2">
                     <span>
                         <i class="fa fa-times"></i>
                     </span> Reject
+                </button>
+
+                <button class="btn btn-dark btn-icon btn-sm text-white mr-2">
+                    <span>
+                        <i class="fa fa-question"></i>
+                    </span>Question
+                </button>
+
+                <button class="btn btn-info btn-icon btn-sm text-white mr-2">
+                    <span>
+                        <i class="fa fa-reply"></i>
+                    </span>Answer
                 </button>
 
                 <button class="btn btn-warning btn-icon btn-sm text-white mr-2">
@@ -50,11 +62,6 @@
                     </span> Message
                 </button>
 
-                <button class="btn btn-dark btn-icon btn-sm text-white mr-2">
-                    <span>
-                        <i class="fa fa-table"></i>
-                    </span> Live Test
-                </button>
 
                 <button class="btn btn-primary btn-icon btn-sm text-white mr-2">
                     <span>
@@ -67,7 +74,7 @@
                         <i class="fa fa-trash"></i>
                     </span> Delete
                 </button>
-               
+
 
             </div>
 
@@ -78,18 +85,25 @@
                     <table id="Pandit_Tb" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline" style="width:100%">
                         <thead>
                             <tr>
+                                <th>Approval</th>
+                                <th>Test</th>
+                                <th>PoojaCategory</th>
+                                <th>Message</th>
+
                                 <th>Action</th>
-                                <th>IsApprove</th>
-                               @*  <th>Reject</th> *@
+                                @*<th>Action</th>*@
+                                @*<th>IsApprove</th> *@
+                                <th>PanditStatus</th>
+                                @*<th>Reject</th>*@
                                 <th>Image</th>
                                 <th>Pandit Name</th>
                                 <th>Temple Name</th>
-                                <th>PrimaryPhone No</th>
-                             @*    <th>Country Name</th>
+                                <th>Mobile Number</th>
+                                @*<th>Country Name</th>
                                 <th>State Name</th>
-                                <th>City Name</th> *@
+                                <th>City Name</th>*@
                                 <th>Experiences</th>
-                              @*   <th>PujaCategory</th> *@
+                                @*<th>PujaCategory</th>*@
                                 <th>Religion</th>
                                 <th>MotherTongue</th>
                                 <th>Caste</th>
@@ -98,7 +112,7 @@
                                 <th>Qualification</th>
 
                                 <th>Address</th>
-                                <th>AlternatePhone No</th>
+                                <th>Alternate MobileNumber</th>
                                 <th>MailId</th>
                                 <th>DateOfBirth</th>
                                 <th>Password</th>
@@ -112,6 +126,9 @@
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 @section scripts {
     <script>
 
@@ -148,10 +165,43 @@
 
                     {
                         "render": function (data, type, row) {
-                            return '<button class="btn btn-sm btn-success" title="Approve" data-target="#approve" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-check"></i></button>&nbsp&nbsp' + '<button class="btn btn-sm btn-danger" title="Reject" data-target="#reject" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-times"></i></button>&nbsp&nbsp' + '<a class="btn btn-sm btn-warning" title="Message" href="../Pandit/PanditMessage?panditId=' + row.panditId + '"><i class="fa fa-comment"></i></a> &nbsp&nbsp' + '<a class="btn btn-sm btn-dark" title="Live Test" href="../Pandit/PanditLiveTestList?panditId=' + row.panditId + '"><i class="fa fa-table"></i></a> &nbsp&nbsp' + '<a class="btn btn-sm btn-primary" title="Edit" href="../Pandit/PanditEdit?panditId=' + row.panditId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" title="Delete" data-target="#delete" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-trash"></i></button> ';
+                            return '&nbsp&nbsp&nbsp<button class="btn btn-sm btn-success" title="Approve" data-target="#approve" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-check"></i></button>&nbsp&nbsp' + '<button class="btn btn-sm btn-danger" title="Reject" data-target="#reject" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-times"></i></button>';
 
                         }
                     },
+                    {
+                        "render": function (data, type, row) {
+                            return '<a class="btn btn-sm btn-dark" title="Question" href="../Pandit/PanditQuestiontList?panditId=' + row.panditId + '"><i class="fa fa-question"></i></a> &nbsp&nbsp' + '<a class="btn btn-sm btn-info" title="Answer" href="../Pandit/PanditLiveTestList?panditId=' + row.panditId + '"><i class="fa fa-reply"></i></a> &nbsp&nbsp';
+
+                        }
+                    },
+                    {
+                        "render": function (data, type, row) {
+                            return '  &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp  &nbsp&nbsp &nbsp&nbsp<a class="btn btn-sm btn-secondary" title="Pooja Category" href="../Pandit/PanditPoojaCategoryList?panditId=' + row.panditId + '"><i class="fas fa-praying-hands"></i></a>';
+
+                        }
+                    },
+                    {
+                        "render": function (data, type, row) {
+                            return '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a class="btn btn-sm btn-warning" title="Message" href="../Pandit/PanditMessage?panditId=' + row.panditId + '"><i class="fa fa-comment"></i></a> ';
+
+                        }
+                    },
+
+                    {
+                        "render": function (data, type, row) {
+                            return '<a class="btn btn-sm btn-primary" title="Edit" href="../Pandit/PanditEdit?panditId=' + row.panditId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" title="Delete" data-target="#delete" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-trash"></i></button> ';
+
+                        }
+                    },
+
+                    // {
+                    //     "render": function (data, type, row) {
+                    //         return '<button class="btn btn-sm btn-success" title="Approve" data-target="#approve" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-check"></i></button>&nbsp&nbsp' + '<button class="btn btn-sm btn-danger" title="Reject" data-target="#reject" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-times"></i></button>&nbsp&nbsp' + '<a class="btn btn-sm btn-warning" title="Message" href="../Pandit/PanditMessage?panditId=' + row.panditId + '"><i class="fa fa-comment"></i></a> &nbsp&nbsp' + '<a class="btn btn-sm btn-dark" title="Live Test" href="../Pandit/PanditLiveTestList?panditId=' + row.panditId + '"><i class="fa fa-table"></i></a> &nbsp&nbsp' + '<a class="btn btn-sm btn-primary" title="Edit" href="../Pandit/PanditEdit?panditId=' + row.panditId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" title="Delete" data-target="#delete" data-id=' + row.panditId + ' data-title="Delete"><i class="fa fa-trash"></i></button> ';
+
+                    //     }
+                    // },
+
                     // {
                     //     "render": function (data, type, row) {
                     //         if (row.isApprove == 1) {

@@ -29,6 +29,16 @@ namespace AdminClient.Controllers
             ViewBag.PanditId = PanditId;
             return View();
         }
+        public IActionResult PanditQuestiontList(int PanditId)
+        {
+            ViewBag.PanditId = PanditId;
+            return View();
+        }
+        public IActionResult PanditPoojaCategoryList(int PanditId)
+        {
+            ViewBag.PanditId = PanditId;
+            return View();
+        }
 
 
 
