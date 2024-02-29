@@ -69,6 +69,17 @@
             <div class="card-body">
                 <form action="#" name="myForm" role="form" class="validate" id="formPost">
                     <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectTemple">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">PoojaCategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -78,12 +89,14 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="PoojaCategoryName" placeholder="Enter PoojaCategoryName">
                             </div>
                         </div>
+
                     </div>
                     <br />
                     <div class="row">
@@ -96,6 +109,7 @@
                         <table id="Optnn" class="table table-bordered table-hover mb-0">
                             <thead>
                                 <tr>
+                                    <th>Temple Name</th>
                                     <th>PoojaCategoryType Name</th>
                                     <th>PoojaCategory Name</th>
                                     <th>Action</th>
@@ -140,11 +154,13 @@
 
 
                         // Retrieve the data-value attributes
-                        var PoojaCategoryTypeName = parseInt($irow.find("td:eq(0)").data("value"));
-                        var PoojaCategoryName = $irow.find("td:eq(1)").data("value");
+                        var TempleName = parseInt($irow.find("td:eq(0)").data("value"));
+                        var PoojaCategoryTypeName = parseInt($irow.find("td:eq(1)").data("value"));
+                        var PoojaCategoryName = $irow.find("td:eq(2)").data("value");
 
 
                         var a = {
+                            "templeId": TempleName,
                             "poojaCategoryTypeId": PoojaCategoryTypeName,
                             "poojaCategoryName": PoojaCategoryName,
                         }
@@ -154,6 +170,7 @@
                     var preloader = $("#preloader");
                     preloader.removeClass("d-none");
                     var model = {
+                        "templeId": parseInt($("#SelectTemple").val()),
                         "poojaCategoryTypeId": parseInt($("#SelectPoojaCategoryType").val()),
                         "poojaCategoryName": $.trim($("#PoojaCategoryName").val()),
                         ////"itemPrice": $.trim($("#ItemPrice").val()),
@@ -258,6 +275,43 @@
             });
         }
 
+
+
+        GetTemple()
+        function GetTemple(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Temple/GetTempleList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    var options = [];
+                    options.push('<option value="">Please Select </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].templeId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value="' + res.data[i].templeId + '" ' + opt + '>' + res.data[i].templeName + '</option>');
+                    }
+                    $("#SelectTemple").html(options.join(''));
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
         //$(function () {
 
         //    $("#Add_Optn").click(function (e) {
@@ -289,30 +343,30 @@
 
         $(function () {
             $("#Add_Optn").click(function (e) {
+                // Get the selected Temple value and text
+                var TempleValue = $('#SelectTemple').val();
+                var TempleText = $('#SelectTemple option:selected').text();
+
                 // Get the selected PoojaCategoryType value and text
                 var PoojaCategoryTypeValue = $('#SelectPoojaCategoryType').val();
                 var PoojaCategoryTypeText = $('#SelectPoojaCategoryType option:selected').text();
+
                 // Get the PoojaCategoryName
                 var PoojaCategoryName = $('#PoojaCategoryName').val();
 
-                // Check if both fields are not empty before adding the row
-                if (PoojaCategoryTypeValue && PoojaCategoryName) {
+                // Check if all fields are not empty before adding the row
+                if (TempleValue && PoojaCategoryTypeValue && PoojaCategoryName) {
 
                     var existingRow = $('#PoojaCategory_Tb').find('td[data-value="' + PoojaCategoryName + '"]').closest('tr');
                     if (existingRow.length) {
                         // Row already exists, alert the user
                         alert('Item already added!');
                     } else {
-                        var row = "<tr><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                        // Construct the row including TempleValue
+                        var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
                         $('#PoojaCategory_Tb').append(row);
                     }
                 }
-
-                //// Event delegation for delete button
-                //$(document.body).delegate(".delRowBtn", "click", function () {
-                //    $(this).closest("tr").remove();
-                //});
-
 
                 // Clear the input fields after adding or if not added due to empty fields
                 $('#PoojaCategoryName').val('');
@@ -323,6 +377,7 @@
                 $(this).closest("tr").remove();
             });
         });
+
 
 
     </script>

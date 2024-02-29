@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using AdminApi.DTO.App.PoojaCategoryDTO;
 using AdminApi.DTO.App.PoojaCategoryItemDTO;
+using AdminApi.Models.App.Temples;
 
 namespace AdminApi.Controllers
 {
@@ -19,17 +20,22 @@ namespace AdminApi.Controllers
         private readonly IConfiguration _config;
         private readonly AppDbContext _context;
         private readonly ISqlRepository<PoojaCategory> _PoojaCategoryRepo;
+        private readonly ISqlRepository<Temple> _TempleRepo;
 
         public PoojaCategoryController(IConfiguration config,
                                  AppDbContext context,
-                                 ISqlRepository<PoojaCategory> poojaCategoryRepo)
+                                 ISqlRepository<PoojaCategory> poojaCategoryRepo,
+                                 ISqlRepository<Temple> templeRepo
+                                 )
         {
             _config = config;
             _context = context;
             _PoojaCategoryRepo = poojaCategoryRepo;
+            _TempleRepo = templeRepo;
         }
-        [HttpPost]
 
+
+        //[HttpPost]
         //public IActionResult PoojaCategoryCreate(CreatePoojaCategoryDTO createPoojaCategoryDTO)
         //{
         //    var objcheck = _context.PoojaCategories.SingleOrDefault(opt => opt.PoojaCategoryName == createPoojaCategoryDTO.PoojaCategoryName && opt.IsDeleted == false);
@@ -39,6 +45,7 @@ namespace AdminApi.Controllers
         //        {
         //            PoojaCategory poojaCategory = new PoojaCategory();
 
+        //            poojaCategory.TempleId = createPoojaCategoryDTO.TempleId;
         //            poojaCategory.PoojaCategoryTypeId = createPoojaCategoryDTO.PoojaCategoryTypeId;
         //            poojaCategory.PoojaCategoryName = createPoojaCategoryDTO.PoojaCategoryName;
 
@@ -61,6 +68,8 @@ namespace AdminApi.Controllers
         //}
 
 
+
+        //[HttpPost]
         //public IActionResult PoojaCategoryCreate(PoojaCategoryMasterDTO poojaCategoryMasterDTO)
         //{
 
@@ -69,6 +78,7 @@ namespace AdminApi.Controllers
         //        for (int i = 0; i < poojaCategoryMasterDTO.CreatePoojaCategoryDTOs.Count; i++)
         //        {
         //            PoojaCategory opt = new PoojaCategory();
+        //            opt.TempleId = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].TempleId;
         //            opt.PoojaCategoryTypeId = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].PoojaCategoryTypeId;
         //            opt.PoojaCategoryName = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].PoojaCategoryName;
         //            opt.CreatedBy = poojaCategoryMasterDTO.CreatePoojaCategoryDTOs[i].CreatedBy;
@@ -86,22 +96,63 @@ namespace AdminApi.Controllers
 
 
 
+        //[HttpPost]
+        //public IActionResult PoojaCategoryCreate(PoojaCategoryMasterDTO poojaCategoryMasterDTO)
+        //{
+        //    try
+        //    {
+        //        var existingCategoryNames = _PoojaCategoryRepo.SelectAll().Select(item => item.PoojaCategoryName).ToList();
+
+        //        foreach (var itemDTO in poojaCategoryMasterDTO.CreatePoojaCategoryDTOs)
+        //        {
+        //            if (existingCategoryNames.Contains(itemDTO.PoojaCategoryName))
+        //            {
+        //                return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Pooja Category with name '{itemDTO.PoojaCategoryName}' already exists!." });
+        //            }
+
+        //            PoojaCategory newItem = new PoojaCategory
+        //            {
+        //                TempleId = itemDTO.TempleId,
+        //                PoojaCategoryTypeId = itemDTO.PoojaCategoryTypeId,
+        //                PoojaCategoryName = itemDTO.PoojaCategoryName,
+        //                CreatedBy = itemDTO.CreatedBy,
+        //                CreatedOn = DateTime.Now
+        //            };
+
+        //            _PoojaCategoryRepo.Insert(newItem);
+
+        //            existingCategoryNames.Add(itemDTO.PoojaCategoryName);
+        //        }
+
+        //        return Ok(poojaCategoryMasterDTO);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
         [HttpPost]
         public IActionResult PoojaCategoryCreate(PoojaCategoryMasterDTO poojaCategoryMasterDTO)
         {
             try
             {
-                var existingCategoryNames = _PoojaCategoryRepo.SelectAll().Select(item => item.PoojaCategoryName).ToList();
+                var existingCategoryNames = _PoojaCategoryRepo.SelectAll().Select(item => new { item.PoojaCategoryName, item.TempleId }).ToList();
 
                 foreach (var itemDTO in poojaCategoryMasterDTO.CreatePoojaCategoryDTOs)
                 {
-                    if (existingCategoryNames.Contains(itemDTO.PoojaCategoryName))
+                    if (existingCategoryNames.Any(x => x.PoojaCategoryName == itemDTO.PoojaCategoryName && x.TempleId == itemDTO.TempleId))
                     {
-                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Pooja Category with name '{itemDTO.PoojaCategoryName}' already exists!." });
+                        var temple = _TempleRepo.SelectById(itemDTO.TempleId); // Assuming you have a service method to retrieve temple name by ID
+                        var templeName = temple != null ? temple.TempleName : "Unknown";
+
+                        return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Pooja Category with name '{itemDTO.PoojaCategoryName}' for Temple Name '{templeName}' already exists!" });
                     }
 
                     PoojaCategory newItem = new PoojaCategory
                     {
+                        TempleId = itemDTO.TempleId,
                         PoojaCategoryTypeId = itemDTO.PoojaCategoryTypeId,
                         PoojaCategoryName = itemDTO.PoojaCategoryName,
                         CreatedBy = itemDTO.CreatedBy,
@@ -110,7 +161,7 @@ namespace AdminApi.Controllers
 
                     _PoojaCategoryRepo.Insert(newItem);
 
-                    existingCategoryNames.Add(itemDTO.PoojaCategoryName);
+                    existingCategoryNames.Add(new { itemDTO.PoojaCategoryName, itemDTO.TempleId });
                 }
 
                 return Ok(poojaCategoryMasterDTO);
@@ -120,6 +171,7 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
 
 
 
@@ -137,6 +189,7 @@ namespace AdminApi.Controllers
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate PoojaCategoryName..!" });
                 }
 
+                objPoojaCategory.TempleId = updatePoojaCategoryDTO.TempleId;
                 objPoojaCategory.PoojaCategoryTypeId = updatePoojaCategoryDTO.PoojaCategoryTypeId;
                 objPoojaCategory.PoojaCategoryName = updatePoojaCategoryDTO.PoojaCategoryName;
                 objPoojaCategory.UpdatedBy = updatePoojaCategoryDTO.CreatedBy;

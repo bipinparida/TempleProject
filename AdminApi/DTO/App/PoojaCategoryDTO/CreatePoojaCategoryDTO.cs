@@ -5,6 +5,7 @@ namespace AdminApi.DTO.App.PoojaCategoryDTO
 {
 	public class CreatePoojaCategoryDTO
 	{
+        public int TempleId { get; set; }
         public int PoojaCategoryTypeId { get; set; }
         public string PoojaCategoryName { get; set; }
 		public int CreatedBy { get; set; }
@@ -13,6 +14,7 @@ namespace AdminApi.DTO.App.PoojaCategoryDTO
 	public class UpdatePoojaCategoryDTO
 	{
 		public int PoojaCategoryId { get; set; }
+        public int TempleId { get; set; }
         public int PoojaCategoryTypeId { get; set; }
         public string PoojaCategoryName { get; set; }
 		public int CreatedBy { get; set; }

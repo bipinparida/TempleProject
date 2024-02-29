@@ -5,6 +5,7 @@ namespace AdminApi.Models.App.PoojaCategory
 	public class PoojaCategory
 	{
 		public int PoojaCategoryId { get; set; }
+        public int TempleId { get; set; }
         public int PoojaCategoryTypeId { get; set; }
         public string PoojaCategoryName { get; set; }
 
