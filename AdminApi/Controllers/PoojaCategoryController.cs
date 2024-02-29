@@ -209,12 +209,15 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.PoojaCategories
                             join p in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals p.PoojaCategoryTypeId
+                            join t in _context.Temples on u.TempleId equals t.TempleId
 
                             select new
                             {
-                                u.PoojaCategoryName,
                                 u.PoojaCategoryId,
+                                u.PoojaCategoryName,
                                 u.PoojaCategoryTypeId,
+                                u.TempleId,
+                                t.TempleName,
                                 p.PoojaCategoryTypeName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
