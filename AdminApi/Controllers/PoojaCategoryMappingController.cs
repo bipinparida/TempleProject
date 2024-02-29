@@ -189,6 +189,7 @@ namespace AdminApi.Controllers
                             join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
                             join t in _context.Temples on u.TempleId equals t.TempleId
                             join v in _context.Pandits on u.PanditId equals v.PanditId
+                            join w in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals w.PoojaCategoryTypeId
 
                             select new
                             {
@@ -199,6 +200,8 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryId,
                                 p.PoojaCategoryName,
                                 t.TempleName,
+                                u.PoojaCategoryTypeId,
+                                w.PoojaCategoryTypeName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
 

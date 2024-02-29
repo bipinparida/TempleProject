@@ -296,34 +296,6 @@ namespace AdminApi.Controllers
             }
         }
 
-      
-
-        //[HttpGet("{PoojaCategoryTypeId}")]
-        //public ActionResult GetPoojaCategoryListbyPoojaCategoryTypeId(int PoojaCategoryTypeId)
-        //{
-        //    try
-        //    {
-        //        var list = (from u in _context.PoojaCategories
-
-        //                    select new
-        //                    {
-        //                        u.PoojaCategoryTypeId,
-        //                        u.PoojaCategoryId,
-        //                        u.PoojaCategoryName,
-        //                        u.IsDeleted
-        //                    }).Where(x => x.IsDeleted == false && x.PoojaCategoryTypeId == PoojaCategoryTypeId).Distinct().ToList();
-
-        //        int totalRecords = list.Count();
-
-        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-        //    }
-        //}
-
-
 
         [HttpGet("{TempleId}/{PoojaCategoryTypeId}")]
         public ActionResult GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId(int TempleId, int PoojaCategoryTypeId)
@@ -350,6 +322,32 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        //[HttpGet("{PoojaCategoryTypeId}")]
+        //public ActionResult GetPoojaCategoryListbyPoojaCategoryTypeId(int PoojaCategoryTypeId)
+        //{
+        //    try
+        //    {
+        //        var list = (from u in _context.PoojaCategories
+
+        //                    select new
+        //                    {
+        //                        u.PoojaCategoryTypeId,
+        //                        u.PoojaCategoryId,
+        //                        u.PoojaCategoryName,
+        //                        u.IsDeleted
+        //                    }).Where(x => x.IsDeleted == false && x.PoojaCategoryTypeId == PoojaCategoryTypeId).Distinct().ToList();
+
+        //        int totalRecords = list.Count();
+
+        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
 
 
 
