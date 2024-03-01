@@ -32,6 +32,15 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectTemple">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">PoojaCategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectPoojaCategoryType">
@@ -63,6 +72,36 @@
 
 @section scripts {
     <script>
+        function TempleList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Temple/GetTempleList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select Temple </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].templeId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+                    }
+                    $("#SelectTemple").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
         function PoojacategoryTypeList(Id) {
             var opt = '';
             $.ajax({
@@ -106,6 +145,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
+                        TempleList(data.templeId);
                         PoojacategoryTypeList(data.poojaCategoryTypeId);
                         $('#PoojaCategoryName').val(data.poojaCategoryName);
                     }
@@ -130,6 +170,7 @@
 
                 var model = {
                     poojaCategoryId: poojaCategoryId,
+                    templeId: $.trim($("#SelectTemple").val()),
                     poojaCategoryTypeId: $.trim($("#SelectPoojaCategoryType").val()),
                     poojaCategoryName: $.trim($("#PoojaCategoryName").val()),
 

@@ -80,6 +80,15 @@
                                 <select multiple="multiple" class="form-control select2 w-100" id="SelectPoojaCategory" data-placeholder="Select PoojaCategory" required></select>
                             </div>
                         </div>
+                        @*<div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>*@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -156,23 +165,27 @@
         });
 
 
-        GetpoojaCategory()
-        async function GetpoojaCategory(Id) {
+        $("#SelectTemple").change(function () {
+            var vtempleId = $("#SelectTemple").val()
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/PoojaCategoryType/GetPoojaCategoryTypeList",
-                contentType: "application/json; charset=utf-8",
+                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryTypeListbyTempleId/' + vtempleId,
                 dataType: "json",
-                success: function (res) {
+                success: function (data) {
                     var options = [];
-                    options.push(' <option value = ""> Select PoojaCategory </option> ');
-                    for (var i = 0; i < res.data.length; i++) {
-                        options.push('<option value = "' + res.data[i].poojaCategoryTypeId + '" ' + opt + ' > ' + res.data[i].poojaCategoryTypeName + '</option>');
+                    options.push('<option>Select PoojaCategoryType</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].poojaCategoryTypeId + '" ' + opt + '>' + data['data'][i].poojaCategoryTypeName + '</option>');
                     }
                     $("#SelectPoojaCategoryType").html(options.join(''));
-                },
 
+                },
                 error: function (data) {
                     if (data.status == 401) {
                         window.location.replace('/Message/TokenExpire');
@@ -181,7 +194,211 @@
                     }
                 }
             });
-        }
+        });
+
+        //$(document).ready(function () {
+            
+        //    function fetchPoojaCategories(TempleId, PoojaCategoryTypeId) {
+        //        $.ajax({
+        //            url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId/' + TempleId + '/' + PoojaCategoryTypeId,
+        //            type: 'GET',
+        //            success: function (response) {
+                       
+        //                $('#SelectPoojaCategory').empty();
+                        
+        //                if (response && response.data && response.data.length > 0) {
+        //                    $.each(response.data, function (index, category) {
+        //                        $('#SelectPoojaCategory').append(`<option value="${category.poojaCategoryId}">${category.poojaCategoryName}</option>`);
+        //                    });
+        //                } else {
+        //                    $('#SelectPoojaCategory').append('<option value="">No categories found</option>');
+        //                }
+
+                        
+        //                $('#SelectPoojaCategory').trigger('change');
+        //            },
+        //            error: function (xhr, status, error) {
+        //                console.error('Error fetching data:', error);
+        //            }
+        //        });
+        //    }
+        //    function displaySelectedCategoryInfo(PoojaCategoryId) {
+               
+        //        $('#selectedCategoryInfo').text('Selected Pooja Category ID: ' + PoojaCategoryId);
+        //    }
+           
+        //    $('#SelectPoojaCategoryType').change(function () {
+        //        var selectedPoojaCategoryTypeId = $(this).val();
+        //        var selectedTempleId = $('#SelectTemple').val(); 
+
+                
+        //        fetchPoojaCategories(selectedTempleId, selectedPoojaCategoryTypeId);
+        //    });
+            
+        //    $('#SelectPoojaCategory').change(function () {
+        //        var selectedCategoryName = $('#SelectPoojaCategory').val();
+               
+        //        displaySelectedCategoryInfo(selectedCategoryName);
+                
+        //    });
+        //    var initialPoojaCategoryTypeId = $('#SelectPoojaCategoryType').val();
+        //    var initialTempleId = $('#SelectTemple').val();
+        //    fetchPoojaCategories(initialTempleId, initialPoojaCategoryTypeId);
+        //});
+
+
+
+
+        var selectedPoojaCategories = [];
+        $(document).ready(function () {
+
+            function fetchPoojaCategories(TempleId, PoojaCategoryTypeId) {
+                $.ajax({
+                    url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId/' + TempleId + '/' + PoojaCategoryTypeId,
+                    type: 'GET',
+                    success: function (response) {
+
+                        $('#SelectPoojaCategory').empty();
+                        if (response && response.data && response.data.length > 0) {
+                            $('#SelectPoojaCategory').append('<option value="all">Select All</option>');
+                            $.each(response.data, function (index, category) {
+                                $('#SelectPoojaCategory').append(`<option value="${category.poojaCategoryId}">${category.poojaCategoryName}</option>`);
+                            });
+                        } else {
+                            $('#SelectPoojaCategory').append('<option value="">No categories found</option>');
+                        }
+
+                        $('#SelectPoojaCategory').trigger('change');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+            function displaySelectedCategoryInfo(selectedCategories) {
+                if (selectedCategories.includes('all')) {
+                    $('#SelectPoojaCategory option[value="all"]').prop('selected', false); 
+                    $('#SelectPoojaCategory option').not('[value="all"]').prop('selected', true);
+                }
+            }
+
+
+            $('#SelectPoojaCategoryType').change(function () {
+                var selectedPoojaCategoryTypeId = $(this).val();
+                var selectedTempleId = $('#SelectTemple').val();
+                fetchPoojaCategories(selectedTempleId, selectedPoojaCategoryTypeId);
+            });
+
+            $('#SelectPoojaCategory').change(function () {
+                var selectedCategories = $(this).val() || [];
+                displaySelectedCategoryInfo(selectedCategories);
+            });
+
+            var initialPoojaCategoryTypeId = $('#SelectPoojaCategoryType').val();
+            var initialTempleId = $('#SelectTemple').val();
+            //fetchPoojaCategories(initialTempleId, initialPoojaCategoryTypeId);
+        });
+
+
+
+
+
+
+        //$(document).ready(function () {
+        //    // Function to fetch Pooja categories and populate dropdown
+        //    function fetchPoojaCategories(TempleId, PoojaCategoryTypeId) {
+        //        $.ajax({
+        //            url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId/' + TempleId + '/' + PoojaCategoryTypeId,
+        //            type: 'GET',
+        //            success: function (response) {
+        //                // Clear existing options
+        //                $('#SelectPoojaCategory').empty();
+
+        //                // Add new options based on API response
+        //                if (response && response.data && response.data.length > 0) {
+        //                    $.each(response.data, function (index, category) {
+        //                        $('#SelectPoojaCategory').append(`<option value="${category.poojaCategoryId}">${category.poojaCategoryName}</option>`);
+        //                    });
+        //                } else {
+        //                    $('#SelectPoojaCategory').append('<option value="">No categories found</option>');
+        //                }
+
+        //                // Trigger change event on PoojaCategory dropdown after populating options
+        //                $('#SelectPoojaCategory').trigger('change');
+        //            },
+        //            error: function (xhr, status, error) {
+        //                console.error('Error fetching data:', error);
+        //            }
+        //        });
+        //    }
+
+        //    // Function to display selected category information
+        //    function displaySelectedCategoryInfo(PoojaCategoryId) {
+        //        // Placeholder function, you can customize this as per your requirements
+        //        $('#selectedCategoryInfo').text('Selected Pooja Category ID: ' + PoojaCategoryId);
+        //    }
+
+        //    // Event listener for change in Pooja category type dropdown
+        //    $('#SelectPoojaCategoryType').change(function () {
+        //        var selectedPoojaCategoryTypeId = $(this).val();
+        //        var selectedTempleId = $('#SelectTemple').val(); // Assuming you have a TempleId input field
+
+        //        // Fetch Pooja categories based on the selected PoojaCategoryType
+        //        fetchPoojaCategories(selectedTempleId, selectedPoojaCategoryTypeId);
+        //    });
+
+        //    // Event listener for change in Pooja category dropdown
+        //    $('#SelectPoojaCategory').change(function () {
+        //        var selectedCategoryNames = $(this).val();
+        //        //var selectedCategoryNames = $(this).find('option:selected').text(); // Retrieve the text of the selected option
+        //        displaySelectedCategoryInfo(selectedCategoryNames);
+        //        // You can perform additional actions here based on the selected category
+        //    });
+
+        //    // to populate the dropdown based on the initial values of Pooja category type and Temple ID.
+        //    var initialPoojaCategoryTypeId = $('#SelectPoojaCategoryType').val();
+        //    var initialTempleId = $('#SelectTemple').val();
+        //    fetchPoojaCategories(initialTempleId, initialPoojaCategoryTypeId);
+        //});
+
+
+        
+
+
+
+
+
+
+
+
+
+        //GetpoojaCategory()
+        //async function GetpoojaCategory(Id) {
+        //    var opt = '';
+        //    $.ajax({
+        //        type: "GET",
+        //        url: "@apiUrl/api/PoojaCategoryType/GetPoojaCategoryTypeList",
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (res) {
+        //            var options = [];
+        //            options.push(' <option value = ""> Select PoojaCategory </option> ');
+        //            for (var i = 0; i < res.data.length; i++) {
+        //                options.push('<option value = "' + res.data[i].poojaCategoryTypeId + '" ' + opt + ' > ' + res.data[i].poojaCategoryTypeName + '</option>');
+        //            }
+        //            $("#SelectPoojaCategoryType").html(options.join(''));
+        //        },
+
+        //        error: function (data) {
+        //            if (data.status == 401) {
+        //                window.location.replace('/Message/TokenExpire');
+        //            } else if (data.status == 403) {
+        //                window.location.replace('/Message/Unauthorize');
+        //            }
+        //        }
+        //    });
+        //}
 
         //$("#SelectPoojaCategoryType").change(function () {
         //    var vtempleId = $("#SelectPoojaCategoryType").val()
@@ -214,56 +431,87 @@
         //    });
         //});
 
-        var selectedSeller = [];
-        $("#SelectPoojaCategoryType").change(function () {
-            var vtempleId = $("#SelectPoojaCategoryType").val();
-            var opt = '';
-            $.ajax({
-                type: "GET",
-                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyPoojaCategoryTypeId/' + vtempleId,
-                dataType: "json",
-                success: function (data) {
-                    var options = [];
-                    console.log(data)
+        //var selectedSeller = [];
+        //$("#SelectPoojaCategoryType").change(function () {
+        //    var vtempleId = $("#SelectPoojaCategoryType").val();
+        //    var opt = '';
+        //    $.ajax({
+        //        type: "GET",
+        //        url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyPoojaCategoryTypeId/' + vtempleId,
+        //        dataType: "json",
+        //        success: function (data) {
+        //            var options = [];
+        //            console.log(data)
 
-                    //for (var i = 0; i < data['data'].length; i++) {
-                    //    if (Id == data['data'][i].poojaCategoryId) {
-                    //        opt = 'selected'
-                    //    } else {
-                    //        opt = '';
-                    //    }
-                        options.push('<option value="__select_all__">Select All</option>'); // Add 'selected' to the default option
-                        for (var i = 0; i < data['data'].length; i++) {
-                            options.push('<option value="' + data['data'][i].poojaCategoryId + '">' + data['data'][i].poojaCategoryName + '</option>');
-                        }
-                    //}
-                    $("#SelectPoojaCategory").html(options.join(''));
-                    $('#SelectPoojaCategory').change(function () {
+        //            //for (var i = 0; i < data['data'].length; i++) {
+        //            //    if (Id == data['data'][i].poojaCategoryId) {
+        //            //        opt = 'selected'
+        //            //    } else {
+        //            //        opt = '';
+        //            //    }
+        //                options.push('<option value="__select_all__">Select All</option>'); // Add 'selected' to the default option
+        //                for (var i = 0; i < data['data'].length; i++) {
+        //                    options.push('<option value="' + data['data'][i].poojaCategoryId + '">' + data['data'][i].poojaCategoryName + '</option>');
+        //                }
+        //            //}
+        //            $("#SelectPoojaCategory").html(options.join(''));
+        //            $('#SelectPoojaCategory').change(function () {
 
-                        selectedSeller = $(this).val()
-                        //console.log(selectedSeller);
-                    }).multipleSelect({
-                        width: '100%'
-                    });
-                    $('#SelectPoojaCategory').on('change', function () {
-                        if ($(this).val() && $(this).val().includes('__select_all__')) {
-                            // Select all options except "__select_all__"
-                            var allOptions = data['data'].map(category => category.poojaCategoryId);
-                            $('#SelectPoojaCategory').val(allOptions).trigger('change');
-                        }
-                    });
-                },
-                error: function (data) {
-                    if (data.status == 401) {
-                        window.location.replace('/Message/TokenExpire');
-                    } else if (data.status == 403) {
-                        window.location.replace('/Message/Unauthorize');
-                    }
-                }
-            });
-        });
+        //                selectedSeller = $(this).val()
+        //                //console.log(selectedSeller);
+        //            }).multipleSelect({
+        //                width: '100%'
+        //            });
+        //            $('#SelectPoojaCategory').on('change', function () {
+        //                if ($(this).val() && $(this).val().includes('__select_all__')) {
+        //                    // Select all options except "__select_all__"
+        //                    var allOptions = data['data'].map(category => category.poojaCategoryId);
+        //                    $('#SelectPoojaCategory').val(allOptions).trigger('change');
+        //                }
+        //            });
+        //        },
+        //        error: function (data) {
+        //            if (data.status == 401) {
+        //                window.location.replace('/Message/TokenExpire');
+        //            } else if (data.status == 403) {
+        //                window.location.replace('/Message/Unauthorize');
+        //            }
+        //        }
+        //    });
+        //});
 
-       
+        //$("#SelectTemple").change(function () {
+        //    var vtempleId = $("#SelectTemple").val()
+        //    var opt = '';
+        //    $.ajax({
+        //        type: "GET",
+        //        url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId/' + vtempleId,
+        //        dataType: "json",
+        //        success: function (data) {
+        //            var options = [];
+        //            options.push('<option>Select PoojaCategory</option>');
+        //            for (var i = 0; i < data['data'].length; i++) {
+        //                //if (Id == res.data[i].stateId) {
+        //                //    opt = 'selected'
+        //                //} else {
+        //                //    opt = '';
+        //                //}
+        //                options.push('<option value="' + data['data'][i].poojaCategoryId + '" ' + opt + '>' + data['data'][i].poojaCategoryName + '</option>');
+        //            }
+        //            $("#SelectPoojaCategory").html(options.join(''));
+
+        //        },
+        //        error: function (data) {
+        //            if (data.status == 401) {
+        //                window.location.replace('/Message/TokenExpire');
+        //            } else if (data.status == 403) {
+        //                window.location.replace('/Message/Unauthorize');
+        //            }
+        //        }
+        //    });
+        //});
+
+
 
         ////var selectedSeller = [];
         //GetSubscriptionType()
@@ -316,23 +564,132 @@
         //    });
         //}
 
-        $("#btncreate").click(function (e) {
-            if (!document.getElementById("formPost").checkValidity()) {
-                e.preventDefault();
-            } else {
-                for (l = 0; l < selectedSeller.length; l++) {
-                    var model = {
+        //$("#btncreate").click(function (e) {
+        //    if (!document.getElementById("formPost").checkValidity()) {
+        //        e.preventDefault();
+        //    } else {
+        //        for (l = 0; l < selectedSeller.length; l++) {
+        //            var model = {
+        //                templeId: parseInt($("#SelectTemple").val()),
+        //                panditId: parseInt($("#SelectPandit").val()),
+        //                poojaCategoryTypeId: parseInt($("#SelectPoojaCategoryType").val()),
+        //                poojaCategoryId: parseInt($("#SelectPoojaCategory").val()),
+        //                //poojaCategoryId: parseInt(selectedSeller[l]),
+        //                //poojaCategoryIds: selectedSeller.map(Number),
+
+        //                createdBy: @Context.Session.GetInt32("UserId"),
+        //            }
+
+        //            //console.log(model);
+
+        //            $.ajax({
+        //                type: "POST",
+        //                url: "@apiUrl/api/PoojaCategoryMapping/PoojaCategoryMappingCreate",
+        //                data: JSON.stringify(model),
+        //                contentType: "application/json; charset=utf-8",
+        //                headers: {
+        //                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+        //                },
+        //                dataType: "json",
+                        //success: function (data, statusText, xhr) {
+                        //    if (xhr.status === 200) {
+
+                        //        sweetAlert({
+                        //            html: true,
+                        //            icon: "success",
+                        //            title: "PoojaCategoryMapping",
+                        //            text: "Successfully created!",
+                        //            type: "success"
+                        //        });
+                        //    } else if (data.status === "Duplicate") {
+                        //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                        //    } else if (data.status === "Error") {
+                        //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                        //    } else {
+                        //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                        //    }
+                        //},
+        //                //success: function (data, statusText, xhr) {
+        //                //    if (xhr.status === 200) {
+        //                //        Swal.fire({
+        //                //            icon: "success",
+        //                //            title: "TemplePoojaCategory Create",
+        //                //            text: "Successfully Created!",
+        //                //        }).then(function () {
+        //                //            location.reload(); // Refresh the page
+        //                //        });
+
+        //                //        //preloader.addClass("d-none");
+        //                //    } else if (data.status === "Duplicate") {
+        //                //        Swal.fire({
+        //                //            icon: "warning",
+        //                //            title: "TemplePoojaCategory Already Exists!",
+        //                //            text: data.responseMsg,
+        //                //        }).then(function () {
+        //                //            location.reload(); // Refresh the page
+        //                //        });
+        //                //    } else if (data.status === "error") {
+        //                //        Swal.fire({
+        //                //            icon: "warning",
+        //                //            title: "Validation Alert!",
+        //                //            text: data.responseMsg,
+        //                //        }).then(function () {
+        //                //            location.reload(); // Refresh the page
+        //                //        });
+        //                //    } else {
+        //                //        Swal.fire({
+        //                //            icon: "warning",
+        //                //            title: "Validation Alert!",
+        //                //            text: "Something unexpected!",
+        //                //        }).then(function () {
+        //                //            location.reload(); // Refresh the page
+        //                //        });
+        //                //    }
+        //                //    preloader.addClass("d-none");
+        //                //},
+        //                error: function (data) {
+        //                    if (data.status == 401) {
+        //                        window.location.replace('/Message/TokenExpire');
+        //                    } else if (data.status == 403) {
+        //                        window.location.replace('/Message/Unauthorize');
+        //                    } else if (data.status == 400) {
+        //                        sweetAlert("Validation Alert!", "Please check input data!", "warning");
+        //                    }
+        //                }
+        //            });
+        //        }
+        //    }
+        //});
+        //$('#SelectPoojaCategory').on('change', function () {
+        //    if ($(this).val() && $(this).val().includes('__select_all__')) {
+        //        // Select all options except "__select_all__"
+        //        $(this).find('option[value!=__select_all__]').prop('selected', true);
+        //    }
+        //});
+
+
+
+        $(document).ready(function () {
+            function fetchPoojaCategories(TempleId, PoojaCategoryTypeId) {
+            }
+            $("#btncreate").click(function (e) {
+                e.preventDefault(); 
+                if (!document.getElementById("formPost").checkValidity()) {
+                    return; 
+                }
+              else
+                {
+                  var selectedPoojaCategories = $("#SelectPoojaCategory").val();
+                //var models = [];
+
+                for (l = 0; l < selectedPoojaCategories.length; l++) {
+                     var model = {
                         templeId: parseInt($("#SelectTemple").val()),
                         panditId: parseInt($("#SelectPandit").val()),
                         poojaCategoryTypeId: parseInt($("#SelectPoojaCategoryType").val()),
-                        poojaCategoryId: parseInt(selectedSeller[l]),
-                        //poojaCategoryIds: selectedSeller.map(Number),
-
-                        createdBy: @Context.Session.GetInt32("UserId"),
-                    }
-
-                    //console.log(model);
-
+                        poojaCategoryId: parseInt(selectedPoojaCategories[l]),
+                        createdBy: @Context.Session.GetInt32("UserId")
+                     }
                     $.ajax({
                         type: "POST",
                         url: "@apiUrl/api/PoojaCategoryMapping/PoojaCategoryMappingCreate",
@@ -360,44 +717,6 @@
                                 sweetAlert("Validation Alert!", "Something unexpected!", "warning");
                             }
                         },
-                        //success: function (data, statusText, xhr) {
-                        //    if (xhr.status === 200) {
-                        //        Swal.fire({
-                        //            icon: "success",
-                        //            title: "TemplePoojaCategory Create",
-                        //            text: "Successfully Created!",
-                        //        }).then(function () {
-                        //            location.reload(); // Refresh the page
-                        //        });
-
-                        //        //preloader.addClass("d-none");
-                        //    } else if (data.status === "Duplicate") {
-                        //        Swal.fire({
-                        //            icon: "warning",
-                        //            title: "TemplePoojaCategory Already Exists!",
-                        //            text: data.responseMsg,
-                        //        }).then(function () {
-                        //            location.reload(); // Refresh the page
-                        //        });
-                        //    } else if (data.status === "error") {
-                        //        Swal.fire({
-                        //            icon: "warning",
-                        //            title: "Validation Alert!",
-                        //            text: data.responseMsg,
-                        //        }).then(function () {
-                        //            location.reload(); // Refresh the page
-                        //        });
-                        //    } else {
-                        //        Swal.fire({
-                        //            icon: "warning",
-                        //            title: "Validation Alert!",
-                        //            text: "Something unexpected!",
-                        //        }).then(function () {
-                        //            location.reload(); // Refresh the page
-                        //        });
-                        //    }
-                        //    preloader.addClass("d-none");
-                        //},
                         error: function (data) {
                             if (data.status == 401) {
                                 window.location.replace('/Message/TokenExpire');
@@ -407,16 +726,16 @@
                                 sweetAlert("Validation Alert!", "Please check input data!", "warning");
                             }
                         }
+
                     });
                 }
-            }
+              }
+                
+            });
+            var initialTempleId = $('#SelectTemple').val();
+            var initialPoojaCategoryTypeId = $('#SelectPoojaCategoryType').val();
+            fetchPoojaCategories(initialTempleId, initialPoojaCategoryTypeId);
         });
-        $('#SelectPoojaCategory').on('change', function () {
-            if ($(this).val() && $(this).val().includes('__select_all__')) {
-                // Select all options except "__select_all__"
-                $(this).find('option[value!=__select_all__]').prop('selected', true);
-            }
-        });
-
+       
     </script>
 }
