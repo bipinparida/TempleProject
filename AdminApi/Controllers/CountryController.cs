@@ -80,7 +80,7 @@ namespace AdminApi.Controllers
 
                 objCountry.CountryName = updateCountryDTO.CountryName;
                 objCountry.CountryCode = updateCountryDTO.CountryCode;
-                objCountry.UpdatedBy = updateCountryDTO.CreatedBy;
+                objCountry.UpdatedBy = updateCountryDTO.UpdatedBy;
                 objCountry.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objCountry);

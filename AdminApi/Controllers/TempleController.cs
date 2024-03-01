@@ -145,7 +145,7 @@ namespace AdminApi.Controllers
                 objTemple.GodName = updateTempleDTO.GodName;
                 objTemple.TempleImage = updateTempleDTO.TempleImage;
 
-                objTemple.UpdatedBy = updateTempleDTO.CreatedBy;
+                objTemple.UpdatedBy = updateTempleDTO.UpdatedBy;
                 objTemple.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objTemple);

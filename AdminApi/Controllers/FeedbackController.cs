@@ -123,7 +123,7 @@ namespace AdminApi.Controllers
                 objFeedback.PanditId = updateFeedbackDTO.PanditId;
                 objFeedback.FeedbackMessage = updateFeedbackDTO.FeedbackMessage;
 
-                objFeedback.UpdatedBy = updateFeedbackDTO.CreatedBy;
+                objFeedback.UpdatedBy = updateFeedbackDTO.UpdatedBy;
                 objFeedback.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objFeedback);

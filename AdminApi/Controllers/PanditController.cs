@@ -276,7 +276,7 @@ namespace AdminApi.Controllers
                 //objPandit.IsApprove = false;
                 //objPandit.Reject = false;
 
-                objPandit.UpdatedBy = updatePanditDTO.CreatedBy;
+                objPandit.UpdatedBy = updatePanditDTO.UpdatedBy;
                 objPandit.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objPandit);

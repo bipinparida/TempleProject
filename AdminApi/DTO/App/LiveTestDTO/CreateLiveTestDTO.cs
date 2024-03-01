@@ -18,7 +18,7 @@ namespace AdminApi.DTO.App.LiveTestDTO
         public int QuestionId { get; set; }
         public string LiveTestAnswer { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 
 

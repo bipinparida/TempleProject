@@ -148,7 +148,7 @@ namespace AdminApi.Controllers
                 objBhakta.Password = updateBhaktaDTO.Password;
                 objBhakta.BhaktaImage = updateBhaktaDTO.BhaktaImage;
 
-                objBhakta.UpdatedBy = updateBhaktaDTO.CreatedBy;
+                objBhakta.UpdatedBy = updateBhaktaDTO.UpdatedBy;
                 objBhakta.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objBhakta);

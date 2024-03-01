@@ -219,7 +219,7 @@ namespace AdminApi.Controllers
                 objLiveTest.LiveTestAnswer = updateLiveTestDTO.LiveTestAnswer;
 
 
-                objLiveTest.UpdatedBy = updateLiveTestDTO.CreatedBy;
+                objLiveTest.UpdatedBy = updateLiveTestDTO.UpdatedBy;
                 objLiveTest.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objLiveTest);

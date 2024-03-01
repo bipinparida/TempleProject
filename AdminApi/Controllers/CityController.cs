@@ -134,7 +134,7 @@ namespace AdminApi.Controllers
                 objCity.CityName = updateCityDTO.CityName;
                 objCity.StateId = updateCityDTO.StateId;
                 objCity.CountryId = updateCityDTO.CountryId;
-                objCity.UpdatedBy = updateCityDTO.CreatedBy;
+                objCity.UpdatedBy = updateCityDTO.UpdatedBy;
                 objCity.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objCity);

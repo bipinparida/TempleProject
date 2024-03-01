@@ -84,7 +84,7 @@ namespace AdminApi.Controllers
                 objPoojaCategoryMapping.PoojaCategoryId = updatePoojaCategoryMappingDTO.PoojaCategoryId;
                 objPoojaCategoryMapping.PanditId = updatePoojaCategoryMappingDTO.PanditId;
 
-                objPoojaCategoryMapping.UpdatedBy = updatePoojaCategoryMappingDTO.CreatedBy;
+                objPoojaCategoryMapping.UpdatedBy = updatePoojaCategoryMappingDTO.UpdatedBy;
                 objPoojaCategoryMapping.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objPoojaCategoryMapping);

@@ -126,7 +126,7 @@ namespace AdminApi.Controllers
 
                 objState.StateName = updateStateDTO.StateName;
                 objState.CountryId = updateStateDTO.CountryId;
-                objState.UpdatedBy = updateStateDTO.CreatedBy;
+                objState.UpdatedBy = updateStateDTO.UpdatedBy;
                 objState.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objState);

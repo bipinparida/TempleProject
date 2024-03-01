@@ -22,7 +22,7 @@ namespace AdminApi.DTO.App.BookingDTO
         public int PoojaCategoryId { get; set; }
         public DateTime? BookingDate { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 
 }

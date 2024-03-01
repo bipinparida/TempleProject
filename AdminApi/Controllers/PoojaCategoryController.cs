@@ -198,7 +198,7 @@ namespace AdminApi.Controllers
                 objPoojaCategory.TempleId = updatePoojaCategoryDTO.TempleId;
                 objPoojaCategory.PoojaCategoryTypeId = updatePoojaCategoryDTO.PoojaCategoryTypeId;
                 objPoojaCategory.PoojaCategoryName = updatePoojaCategoryDTO.PoojaCategoryName;
-                objPoojaCategory.UpdatedBy = updatePoojaCategoryDTO.CreatedBy;
+                objPoojaCategory.UpdatedBy = updatePoojaCategoryDTO.UpdatedBy;
                 objPoojaCategory.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objPoojaCategory);

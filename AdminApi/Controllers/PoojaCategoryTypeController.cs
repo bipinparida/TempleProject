@@ -82,7 +82,7 @@ namespace AdminApi.Controllers
                 }
 
                 objCategoryType.PoojaCategoryTypeName = updatePoojaCategoryTypeDTO.PoojaCategoryTypeName;
-                objCategoryType.UpdatedBy = updatePoojaCategoryTypeDTO.CreatedBy;
+                objCategoryType.UpdatedBy = updatePoojaCategoryTypeDTO.UpdatedBy;
                 objCategoryType.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objCategoryType);

@@ -132,7 +132,7 @@ namespace AdminApi.Controllers
                 objBooking.PoojaCategoryId = updateBookingDTO.PoojaCategoryId;
                 objBooking.BookingDate = updateBookingDTO.BookingDate;
 
-                objBooking.UpdatedBy = updateBookingDTO.CreatedBy;
+                objBooking.UpdatedBy = updateBookingDTO.UpdatedBy;
                 objBooking.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objBooking);

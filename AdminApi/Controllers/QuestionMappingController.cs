@@ -82,7 +82,7 @@ namespace AdminApi.Controllers
                 objQuestionMapping.PanditId = updateQuestionMappingDTO.PanditId;
                 objQuestionMapping.QuestionId = updateQuestionMappingDTO.QuestionId;
 
-                objQuestionMapping.UpdatedBy = updateQuestionMappingDTO.CreatedBy;
+                objQuestionMapping.UpdatedBy = updateQuestionMappingDTO.UpdatedBy;
                 objQuestionMapping.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objQuestionMapping);

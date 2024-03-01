@@ -81,7 +81,7 @@ namespace AdminApi.Controllers
                 }
 
                 objQuestion.QuestionName = updateQuestionDTO.QuestionName;
-                objQuestion.UpdatedBy = updateQuestionDTO.CreatedBy;
+                objQuestion.UpdatedBy = updateQuestionDTO.UpdatedBy;
                 objQuestion.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objQuestion);

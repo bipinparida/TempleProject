@@ -243,7 +243,7 @@ namespace AdminApi.Controllers
                 objItems.PoojaCategoryId = updatePoojaCategoryItemDTO.PoojaCategoryId;
                 objItems.ItemName = updatePoojaCategoryItemDTO.ItemName;
                 objItems.ItemPrice = updatePoojaCategoryItemDTO.ItemPrice;
-                objItems.UpdatedBy = updatePoojaCategoryItemDTO.CreatedBy;
+                objItems.UpdatedBy = updatePoojaCategoryItemDTO.UpdatedBy;
                 objItems.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objItems);

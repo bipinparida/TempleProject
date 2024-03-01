@@ -57,7 +57,7 @@ namespace AdminApi.DTO.App.PanditDTO
         public bool Reject { get; set; }
         public bool IsApprove { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 
     public class MessagePanditDTO

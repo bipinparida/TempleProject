@@ -17,7 +17,7 @@ namespace AdminApi.DTO.App.PoojaCategoryItemDTO
         public string ItemName { get; set; }
         public double? ItemPrice { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
     public class PoojaCategoryItemMasterDTO
     {
