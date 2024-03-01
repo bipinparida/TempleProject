@@ -66,7 +66,9 @@ namespace AdminApi.Controllers
 
 
 
-
+        ///<summary>
+        ///Create LiveTest
+        ///</summary>
         [HttpPost]
         public IActionResult LiveTestCreate(CreateLiveTestDTO createLiveTestDTO)
         {
@@ -149,7 +151,9 @@ namespace AdminApi.Controllers
 
 
 
-
+        ///<summary>
+        ///Get LiveTest List
+        ///</summary>
         [HttpGet]
         public ActionResult GetLiveTestList()
         {
@@ -181,7 +185,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Get Single LiveTest by ID
+        ///</summary>
         [HttpGet("{LiveTestId}")]
         public ActionResult GetSingleLiveTest(int LiveTestId)
         {
@@ -196,6 +202,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Update LiveTest
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateLiveTest(UpdateLiveTestDTO updateLiveTestDTO)
         {
@@ -220,6 +230,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Delete Single LiveTest by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteLiveTest(int Id, int DeletedBy)
         {
@@ -239,6 +253,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get LiveTest List by Pandit ID
+        ///</summary>
         [HttpGet("{PanditId}")]
         public ActionResult GetLiveTestListbyPanditId(int PanditId)
         {

@@ -131,6 +131,10 @@ namespace AdminApi.Controllers
         //}
 
 
+
+        ///<summary>
+        ///Create PoojaCategory Item
+        ///</summary>
         [HttpPost]
         public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
         {
@@ -170,8 +174,9 @@ namespace AdminApi.Controllers
         }
 
 
-
-
+        ///<summary>
+        ///Get PoojaCategory Item List
+        ///</summary>
         [HttpGet]
         public ActionResult GetPoojaCategoryItemList()
         {
@@ -200,6 +205,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Get Single PoojaCategory Item by ID
+        ///</summary>
         [HttpGet("{PoojaCategoryItemId}")]
         public ActionResult GetSinglePoojaCategoryItem(int PoojaCategoryItemId)
         {
@@ -213,6 +223,10 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Update PoojaCategory Item
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePoojaCategoryItem(UpdatePoojaCategoryItemDTO updatePoojaCategoryItemDTO)
         {
@@ -239,6 +253,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Delete Single PoojaCategory Item by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletePoojaCategoryItem(int Id, int DeletedBy)
         {
@@ -258,7 +277,9 @@ namespace AdminApi.Controllers
         }
 
 
-
+        ///<summary>
+        ///Get PoojaCategory Item List by PoojaCategoryId
+        ///</summary>
         [HttpGet("{PoojaCategoryId}")]
         public ActionResult GetPoojaCategoryItemListByPoojacategoryId(int PoojaCategoryId)
         {

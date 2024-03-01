@@ -26,6 +26,10 @@ namespace AdminApi.Controllers
             _QuestionMappingRepo = questionMappingRepo;
         }
 
+
+        ///<summary>
+        ///Create Question Mapping 
+        ///</summary>
         [HttpPost]
         public IActionResult QuestionMappingCreate(CreateQuestionMappingDTO createQuestionMappingDTO)
         {
@@ -56,6 +60,11 @@ namespace AdminApi.Controllers
             }
 
         }
+
+
+        ///<summary>
+        ///Update Question Mapping 
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateQuestionMapping(UpdateQuestionMappingDTO updateQuestionMappingDTO)
         {
@@ -83,6 +92,10 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Get Question Mapping List
+        ///</summary>
         [HttpGet]
         public ActionResult GetQuestionMappingList()
         {
@@ -111,6 +124,10 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Get Single Question Mapping by ID
+        ///</summary>
         [HttpGet("{QuestionMappingId}")]
         public ActionResult GetSingleQuestionMapping(int QuestionMappingId)
         {
@@ -124,6 +141,10 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Delete Single Question Mapping by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteQuestionMapping(int Id, int DeletedBy)
         {

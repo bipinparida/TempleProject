@@ -133,6 +133,10 @@ namespace AdminApi.Controllers
         //}
 
 
+
+        ///<summary>
+        ///Create PoojaCategory
+        ///</summary>
         [HttpPost]
         public IActionResult PoojaCategoryCreate(PoojaCategoryMasterDTO poojaCategoryMasterDTO)
         {
@@ -174,7 +178,9 @@ namespace AdminApi.Controllers
 
 
 
-
+        ///<summary>
+        ///Update PoojaCategory
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePoojaCategory(UpdatePoojaCategoryDTO updatePoojaCategoryDTO)
         {
@@ -202,6 +208,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Get PoojaCategory List
+        ///</summary>
         [HttpGet]
         public ActionResult GetPoojaCategoryList()
         {
@@ -233,6 +244,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Single PoojaCategory by ID
+        ///</summary>
         [HttpGet("{PoojaCategoryId}")]
         public ActionResult GetSinglePoojaCategory(int PoojaCategoryId)
         {
@@ -248,6 +262,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Delete Single PoojaCategory by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletePoojaCategory(int Id, int DeletedBy)
         {
@@ -297,6 +314,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get PoojaCategory List by TempleId and PoojaCategoryId
+        ///</summary>
         [HttpGet("{TempleId}/{PoojaCategoryTypeId}")]
         public ActionResult GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId(int TempleId, int PoojaCategoryTypeId)
         {

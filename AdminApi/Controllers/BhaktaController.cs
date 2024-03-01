@@ -28,6 +28,9 @@ namespace AdminApi.Controllers
             _BhaktaRepo = bhaktaRepo;
         }
 
+        ///<summary>
+        ///Create Bhakta
+        ///</summary>
         [HttpPost]
         public IActionResult BhaktaCreate(CreateBhaktaDTO createBhaktaDTO)
         {
@@ -66,6 +69,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Bhakta List
+        ///</summary>
         [HttpGet]
         public ActionResult GetBhaktaList()
         {
@@ -98,6 +104,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Single Bhakta by ID
+        ///</summary>
         [HttpGet("{BhaktaId}")]
         public ActionResult GetSingleBhakta(int BhaktaId)
         {
@@ -113,6 +122,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Update Bhakta
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateBhakta(UpdateBhaktaDTO updateBhaktaDTO)
         {
@@ -148,6 +160,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Delete Single Bhakta by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteBhakta(int Id, int DeletedBy)
         {

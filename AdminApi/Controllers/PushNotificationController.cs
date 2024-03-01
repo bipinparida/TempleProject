@@ -26,6 +26,9 @@ namespace AdminApi.Controllers
             _PushNotificationRepo = PushNotificationRepo;
         }
 
+        ///<summary>
+        ///Create PushNotification
+        ///</summary>
         [HttpPost]
         public IActionResult CreatePushNotificationInfo(CreatePushNotificationDTO pushNotificationDTO)
         {
@@ -63,6 +66,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Get PushNotification List
+        ///</summary>
         [HttpGet]
         public IActionResult GetPushNotificationList()
         {
@@ -89,6 +96,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Get Single PushNotification by ID
+        ///</summary>
         [HttpGet("{PushNotificationId}")]
         public IActionResult GetPushNotificationByPushNotificationId(int PushNotificationId)
         {
@@ -117,6 +128,10 @@ namespace AdminApi.Controllers
         }
 
 
+
+        ///<summary>
+        ///Update PushNotification
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePushNotificationInfo(UpdatePushNotificationDTO updatepushNotificationDTO)
         {
@@ -138,6 +153,11 @@ namespace AdminApi.Controllers
             }
         }
 
+
+
+        ///<summary>
+        ///Delete Single PushNotification by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletePushNotificationInfo(int Id, int DeletedBy)
         {

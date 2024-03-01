@@ -28,6 +28,9 @@ namespace AdminApi.Controllers
             _CityRepo = cityRepo;
         }
 
+        ///<summary>
+        ///Create City
+        ///</summary>
         [HttpPost]
         public IActionResult CityCreate(CreateCityDTO createCityDTO)
         {
@@ -59,6 +62,9 @@ namespace AdminApi.Controllers
             }
         }
 
+        ///<summary>
+        ///Get City List
+        ///</summary>
         [HttpGet]
         public ActionResult GetCityList()
         {
@@ -90,7 +96,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Get Single City by ID
+        ///</summary>
         [HttpGet("{CityId}")]
         public ActionResult GetSingleCity(int CityId)
         {
@@ -106,6 +114,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Update City
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateCity(UpdateCityDTO updateCityDTO)
         {
@@ -135,6 +146,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Delete Single City by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteCity(int Id, int DeletedBy)
         {
@@ -153,6 +167,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Get City List by State ID
+        ///</summary>
         [HttpGet("{Stateid}")]
         public ActionResult GetCityListbystateid(int Stateid)
         {
