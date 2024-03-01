@@ -26,6 +26,6 @@ namespace AdminApi.DTO.App.TempleDTO
         public string GodName { get; set; }
         public string TempleImage { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

@@ -29,6 +29,11 @@ namespace AdminApi.Controllers
             _PoojaCategoryTypeRepo = poojaCategoryTypeRepo;
         }
 
+
+
+        ///<summary>
+        ///Create Pooja Category Type
+        ///</summary>
         [HttpPost]
         public IActionResult PoojaCategoryTypeCreate(CreatePoojaCategoryTypeDTO createPoojaCategoryTypeDTO)
         {
@@ -59,7 +64,9 @@ namespace AdminApi.Controllers
 
         }
 
-
+        ///<summary>
+        ///Update Pooja Category Type
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePoojaCategoryType(UpdatePoojaCategoryTypeDTO updatePoojaCategoryTypeDTO)
         {
@@ -75,7 +82,7 @@ namespace AdminApi.Controllers
                 }
 
                 objCategoryType.PoojaCategoryTypeName = updatePoojaCategoryTypeDTO.PoojaCategoryTypeName;
-                objCategoryType.UpdatedBy = updatePoojaCategoryTypeDTO.CreatedBy;
+                objCategoryType.UpdatedBy = updatePoojaCategoryTypeDTO.UpdatedBy;
                 objCategoryType.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objCategoryType);
@@ -86,6 +93,9 @@ namespace AdminApi.Controllers
             }
         }
 
+        ///<summary>
+        ///Get Pooja Category Type List
+        ///</summary>
         [HttpGet]
         public ActionResult GetPoojaCategoryTypeList()
         {
@@ -110,7 +120,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Get Single Pooja Category Type by ID
+        ///</summary>
         [HttpGet("{PoojaCategoryTypeId}")]
         public ActionResult GetSinglePoojaCategoryType(int PoojaCategoryTypeId)
         {
@@ -125,7 +137,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Delete Single Pooja Category Type by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletesinglePoojaCategoryType(int Id, int DeletedBy)
         {
@@ -143,9 +157,6 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-
-
-
 
 
     }

@@ -26,7 +26,9 @@ namespace AdminApi.Controllers
             _CountryRepo = countryRepo;
         }
 
-
+        ///<summary>
+        ///Create Country
+        ///</summary>
         [HttpPost]
         public IActionResult CountryCreate(CreateCountryDTO countryDTO)
         {
@@ -59,6 +61,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Update Country
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateCountry(UpdateCountryDTO updateCountryDTO)
         {
@@ -75,7 +80,7 @@ namespace AdminApi.Controllers
 
                 objCountry.CountryName = updateCountryDTO.CountryName;
                 objCountry.CountryCode = updateCountryDTO.CountryCode;
-                objCountry.UpdatedBy = updateCountryDTO.CreatedBy;
+                objCountry.UpdatedBy = updateCountryDTO.UpdatedBy;
                 objCountry.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objCountry);
@@ -86,6 +91,9 @@ namespace AdminApi.Controllers
             }
         }
 
+        ///<summary>
+        ///Get Country List
+        ///</summary>
         [HttpGet]
         public ActionResult GetCountryList()
         {
@@ -112,6 +120,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Single Country by ID
+        ///</summary>
         [HttpGet("{CountryId}")]
         public ActionResult GetSingleCountry(int CountryId)
         {
@@ -127,6 +138,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Delete Single Country by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteCountry(int Id, int DeletedBy)
         {

@@ -6,6 +6,7 @@ using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
 using AdminApi.Models.App.PoojaCategoryItems;
+using AdminApi.Models.App.PushNotifications;
 using AdminApi.Models.App.Questions;
 using AdminApi.Models.App.Temples;
 using AdminApi.Models.Helper;
@@ -46,6 +47,7 @@ namespace AdminApi.Models
         public virtual DbSet<PoojaCategoryMapping> PoojaCategoryMappings { get; set; }
        
         public virtual DbSet<PoojaCategoryItem> PoojaCategoryItems { get; set; }
+        public virtual DbSet<PushNotification> PushNotifications { get; set; }
         
 
 
@@ -194,6 +196,16 @@ namespace AdminApi.Models
  .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<PoojaCategoryItem>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+
+            modelBuilder.Entity<PushNotification>()
+ .Property(s => s.CreatedOn)
+ .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<PushNotification>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();

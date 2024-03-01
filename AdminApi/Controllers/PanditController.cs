@@ -84,7 +84,9 @@ namespace AdminApi.Controllers
         //}
 
 
-
+        ///<summary>
+        ///Create Pandit
+        ///</summary>
         [HttpPost]
         public IActionResult PanditCreate(CreatePanditDTO createPanditDTO)
         {
@@ -157,6 +159,9 @@ namespace AdminApi.Controllers
 
 
 
+        ///<summary>
+        ///Get Pandit List
+        ///</summary>
         [HttpGet]
         public ActionResult GetPanditList()
         {
@@ -211,6 +216,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Single Pandit by ID
+        ///</summary>
         [HttpGet("{PanditId}")]
         public ActionResult GetSinglePandit(int PanditId)
         {
@@ -226,6 +234,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Update Pandit
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePandit(UpdatePanditDTO updatePanditDTO)
         {
@@ -265,7 +276,7 @@ namespace AdminApi.Controllers
                 //objPandit.IsApprove = false;
                 //objPandit.Reject = false;
 
-                objPandit.UpdatedBy = updatePanditDTO.CreatedBy;
+                objPandit.UpdatedBy = updatePanditDTO.UpdatedBy;
                 objPandit.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objPandit);
@@ -276,7 +287,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Delete Single Pandit by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletePandit(int Id, int DeletedBy)
         {
@@ -296,7 +309,9 @@ namespace AdminApi.Controllers
         }
 
 
-
+        ///<summary>
+        ///Approve Pandit by ID
+        ///</summary>
         [HttpGet("{Id}")]
         public ActionResult ApprovePandit(int Id)
         {
@@ -316,7 +331,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Reject Pandit by ID
+        ///</summary>
         [HttpGet("{Id}")]
         public ActionResult RejectPandit(int Id)
         {
@@ -337,7 +354,9 @@ namespace AdminApi.Controllers
         }
 
 
-
+        ///<summary>
+        ///Message Pandit by ID
+        ///</summary>
         [HttpPost]
         public ActionResult MessagePandit(MessagePanditDTO messagePanditDTO)
         {
@@ -356,7 +375,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Gat Pandit List by Temple ID
+        ///</summary>
         [HttpGet("{TempleId}")]
         public ActionResult GetPanditListbyTempleId(int TempleId)
         {

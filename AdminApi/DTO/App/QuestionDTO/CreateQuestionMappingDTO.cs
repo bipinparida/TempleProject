@@ -14,7 +14,7 @@
         public int PanditId { get; set; }
         public int QuestionId { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
     }
 
 }

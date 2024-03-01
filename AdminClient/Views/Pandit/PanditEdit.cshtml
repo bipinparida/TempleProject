@@ -129,7 +129,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">AadharCard Number </label>
-                                <input type="text" class="form-control" id="AadharCard" placeholder="Enter AadharCard Number" >
+                                <input type="number" class="form-control" id="AadharCard" placeholder="Enter AadharCard Number" >
                             </div>
                         </div>
 
@@ -153,14 +153,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Mobile Number &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="text" class="form-control" id="PrimaryPhone" placeholder="Enter Mobile Number" required>
+                                <input type="number" class="form-control" id="PrimaryPhone" placeholder="Enter Mobile Number" required>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Alternate Mobile Number </label>
-                                <input type="text" class="form-control" id="AlternatePhone" placeholder="Enter Alternate Mobile Number" >
+                                <input type="number" class="form-control" id="AlternatePhone" placeholder="Enter Alternate Mobile Number" >
                             </div>
                         </div>
 
@@ -192,8 +192,8 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Pandit Image &nbsp;</label>
-                                <input type="file" class="form-control" id="PanditImage" accept=".jpg, .jpeg" ">
-                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG files are allowed.</small>
+                                <input type="file" class="form-control" id="PanditImage" accept=".png,.jpg, .jpeg" ">
+                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
                             </div>
                         </div>
 
@@ -476,12 +476,12 @@
                     panditId: panditId,
 
                     // countryId: $.trim($("#Selectcountry").val()),
-                    // stateId: $.trim($("#Selectstate").val()),
+                    stateId: $.trim($("#Selectstate").val()),
                     // cityId: $.trim($("#SelectCity").val()),
                     // templeId: $.trim($("#SelectTemple").val()),
 
                     countryId: parseInt($("#Selectcountry").val()),
-                    stateId: parseInt($("#SelectState").val()),
+                    // stateId: parseInt($("#SelectState").val()),
                     cityId: parseInt($("#SelectCity").val()),
                     templeId: parseInt($("#SelectTemple").val()),
 

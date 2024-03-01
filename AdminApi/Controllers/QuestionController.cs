@@ -28,6 +28,10 @@ namespace AdminApi.Controllers
             _QuestionRepo = questionRepo;
         }
 
+
+        ///<summary>
+        ///Create Question
+        ///</summary>
         [HttpPost]
         public IActionResult QuestionCreate(CreateQuestionDTO createQuestionDTO)
         {
@@ -58,6 +62,10 @@ namespace AdminApi.Controllers
 
         }
 
+
+        ///<summary>
+        ///Update Question
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateQuestion(UpdateQuestionDTO updateQuestionDTO)
         {
@@ -73,7 +81,7 @@ namespace AdminApi.Controllers
                 }
 
                 objQuestion.QuestionName = updateQuestionDTO.QuestionName;
-                objQuestion.UpdatedBy = updateQuestionDTO.CreatedBy;
+                objQuestion.UpdatedBy = updateQuestionDTO.UpdatedBy;
                 objQuestion.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objQuestion);
@@ -84,6 +92,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Get Question List
+        ///</summary>
         [HttpGet]
         public ActionResult GetQuestionList()
         {
@@ -108,6 +120,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Get Single Question by ID
+        ///</summary>
         [HttpGet("{QuestionId}")]
         public ActionResult GetSingleQuestion(int QuestionId)
         {
@@ -122,6 +138,10 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Delete Single Question by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteQuestion(int Id, int DeletedBy)
         {

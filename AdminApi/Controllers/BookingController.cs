@@ -28,7 +28,9 @@ namespace AdminApi.Controllers
             _BookingRepo = bookingRepo;
         }
 
-
+        ///<summary>
+        ///Create Booking
+        ///</summary>
         [HttpPost]
         public IActionResult BookingCreate(CreateBookingDTO createBookingDTO)
         {
@@ -56,6 +58,10 @@ namespace AdminApi.Controllers
 
         }
 
+
+        ///<summary>
+        ///Get Booking List
+        ///</summary>
         [HttpGet]
         public ActionResult GetBookingList()
         {
@@ -93,7 +99,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Get Single Booking by ID
+        ///</summary>
         [HttpGet("{BookingId}")]
         public ActionResult GetSingleBooking(int BookingId)
         {
@@ -108,7 +116,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Update Booking
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateBooking(UpdateBookingDTO updateBookingDTO)
         {
@@ -122,7 +132,7 @@ namespace AdminApi.Controllers
                 objBooking.PoojaCategoryId = updateBookingDTO.PoojaCategoryId;
                 objBooking.BookingDate = updateBookingDTO.BookingDate;
 
-                objBooking.UpdatedBy = updateBookingDTO.CreatedBy;
+                objBooking.UpdatedBy = updateBookingDTO.UpdatedBy;
                 objBooking.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objBooking);
@@ -134,6 +144,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Delete Single Booking by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteBooking(int Id, int DeletedBy)
         {

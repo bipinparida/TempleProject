@@ -24,6 +24,11 @@ namespace AdminApi.Controllers
             _context = context;
             _PoojaCategoryMappingRepo = poojaCategoryMappinRepo;
         }
+
+
+        ///<summary>
+        ///Create PoojaCategory Mapping
+        ///</summary>
         [HttpPost]
         public IActionResult PoojaCategoryMappingCreate(CreatePoojaCategoryMappingDTO createPoojaCategoryMappingDTO)
         {
@@ -57,6 +62,10 @@ namespace AdminApi.Controllers
             }
 
         }
+
+        ///<summary>
+        ///Update PoojaCategory Mapping
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePoojaCategoryMapping(UpdatePoojaCategoryMappingDTO updatePoojaCategoryMappingDTO)
         {
@@ -75,7 +84,7 @@ namespace AdminApi.Controllers
                 objPoojaCategoryMapping.PoojaCategoryId = updatePoojaCategoryMappingDTO.PoojaCategoryId;
                 objPoojaCategoryMapping.PanditId = updatePoojaCategoryMappingDTO.PanditId;
 
-                objPoojaCategoryMapping.UpdatedBy = updatePoojaCategoryMappingDTO.CreatedBy;
+                objPoojaCategoryMapping.UpdatedBy = updatePoojaCategoryMappingDTO.UpdatedBy;
                 objPoojaCategoryMapping.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objPoojaCategoryMapping);
@@ -85,6 +94,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Get PoojaCategory Mapping List
+        ///</summary>
         [HttpGet]
         public ActionResult GetPoojaCategoryMappingList()
         {
@@ -119,6 +133,10 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Get Single PoojaCategory Mappping by ID
+        ///</summary>
         [HttpGet("{PoojaCategoryMappingId}")]
         public ActionResult GetSinglePoojaCategoryMapping(int PoojaCategoryMappingId)
         {
@@ -132,6 +150,12 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+
+        ///<summary>
+        ///Delete Single PoojaCategory Mapping by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletePoojaCategoryMapping(int Id, int DeletedBy)
         {
@@ -151,6 +175,10 @@ namespace AdminApi.Controllers
         }
 
 
+
+        ///<summary>
+        ///Get PoojaCategory List by Temple ID
+        ///</summary>
         [HttpGet("{TempleId}")]
         public ActionResult GetPoojaCategoryListbyTempleId(int TempleId)
         {
@@ -180,6 +208,11 @@ namespace AdminApi.Controllers
             }
         }
 
+
+
+        ///<summary>
+        ///Get PoojaCategory List by Pandit ID
+        ///</summary>
         [HttpGet("{PanditId}")]
         public ActionResult GetPoojaCategoryListbyPanditId(int PanditId)
         {
@@ -189,6 +222,7 @@ namespace AdminApi.Controllers
                             join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
                             join t in _context.Temples on u.TempleId equals t.TempleId
                             join v in _context.Pandits on u.PanditId equals v.PanditId
+                            join w in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals w.PoojaCategoryTypeId
 
                             select new
                             {
@@ -199,6 +233,8 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryId,
                                 p.PoojaCategoryName,
                                 t.TempleName,
+                                u.PoojaCategoryTypeId,
+                                w.PoojaCategoryTypeName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
 
@@ -213,6 +249,10 @@ namespace AdminApi.Controllers
         }
 
 
+
+        ///<summary>
+        ///Get Pandit List by PoojaCategory ID
+        ///</summary>
         [HttpGet("{PoojaCategoryId}")]
         public ActionResult GetPanditListbyPoojaCategoryId(int PoojaCategoryId)
         {

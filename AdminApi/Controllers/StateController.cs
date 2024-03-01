@@ -62,7 +62,6 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Get State List
         ///</summary>
-        ///
         [HttpGet]
         public ActionResult GetStateList()
         {
@@ -94,7 +93,6 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Get Single State by ID
         ///</summary>
-        ///
         [HttpGet("{StateId}")]
         public ActionResult GetSingleState(int StateId)
         {
@@ -112,7 +110,6 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Update State
         ///</summary>
-        ///
         [HttpPost]
         public ActionResult UpdateState(UpdateStateDTO updateStateDTO)
         {
@@ -129,7 +126,7 @@ namespace AdminApi.Controllers
 
                 objState.StateName = updateStateDTO.StateName;
                 objState.CountryId = updateStateDTO.CountryId;
-                objState.UpdatedBy = updateStateDTO.CreatedBy;
+                objState.UpdatedBy = updateStateDTO.UpdatedBy;
                 objState.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objState);
@@ -143,7 +140,6 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Delete Single State by ID
         ///</summary>
-        ///
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteState(int Id, int DeletedBy)
         {
@@ -165,7 +161,6 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Get State List by Countryid
         ///</summary>
-        ///
         [HttpGet("{Countryid}")]
         public ActionResult GetStateListbyCountryid(int Countryid)
         {

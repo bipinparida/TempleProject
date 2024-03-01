@@ -131,6 +131,10 @@ namespace AdminApi.Controllers
         //}
 
 
+
+        ///<summary>
+        ///Create PoojaCategory Item
+        ///</summary>
         [HttpPost]
         public IActionResult PoojaCategoryItemCreate(PoojaCategoryItemMasterDTO poojaCategoryItemMasterDTO)
         {
@@ -170,8 +174,9 @@ namespace AdminApi.Controllers
         }
 
 
-
-
+        ///<summary>
+        ///Get PoojaCategory Item List
+        ///</summary>
         [HttpGet]
         public ActionResult GetPoojaCategoryItemList()
         {
@@ -200,6 +205,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Get Single PoojaCategory Item by ID
+        ///</summary>
         [HttpGet("{PoojaCategoryItemId}")]
         public ActionResult GetSinglePoojaCategoryItem(int PoojaCategoryItemId)
         {
@@ -213,6 +223,10 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Update PoojaCategory Item
+        ///</summary>
         [HttpPost]
         public ActionResult UpdatePoojaCategoryItem(UpdatePoojaCategoryItemDTO updatePoojaCategoryItemDTO)
         {
@@ -229,7 +243,7 @@ namespace AdminApi.Controllers
                 objItems.PoojaCategoryId = updatePoojaCategoryItemDTO.PoojaCategoryId;
                 objItems.ItemName = updatePoojaCategoryItemDTO.ItemName;
                 objItems.ItemPrice = updatePoojaCategoryItemDTO.ItemPrice;
-                objItems.UpdatedBy = updatePoojaCategoryItemDTO.CreatedBy;
+                objItems.UpdatedBy = updatePoojaCategoryItemDTO.UpdatedBy;
                 objItems.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objItems);
@@ -239,6 +253,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Delete Single PoojaCategory Item by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeletePoojaCategoryItem(int Id, int DeletedBy)
         {
@@ -258,6 +277,44 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get PoojaCategory Item List by PoojaCategoryId
+        ///</summary>
+        ///
+
+
+
+        //[HttpGet("{PoojaCategoryId}")]
+        //public ActionResult GetPoojaCategoryItemListByPoojacategoryId(int PoojaCategoryId)
+        //{
+        //    try
+        //    {
+        //        var list = (from u in _context.PoojaCategoryItems
+        //                   // join q in _context.PoojaCategories on u.PoojaCategoryId equals q.PoojaCategoryId
+
+        //                    select new
+        //                    {
+        //                        u.PoojaCategoryItemId,
+        //                        u.PoojaCategoryId,
+        //                        //q.PoojaCategoryName,
+        //                        u.ItemName,
+        //                        u.ItemPrice,
+
+        //                        u.IsDeleted
+        //                    }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
+
+        //        int totalRecords = list.Count();
+
+        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
+
 
         [HttpGet("{PoojaCategoryId}")]
         public ActionResult GetPoojaCategoryItemListByPoojacategoryId(int PoojaCategoryId)
@@ -265,29 +322,28 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.PoojaCategoryItems
-                            join q in _context.PoojaCategories on u.PoojaCategoryId equals q.PoojaCategoryId
 
                             select new
                             {
                                 u.PoojaCategoryItemId,
                                 u.PoojaCategoryId,
-                                q.PoojaCategoryName,
                                 u.ItemName,
                                 u.ItemPrice,
-
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
 
+                // Calculate total price by summing up all ItemPrices
+                decimal totalPrice = (decimal)list.Sum(item => item.ItemPrice);
+
                 int totalRecords = list.Count();
 
-                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords, totalItemPrice = totalPrice });
             }
             catch (Exception ex)
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-
 
 
 

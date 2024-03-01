@@ -26,6 +26,11 @@ namespace AdminApi.Controllers
             _context = context;
             _FeedbackRepo = feedbackRepo;
         }
+
+
+        ///<summary>
+        ///Create Feedback
+        ///</summary>
         [HttpPost]
         public IActionResult FeedbackCreate(CreateFeedbackDTO createFeedbackDTO)
         {
@@ -49,6 +54,11 @@ namespace AdminApi.Controllers
             }
 
         }
+
+
+        ///<summary>
+        ///Get Feedback List
+        ///</summary>
         [HttpGet]
         public ActionResult GetFeedbackList()
         {
@@ -78,6 +88,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Get Single Feedback by ID
+        ///</summary>
         [HttpGet("{FeedbackId}")]
         public ActionResult GetSingleFeedback(int FeedbackId)
         {
@@ -91,6 +106,11 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+
+        ///<summary>
+        ///Update Feedback
+        ///</summary>
         [HttpPost]
         public ActionResult UpdateFeedback(UpdateFeedbackDTO updateFeedbackDTO)
         {
@@ -103,7 +123,7 @@ namespace AdminApi.Controllers
                 objFeedback.PanditId = updateFeedbackDTO.PanditId;
                 objFeedback.FeedbackMessage = updateFeedbackDTO.FeedbackMessage;
 
-                objFeedback.UpdatedBy = updateFeedbackDTO.CreatedBy;
+                objFeedback.UpdatedBy = updateFeedbackDTO.UpdatedBy;
                 objFeedback.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
                 return Ok(objFeedback);
@@ -114,7 +134,9 @@ namespace AdminApi.Controllers
             }
         }
 
-
+        ///<summary>
+        ///Delete Single Feedback by ID
+        ///</summary>
         [HttpGet("{Id}/{DeletedBy}")]
         public ActionResult DeleteFeedback(int Id, int DeletedBy)
         {
@@ -134,6 +156,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Feedback List by PanditId
+        ///</summary>
         [HttpGet("{PanditId}")]
         public ActionResult GetFeedbackListbyPanditId(int PanditId)
         {
@@ -165,6 +190,9 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Feedback List by BhaktaId
+        ///</summary>
         [HttpGet("{BhaktaId}")]
         public ActionResult GetFeedbackListbyBhaktaId(int BhaktaId)
         {
