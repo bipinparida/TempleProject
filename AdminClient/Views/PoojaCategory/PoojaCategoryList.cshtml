@@ -35,6 +35,7 @@
                                 <th>Temple Name</th>
                                 <th>PoojaCategoryType Name</th>
                                 <th>PoojaCategory Name</th>
+                                <th>PoojaPrice</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -80,6 +81,7 @@
                     { "data": "templeName", "orderable": true, "visible": true },
                     { "data": "poojaCategoryTypeName", "orderable": true, "visible": true },
                     { "data": "poojaCategoryName", "orderable": true, "visible": true },
+                    { "data": "poojaPrice", "orderable": true, "visible": true },
                     {
                         "render": function (data, type, row) {
                             return '<a class="btn btn-sm btn-primary" href="../PoojaCategory/PoojaCategoryEdit?poojaCategoryId=' + row.poojaCategoryId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.poojaCategoryId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';

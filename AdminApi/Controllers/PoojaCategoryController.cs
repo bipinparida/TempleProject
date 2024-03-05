@@ -159,6 +159,7 @@ namespace AdminApi.Controllers
                         TempleId = itemDTO.TempleId,
                         PoojaCategoryTypeId = itemDTO.PoojaCategoryTypeId,
                         PoojaCategoryName = itemDTO.PoojaCategoryName,
+                        PoojaPrice=itemDTO.PoojaPrice,
                         CreatedBy = itemDTO.CreatedBy,
                         CreatedOn = DateTime.Now
                     };
@@ -198,6 +199,7 @@ namespace AdminApi.Controllers
                 objPoojaCategory.TempleId = updatePoojaCategoryDTO.TempleId;
                 objPoojaCategory.PoojaCategoryTypeId = updatePoojaCategoryDTO.PoojaCategoryTypeId;
                 objPoojaCategory.PoojaCategoryName = updatePoojaCategoryDTO.PoojaCategoryName;
+                objPoojaCategory.PoojaPrice = updatePoojaCategoryDTO.PoojaPrice;
                 objPoojaCategory.UpdatedBy = updatePoojaCategoryDTO.UpdatedBy;
                 objPoojaCategory.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
@@ -227,6 +229,7 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryId,
                                 u.PoojaCategoryName,
                                 u.PoojaCategoryTypeId,
+                                u.PoojaPrice,
                                 u.TempleId,
                                 t.TempleName,
                                 p.PoojaCategoryTypeName,

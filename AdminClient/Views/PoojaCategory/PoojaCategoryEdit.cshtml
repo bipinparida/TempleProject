@@ -55,6 +55,12 @@
                             </div>
                         </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PoojaPrice" placeholder="Enter PoojaPrice">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -148,6 +154,7 @@
                         TempleList(data.templeId);
                         PoojacategoryTypeList(data.poojaCategoryTypeId);
                         $('#PoojaCategoryName').val(data.poojaCategoryName);
+                        $('#PoojaPrice').val(data.poojaPrice);
                     }
                     else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -173,7 +180,7 @@
                     templeId: $.trim($("#SelectTemple").val()),
                     poojaCategoryTypeId: $.trim($("#SelectPoojaCategoryType").val()),
                     poojaCategoryName: $.trim($("#PoojaCategoryName").val()),
-
+                    poojaPrice: $.trim($("#PoojaPrice").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)

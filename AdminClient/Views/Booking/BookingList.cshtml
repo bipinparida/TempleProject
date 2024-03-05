@@ -34,9 +34,12 @@
                             <tr>
                                 <th>Bhakta Name</th>
                                 <th>Temple Name</th>
-                                <th>Pandit Name</th>
+                                <th>PoojaCategoryType Name</th>
                                 <th>PoojaCategory Name</th>
+                                <th>PoojaCategoryItem Name</th>
+                                <th>Pandit Name</th>
                                 <th>BookingDate</th>
+                                <th>PoojaPrice</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -82,8 +85,10 @@
                 "columns": [
                     { "data": "bhaktaName", "orderable": true, "visible": true },
                     { "data": "templeName", "orderable": true, "visible": true },
-                    { "data": "panditName", "orderable": true, "visible": true },
+                    { "data": "poojaCategoryTypeName", "orderable": true, "visible": true },
                     { "data": "poojaCategoryName", "orderable": true, "visible": true },
+                    { "data": "itemName", "orderable": true, "visible": true },
+                    { "data": "panditName", "orderable": true, "visible": true },
                     {
                         "data": "bookingDate",
                         "render": function (data) {
@@ -92,15 +97,31 @@
                             var day = date.getDate();
                             var month = date.getMonth() + 1;
                             var year = date.getFullYear();
+                            var hour = date.getHours();
+                            var amOrPm = hour >= 12 ? "PM" : "AM";
+
+                            // Convert 24-hour format to 12-hour format
+                            if (hour > 12) {
+                                hour = hour - 12;
+                            } else if (hour === 0) {
+                                hour = 12;
+                            }
                             return (
                                 (day < 10 ? "0" + day : day) +
                                 "/" +
                                 (month < 10 ? "0" + month : month) +
                                 "/" +
-                                year
+                                year.toString().substring(2) +
+                                "&nbsp;&nbsp;" +
+                                (hour < 10 ? "0" + hour : hour) +
+                                ":" +
+                                (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+                                " " +
+                                amOrPm
                             );
                         }
                     },
+                    { "data": "poojaPrice", "orderable": true, "visible": true },
                     {
                         "render": function (data, type, row) {
                             return '<a class="btn btn-sm btn-primary" href="../Booking/BookingEdit?bookingId=' + row.bookingId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.bookingId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
