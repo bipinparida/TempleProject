@@ -333,6 +333,7 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryTypeId,
                                 u.PoojaCategoryId,
                                 u.PoojaCategoryName,
+                                u.PoojaPrice,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.PoojaCategoryTypeId == PoojaCategoryTypeId && x.TempleId == TempleId).Distinct().ToList();
 
@@ -372,9 +373,22 @@ namespace AdminApi.Controllers
         //    }
         //}
 
+            
+            [HttpGet("{poojaCategoryId}")]
+            public IActionResult GetPoojaCategoryPricebyPoojacategoryId(int poojaCategoryId)
+            {
+                var poojaCategory = _context.PoojaCategories.FirstOrDefault(pc => pc.PoojaCategoryId == poojaCategoryId);
+                if (poojaCategory == null)
+                {
+                    return NotFound();
+                }
 
-
-
-
+                return Ok(new { price = poojaCategory.PoojaPrice });
+            }
     }
 }
+
+
+
+
+

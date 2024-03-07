@@ -296,6 +296,35 @@
         });
 
 
+        $(document).ready(function () {
+            
+            function getPoojaPrice() {
+                var poojaCategoryId = $("#SelectPoojaCategory").val();
+                $.ajax({
+                    type: "GET",
+                    url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryPricebyPoojacategoryId/' + poojaCategoryId,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data && data.price) {
+                            $("#PoojaPrice").val(data.price);
+                        } else {
+                            $("#PoojaPrice").val(''); 
+                        }
+                    },
+                    error: function (data) {
+                        console.log("Error fetching Pooja price:", data);
+                        $("#PoojaPrice").val('');
+                    }
+                });
+            }
+
+            $("#SelectPoojaCategory").change(function () {
+                getPoojaPrice();
+            });
+        });
+
+
+
         $("#btncreate").click(function (e) {
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
