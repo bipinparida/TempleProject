@@ -234,7 +234,7 @@ namespace AdminApi.Controllers
                                 t.TempleName,
                                 p.PoojaCategoryTypeName,
                                 u.IsDeleted
-                            }).Where(x => x.IsDeleted == false).ToList();
+                            }).Where(x => x.IsDeleted == false).Distinct().ToList();
 
                 int totalRecords = list.Count();
 
@@ -373,8 +373,37 @@ namespace AdminApi.Controllers
         //    }
         //}
 
-            
-            [HttpGet("{poojaCategoryId}")]
+
+        ///<summary>
+        ///Get PoojaCategory List by Temple ID 
+        ///</summary>
+        [HttpGet("{TempleId}")]
+        public ActionResult GetPoojaCategoryListbyTempleId(int TempleId)
+        {
+            try
+            {
+                var list = (from u in _context.PoojaCategories
+
+                            select new
+                            {
+                                u.TempleId,
+                                u.PoojaCategoryId,
+                                u.PoojaCategoryName,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.TempleId == TempleId).Distinct().ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        [HttpGet("{poojaCategoryId}")]
             public IActionResult GetPoojaCategoryPricebyPoojacategoryId(int poojaCategoryId)
             {
                 var poojaCategory = _context.PoojaCategories.FirstOrDefault(pc => pc.PoojaCategoryId == poojaCategoryId);
