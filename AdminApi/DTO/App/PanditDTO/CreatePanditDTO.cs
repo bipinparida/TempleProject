@@ -28,7 +28,8 @@ namespace AdminApi.DTO.App.PanditDTO
         public bool Reject { get; set; }
         public bool IsApprove { get; set; }
         public int CreatedBy { get; set; }
-        public List<PoojaCategoryMappingDTO> PoojaCategoryMappings { get; set; } // Renamed to match the property name
+
+       // public List<PoojaCategoryMappingDTO> PoojaCategoryMappings { get; set; } 
     }
 
     public class UpdatePanditDTO

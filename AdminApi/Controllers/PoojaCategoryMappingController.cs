@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System;
+using AdminApi.DTO.App.PanditDTO;
 
 namespace AdminApi.Controllers
 {
@@ -62,6 +63,55 @@ namespace AdminApi.Controllers
             }
 
         }
+
+
+        ///<summary>
+        ///Create PoojaCategory Mapping For Flutter
+        ///</summary>
+        [HttpPost]
+        public IActionResult PoojaCategortyMappingMobile(PoojaCategoryMappingMasterDTOs poojaCategoryMappingMasterDTO)
+        {
+            try
+            {
+                if (poojaCategoryMappingMasterDTO.PoojaCategoryMappings != null && poojaCategoryMappingMasterDTO.PoojaCategoryMappings.Any())
+                {
+                    foreach (var mappingDto in poojaCategoryMappingMasterDTO.PoojaCategoryMappings)
+                    {
+                        var objcheck = _context.PoojaCategoryMappings
+                            .SingleOrDefault(opt => opt.TempleId == mappingDto.TempleId &&
+                                                    opt.PanditId == mappingDto.PanditId &&
+                                                    opt.PoojaCategoryTypeId == mappingDto.PoojaCategoryTypeId &&
+                                                    opt.PoojaCategoryId == mappingDto.PoojaCategoryId &&
+                                                    opt.IsDeleted == false);
+
+                        if (objcheck == null)
+                        {
+                            PoojaCategoryMapping poojaCategoryMapping = new PoojaCategoryMapping
+                            {
+                                TempleId = mappingDto.TempleId,
+                                PanditId = mappingDto.PanditId,
+                                PoojaCategoryTypeId = mappingDto.PoojaCategoryTypeId,
+                                PoojaCategoryId = mappingDto.PoojaCategoryId,
+                                CreatedBy = mappingDto.CreatedBy
+                            };
+
+                            var obj = _PoojaCategoryMappingRepo.Insert(poojaCategoryMapping);
+                            return Ok(obj);
+                        }
+                        else
+                        {
+                            return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "PoojaCategory..!" });
+                        }
+                    }
+                }
+                return Accepted(new Confirmation { Status = "Error", ResponseMsg = "No mappings provided!" });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "Error", ResponseMsg = ex.Message });
+            }
+        }
+
 
         ///<summary>
         ///Update PoojaCategory Mapping

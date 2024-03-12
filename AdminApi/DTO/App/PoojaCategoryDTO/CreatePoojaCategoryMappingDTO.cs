@@ -1,4 +1,6 @@
-﻿namespace AdminApi.DTO.App.PoojaCategoryDTO
+﻿using System.Collections.Generic;
+
+namespace AdminApi.DTO.App.PoojaCategoryDTO
 {
     public class CreatePoojaCategoryMappingDTO
     {
@@ -17,4 +19,10 @@
         public int PoojaCategoryId { get; set; }
         public int UpdatedBy { get; set; }
     }
+    public class PoojaCategoryMappingMasterDTOs
+    {
+        public List<CreatePoojaCategoryMappingDTO> PoojaCategoryMappings { get; set; } 
+    }
+
+   
 }
