@@ -288,7 +288,7 @@ namespace AdminApi.Controllers
 
 
         ///<summary>
-        ///Get PoojaCategory Type by Temple ID 
+        ///Get PoojaCategory TypeList by Temple ID 
         ///</summary>
         [HttpGet("{TempleId}")]
         public ActionResult GetPoojaCategoryTypeListbyTempleId(int TempleId)
@@ -318,7 +318,7 @@ namespace AdminApi.Controllers
 
 
         ///<summary>
-        ///Get PoojaCategory List by TempleId and PoojaCategoryId
+        ///Get PoojaCategory List by TempleId and PoojaCategoryTypeId
         ///</summary>
         [HttpGet("{TempleId}/{PoojaCategoryTypeId}")]
         public ActionResult GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId(int TempleId, int PoojaCategoryTypeId)
