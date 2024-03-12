@@ -71,6 +71,15 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectTemple">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectPoojaCategory">
@@ -102,6 +111,7 @@
                         <table id="Optnn" class="table table-bordered table-hover mb-0">
                             <thead>
                                 <tr>
+                                    <th>Temple Name</th>
                                     <th>PoojaCategory Name</th>
                                     <th>Item Name</th>
                                     <th>Item Price</th>
@@ -147,12 +157,14 @@
 
 
                         // Retrieve the data-value attributes
-                        var PoojaCategoryName = parseInt($irow.find("td:eq(0)").data("value"));
-                        var ItemName = $irow.find("td:eq(1)").data("value");
-                        var ItemPrice = parseFloat($irow.find("td:eq(2)").data("value"));
+                        var TempleName = parseInt($irow.find("td:eq(0)").data("value"));
+                        var PoojaCategoryName = parseInt($irow.find("td:eq(1)").data("value"));
+                        var ItemName = $irow.find("td:eq(2)").data("value");
+                        var ItemPrice = parseFloat($irow.find("td:eq(3)").data("value"));
 
 
                         var a = {
+                            "templeId": TempleName,
                             "poojaCategoryId": PoojaCategoryName,
                             "itemName": ItemName,
                             "itemPrice": ItemPrice
@@ -163,6 +175,7 @@
                     var preloader = $("#preloader");
                     preloader.removeClass("d-none");
                     var model = {
+                        "templeId": parseInt($("#SelectTemple").val()),
                         "poojaCategoryId": parseInt($("#SelectPoojaCategory").val()),
                         "itemName": $.trim($("#ItemName").val()),
                         //"itemPrice": $.trim($("#ItemPrice").val()),
@@ -232,12 +245,13 @@
             });
         });
 
-        GetItem()
-        function GetItem(Id) {
+
+        GetTemple()
+        function GetTemple(Id) {
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/PoojaCategory/GetPoojaCategoryList",
+                url: "@apiUrl/api/Temple/GetTempleList",
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -246,16 +260,16 @@
                 success: function (res) {
                     console.log(res)
                     var options = [];
-                    options.push('<option value="">Please Select </option>');
+                    options.push('<option value="">Please SelectTemple</option>');
                     for (var i = 0; i < res.data.length; i++) {
-                        if (Id == res.data[i].poojaCategoryId) {
+                        if (Id == res.data[i].templeId) {
                             opt = 'selected'
                         } else {
                             opt = '';
                         }
-                        options.push('<option value="' + res.data[i].poojaCategoryId + '" ' + opt + '>' + res.data[i].poojaCategoryName + '</option>');
+                        options.push('<option value="' + res.data[i].templeId + '" ' + opt + '>' + res.data[i].templeName + '</option>');
                     }
-                    $("#SelectPoojaCategory").html(options.join(''));
+                    $("#SelectTemple").html(options.join(''));
                 },
                 error: function (data) {
                     if (data.status == 401) {
@@ -266,6 +280,40 @@
                 }
             });
         }
+
+
+        $("#SelectTemple").change(function () {
+            var vtempleid = $("#SelectTemple").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleId/' + vtempleid,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select PoojaCategory</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].poojaCategoryId + '" ' + opt + '>' + data['data'][i].poojaCategoryName + '</option>');
+                    }
+                    $("#SelectPoojaCategory").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
+
 
         //$(function () {
 
@@ -409,6 +457,8 @@
 
         $(function () {
             $("#Add_Optn").click(function (e) {
+                var TempleValue = $('#SelectTemple').val();
+                var TempleText = $('#SelectTemple option:selected').text();
                 // Get the selected PoojaCategoryType value and text
                 var PoojaCategoryValue = $('#SelectPoojaCategory').val();
                 var PoojaCategoryText = $('#SelectPoojaCategory option:selected').text();
@@ -417,7 +467,7 @@
                 var ItemPrice = $('#ItemPrice').val();
 
                 // Check if both fields are not empty before adding the row
-                if (PoojaCategoryValue && ItemName && ItemPrice) {
+                if (TempleValue && PoojaCategoryValue && ItemName && ItemPrice) {
                     // Check if a row with the same ItemName already exists
                     var existingRow = $('#PoojaCategoryItem_Tb').find('td[data-value="' + ItemName + '"]').closest('tr');
                     if (existingRow.length) {
@@ -425,7 +475,7 @@
                         alert('Item already added!');
                     } else {
                         // Row doesn't exist, so add it
-                        var row = "<tr><td data-value='" + PoojaCategoryValue + "'>" + PoojaCategoryText + "</td><td data-value='" + ItemName + "'>" + ItemName + "</td><td data-value='" + ItemPrice + "'>" + ItemPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                        var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryValue + "'>" + PoojaCategoryText + "</td><td data-value='" + ItemName + "'>" + ItemName + "</td><td data-value='" + ItemPrice + "'>" + ItemPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
                         $('#PoojaCategoryItem_Tb').append(row);
                     }
                 }

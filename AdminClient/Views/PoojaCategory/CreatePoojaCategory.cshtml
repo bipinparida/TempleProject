@@ -97,6 +97,12 @@
                             </div>
                         </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PoojaPrice" placeholder="Enter PoojaPrice">
+                            </div>
+                        </div>
                     </div>
                     <br />
                     <div class="row">
@@ -112,6 +118,7 @@
                                     <th>Temple Name</th>
                                     <th>PoojaCategoryType Name</th>
                                     <th>PoojaCategory Name</th>
+                                    <th>PoojaPrice</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -157,12 +164,13 @@
                         var TempleName = parseInt($irow.find("td:eq(0)").data("value"));
                         var PoojaCategoryTypeName = parseInt($irow.find("td:eq(1)").data("value"));
                         var PoojaCategoryName = $irow.find("td:eq(2)").data("value");
-
+                        var PoojaPrice = parseFloat($irow.find("td:eq(3)").data("value"));
 
                         var a = {
                             "templeId": TempleName,
                             "poojaCategoryTypeId": PoojaCategoryTypeName,
                             "poojaCategoryName": PoojaCategoryName,
+                            "poojaPrice": PoojaPrice,
                         }
                         OptionDetails.push(a);
                     });
@@ -173,8 +181,7 @@
                         "templeId": parseInt($("#SelectTemple").val()),
                         "poojaCategoryTypeId": parseInt($("#SelectPoojaCategoryType").val()),
                         "poojaCategoryName": $.trim($("#PoojaCategoryName").val()),
-                        ////"itemPrice": $.trim($("#ItemPrice").val()),
-                        //"itemPrice": parseFloat($("#ItemPrice").val()),
+                        "poojaPrice": parseFloat($("#PoojaPrice").val()),
                         createPoojaCategoryDTOs: OptionDetails,
                         createdBy: @Context.Session.GetInt32("UserId"),
                     }
@@ -354,8 +361,9 @@
                 // Get the PoojaCategoryName
                 var PoojaCategoryName = $('#PoojaCategoryName').val();
 
+                var PoojaPrice = $('#PoojaPrice').val();
                 // Check if all fields are not empty before adding the row
-                if (TempleValue && PoojaCategoryTypeValue && PoojaCategoryName) {
+                if (TempleValue && PoojaCategoryTypeValue && PoojaCategoryName && PoojaPrice) {
 
                     var existingRow = $('#PoojaCategory_Tb').find('td[data-value="' + PoojaCategoryName + '"]').closest('tr');
                     if (existingRow.length) {
@@ -363,13 +371,15 @@
                         alert('Item already added!');
                     } else {
                         // Construct the row including TempleValue
-                        var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                        var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td data-value='" + PoojaPrice + "'>" + PoojaPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
                         $('#PoojaCategory_Tb').append(row);
                     }
                 }
 
                 // Clear the input fields after adding or if not added due to empty fields
                 $('#PoojaCategoryName').val('');
+
+                $('#PoojaPrice').val('');
             });
 
             // Event delegation for delete button

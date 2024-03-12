@@ -50,9 +50,29 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">PoojacategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojacategoryType">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectPoojaCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategoryItem Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategoryItem">
                                     </select>
                                 </div>
                             </div>
@@ -66,12 +86,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">BookingDate &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="datetime-local" class="form-control" name="example-text-input" tabindex="11" id="BookingDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PoojaPrice" placeholder="Enter PoojaPrice">
                             </div>
                         </div>
                     </div>
@@ -152,6 +176,42 @@
                 }
             });
         }
+
+    //PoojacategoryType
+        function PoojacategorytypeList(selectedPoojacategorytype) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategoryType/GetPoojaCategoryTypeList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value="">Select PoojaCategoryType</option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        var poojaCategoryTypeName = res.data[i].poojaCategoryTypeName;
+                        var poojaCategoryTypeId = res.data[i].poojaCategoryTypeId;
+                        options.push('<option value="' + poojaCategoryTypeId + '">' + poojaCategoryTypeName + '</option>');
+                    }
+                    $("#SelectPoojacategoryType").html(options.join(''));
+
+                    if (selectedPoojacategorytype) {
+                        $('#SelectPoojacategoryType').val(selectedPoojacategorytype);
+                        $('#SelectPoojacategoryType').trigger('change');
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
         //poojacategory
         function PoojacategoryList(selectedPoojacategory) {
             var opt = '';
@@ -176,6 +236,41 @@
                     if (selectedPoojacategory) {
                         $('#SelectPoojaCategory').val(selectedPoojacategory);
                         $('#SelectPoojaCategory').trigger('change');
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+        //PoojacategoryItem
+        function PoojacategoryItemList(selectedPoojacategoryItem) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/PoojaCategoryItem/GetPoojaCategoryItemList",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value="">Select PoojaCategoryItem</option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        var itemName = res.data[i].itemName;
+                        var poojaCategoryItemId = res.data[i].poojaCategoryItemId;
+                        options.push('<option value="' + poojaCategoryItemId + '">' + itemName + '</option>');
+                    }
+                    $("#SelectPoojaCategoryItem").html(options.join(''));
+
+                    if (selectedPoojacategoryItem) {
+                        $('#SelectPoojaCategoryItem').val(selectedPoojacategoryItem);
+                        $('#SelectPoojaCategoryItem').trigger('change');
                     }
                 },
                 error: function (data) {
@@ -235,9 +330,13 @@
                         BhaktaList(data.bhaktaId);
                         TempleList(data.templeId);
                         PanditList(data.panditId);
+                        PoojacategorytypeList(data.poojaCategoryTypeId);
                         PoojacategoryList(data.poojaCategoryId);
+                        PoojacategoryItemList(data.poojaCategoryItemId);
+
 
                         $('#BookingDate').val(data.bookingDate);
+                        $('#PoojaPrice').val(data.poojaPrice);
                        
                     }
                     else {
@@ -262,9 +361,12 @@
                     bookingId: bookingId,
                     bhaktaId: $.trim($("#SelectBhakta").val()),
                     templeId: $.trim($("#SelectTemple").val()),
-                    panditId: $.trim($("#SelectPandit").val()),
+                    poojaCategoryTypeId: $.trim($("#SelectPoojacategoryType").val()),
                     poojaCategoryId: $.trim($("#SelectPoojaCategory").val()),
+                    poojaCategoryItemId: $.trim($("#SelectPoojaCategoryItem").val()),
+                    panditId: $.trim($("#SelectPandit").val()),
                     bookingDate: $.trim($("#BookingDate").val()) == '' ? null : $.trim($("#BookingDate").val().replace(/\//g, '-')),
+                    poojaPrice: $.trim($("#PoojaPrice").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)

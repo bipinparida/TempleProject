@@ -9,6 +9,7 @@ using System;
 using AdminApi.DTO.App.PoojaCategoryItemDTO;
 using System.Linq;
 using AdminApi.DTO.App.PanditDTO;
+using Microsoft.AspNetCore.Http;
 
 namespace AdminApi.Controllers
 {
@@ -152,6 +153,7 @@ namespace AdminApi.Controllers
 
                     PoojaCategoryItem newItem = new PoojaCategoryItem
                     {
+                        TempleId = itemDTO.TempleId,
                         PoojaCategoryId = itemDTO.PoojaCategoryId,
                         ItemName = itemDTO.ItemName,
                         ItemPrice = itemDTO.ItemPrice,
@@ -183,11 +185,14 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.PoojaCategoryItems
+                            join a in _context.Temples on u.TempleId equals a.TempleId
                             join p in _context.PoojaCategories on u.PoojaCategoryId equals p.PoojaCategoryId
 
                             select new
                             {
                                 u.PoojaCategoryItemId,
+                                u.TempleId,
+                                a.TempleName,
                                 u.PoojaCategoryId,
                                 u.ItemName,
                                 u.ItemPrice,
@@ -241,6 +246,7 @@ namespace AdminApi.Controllers
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate ItemName..!" });
                 }
                 objItems.PoojaCategoryId = updatePoojaCategoryItemDTO.PoojaCategoryId;
+                objItems.TempleId = updatePoojaCategoryItemDTO.TempleId;
                 objItems.ItemName = updatePoojaCategoryItemDTO.ItemName;
                 objItems.ItemPrice = updatePoojaCategoryItemDTO.ItemPrice;
                 objItems.UpdatedBy = updatePoojaCategoryItemDTO.UpdatedBy;
@@ -280,28 +286,65 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Get PoojaCategory Item List by PoojaCategoryId
         ///</summary>
+        ///
+
+
+
+        //[HttpGet("{PoojaCategoryId}")]
+        //public ActionResult GetPoojaCategoryItemListByPoojacategoryId(int PoojaCategoryId)
+        //{
+        //    try
+        //    {
+        //        var list = (from u in _context.PoojaCategoryItems
+        //                   // join q in _context.PoojaCategories on u.PoojaCategoryId equals q.PoojaCategoryId
+
+        //                    select new
+        //                    {
+        //                        u.PoojaCategoryItemId,
+        //                        u.PoojaCategoryId,
+        //                        //q.PoojaCategoryName,
+        //                        u.ItemName,
+        //                        u.ItemPrice,
+
+        //                        u.IsDeleted
+        //                    }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
+
+        //        int totalRecords = list.Count();
+
+        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
+
+
         [HttpGet("{PoojaCategoryId}")]
         public ActionResult GetPoojaCategoryItemListByPoojacategoryId(int PoojaCategoryId)
         {
             try
             {
                 var list = (from u in _context.PoojaCategoryItems
-                            join q in _context.PoojaCategories on u.PoojaCategoryId equals q.PoojaCategoryId
 
                             select new
                             {
+                                u.TempleId,
                                 u.PoojaCategoryItemId,
                                 u.PoojaCategoryId,
-                                q.PoojaCategoryName,
                                 u.ItemName,
                                 u.ItemPrice,
-
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId).ToList();
 
+                // Calculate total price by summing up all ItemPrices
+                decimal totalPrice = (decimal)list.Sum(item => item.ItemPrice);
+
                 int totalRecords = list.Count();
 
-                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords, totalItemPrice = totalPrice });
             }
             catch (Exception ex)
             {
@@ -311,6 +354,37 @@ namespace AdminApi.Controllers
 
 
 
+        ///<summary>
+        ///Get PoojaCategoryItem List by TempleId and PoojaCategoryId
+        ///</summary>
+        [HttpGet("{TempleId}/{PoojaCategoryId}")]
+        public ActionResult GetPoojaCategoryItemListbyTempleAndPoojaCategoryId(int TempleId, int PoojaCategoryId)
+        {
+            try
+            {
+                var list = (from u in _context.PoojaCategoryItems
+
+                            select new
+                            {
+                                u.PoojaCategoryItemId,
+                                u.PoojaCategoryId,
+                                u.TempleId,
+                                u.ItemName,
+                                u.ItemPrice,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PoojaCategoryId == PoojaCategoryId && x.TempleId == TempleId).Distinct().ToList();
+
+                decimal totalPrice = (decimal)list.Sum(item => item.ItemPrice);
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords, totalItemPrice = totalPrice });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
 
     }
 }

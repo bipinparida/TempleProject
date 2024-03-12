@@ -51,9 +51,29 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">PoojacategoryType Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojacategoryType">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">PoojaCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectPoojaCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategoryItem Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPoojaCategoryItem">
                                     </select>
                                 </div>
                             </div>
@@ -67,15 +87,20 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">BookingDate &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="datetime-local" class="form-control" name="example-text-input" tabindex="11" id="BookingDate" required>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="PoojaPrice" placeholder="Enter PoojaPrice">
+                            </div>
+                        </div>
                     </div>
+                   
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btncreate" class="btn btn-radius btn-success">Create</button>
@@ -144,26 +169,27 @@
                 }
             });
         }
-        //Poojacategory
+
+        //Poojacategorytype Name
         $("#SelectTemple").change(function () {
-            var vtempleId = $("#SelectTemple").val()
+            var vpoojatypeId = $("#SelectTemple").val()
             var opt = '';
             $.ajax({
                 type: "GET",
-                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleId/' + vtempleId,
+                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryTypeListbyTempleId/' + vpoojatypeId,
                 dataType: "json",
                 success: function (data) {
                     var options = [];
-                    options.push('<option>Select PoojaCategory</option>');
+                    options.push('<option>Select PoojaCategoryType</option>');
                     for (var i = 0; i < data['data'].length; i++) {
                         //if (Id == res.data[i].stateId) {
                         //    opt = 'selected'
                         //} else {
                         //    opt = '';
                         //}
-                        options.push('<option value="' + data['data'][i].poojaCategoryId + '" ' + opt + '>' + data['data'][i].poojaCategoryName + '</option>');
+                        options.push('<option value="' + data['data'][i].poojaCategoryTypeId + '" ' + opt + '>' + data['data'][i].poojaCategoryTypeName + '</option>');
                     }
-                    $("#SelectPoojaCategory").html(options.join(''));
+                    $("#SelectPoojacategoryType").html(options.join(''));
 
                 },
                 error: function (data) {
@@ -176,23 +202,23 @@
             });
         });
 
-        Getpandit()
-        async function Getpandit(Id) {
-            var opt = '';
+        //Poojacategory Name
+        $("#SelectPoojacategoryType").change(function () {
+            var templeId = $("#SelectTemple").val();
+            var poojaCategoryTypeId = $(this).val();
+
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/Pandit/GetPanditList",
-                contentType: "application/json; charset=utf-8",
+                url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryListbyTempleAndPoojaCategoryTypeId/' + templeId + '/' + poojaCategoryTypeId,
                 dataType: "json",
-                success: function (res) {
+                success: function (data) {
                     var options = [];
-                    options.push(' <option value = ""> Select Pandit </option> ');
-                    for (var i = 0; i < res.data.length; i++) {
-                        options.push('<option value = "' + res.data[i].panditId + '" ' + opt + ' > ' + res.data[i].panditName + '</option>');
+                    options.push('<option>Select PoojaCategoryName</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        options.push('<option value="' + data['data'][i].poojaCategoryId + '">' + data['data'][i].poojaCategoryName + '</option>');
                     }
-                    $("#SelectPandit").html(options.join(''));
+                    $("#SelectPoojaCategory").html(options.join(''));
                 },
-
                 error: function (data) {
                     if (data.status == 401) {
                         window.location.replace('/Message/TokenExpire');
@@ -201,7 +227,103 @@
                     }
                 }
             });
-        }
+        });
+
+        //PoojacategoryItem Name
+        $("#SelectPoojaCategory").change(function () {
+            var vpoojaItemId = $("#SelectPoojaCategory").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/PoojaCategoryItem/GetPoojaCategoryItemListByPoojacategoryId/' + vpoojaItemId,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select PoojaCategoryItem</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].poojaCategoryItemId + '" ' + opt + '>' + data['data'][i].itemName + '</option>');
+                    }
+                    $("#SelectPoojaCategoryItem").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
+
+
+        //Pandit
+        $("#SelectTemple").change(function () {
+            var vtempleId = $("#SelectTemple").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/Pandit/GetPanditListbyTempleId/' + vtempleId,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select Pandit</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].panditId + '" ' + opt + '>' + data['data'][i].panditName + '</option>');
+                    }
+                    $("#SelectPandit").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
+
+        $(document).ready(function () {
+            
+            function getPoojaPrice() {
+                var poojaCategoryId = $("#SelectPoojaCategory").val();
+                $.ajax({
+                    type: "GET",
+                    url: '@apiUrl/api/PoojaCategory/GetPoojaCategoryPricebyPoojacategoryId/' + poojaCategoryId,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data && data.price) {
+                            $("#PoojaPrice").val(data.price);
+                        } else {
+                            $("#PoojaPrice").val(''); 
+                        }
+                    },
+                    error: function (data) {
+                        console.log("Error fetching Pooja price:", data);
+                        $("#PoojaPrice").val('');
+                    }
+                });
+            }
+
+            $("#SelectPoojaCategory").change(function () {
+                getPoojaPrice();
+            });
+        });
+
+
 
         $("#btncreate").click(function (e) {
             if (!document.getElementById("formPost").checkValidity()) {
@@ -210,9 +332,12 @@
                 var model = {
                     bhaktaId: parseInt($("#SelectBhakta").val()),
                     templeId: parseInt($("#SelectTemple").val()),
-                    panditId: parseInt($("#SelectPandit").val()),
+                    poojaCategoryTypeId: parseInt($("#SelectPoojacategoryType").val()),
                     poojaCategoryId: parseInt($("#SelectPoojaCategory").val()),
+                    poojaCategoryItemId: parseInt($("#SelectPoojaCategoryItem").val()),
+                    panditId: parseInt($("#SelectPandit").val()),
                     bookingDate: $.trim($("#BookingDate").val()) == '' ? null : $.trim($("#BookingDate").val().replace(/\//g, '-')),
+                    poojaPrice: parseInt($("#PoojaPrice").val()),
                     createdBy: @Context.Session.GetInt32("UserId"),
                 };
                 console.log(model);
@@ -225,23 +350,6 @@
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
                     },
                     dataType: "json",
-                    //success: function (data, statusText, xhr) {
-                    //    if (xhr.status === 200) {
-                    //        console.log(data);
-                    //        sweetAlert({
-                    //            html: true,
-                    //            title: "Temple Add",
-                    //            text: "Successfully Created!",
-                    //            type: "success"
-                    //        });
-                    //    } else if (data.status === "duplicate") {
-                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
-                    //    } else if (data.status === "error") {
-                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
-                    //    } else {
-                    //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
-                    //    }
-                    //},
                     success: function (data, statusText, xhr) {
                         if (xhr.status === 200) {
                             Swal.fire({
@@ -293,7 +401,6 @@
 
             }
         });
-
     </script>
 
 }

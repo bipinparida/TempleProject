@@ -40,9 +40,12 @@ namespace AdminApi.Controllers
 
                 booking.BhaktaId = createBookingDTO.BhaktaId;
                 booking.TempleId = createBookingDTO.TempleId;
-                booking.PanditId = createBookingDTO.PanditId;
+                booking.PoojaCategoryTypeId = createBookingDTO.PoojaCategoryTypeId;
                 booking.PoojaCategoryId = createBookingDTO.PoojaCategoryId;
+                booking.PoojaCategoryItemId = createBookingDTO.PoojaCategoryItemId;
+                booking.PanditId = createBookingDTO.PanditId;
                 booking.BookingDate = createBookingDTO.BookingDate;
+                booking.PoojaPrice = createBookingDTO.PoojaPrice;
 
 
                 booking.CreatedBy = createBookingDTO.CreatedBy;
@@ -72,6 +75,8 @@ namespace AdminApi.Controllers
                             join t in _context.Temples on u.TempleId equals t.TempleId
                             join p in _context.Pandits on u.PanditId equals p.PanditId
                             join c in _context.PoojaCategories on u.PoojaCategoryId equals c.PoojaCategoryId
+                            join d in _context.PoojaCategoryItems on u.PoojaCategoryItemId equals d.PoojaCategoryItemId
+                            join e in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals e.PoojaCategoryTypeId
 
                             select new
                             {
@@ -80,11 +85,16 @@ namespace AdminApi.Controllers
                                 b.BhaktaName,
                                 u.TempleId,
                                 t.TempleName,
+                                u.PoojaCategoryTypeId,
+                                e.PoojaCategoryTypeName,
                                 u.PanditId,
                                 p.PanditName,
                                 u.PoojaCategoryId,
                                 c.PoojaCategoryName,
+                                u.PoojaCategoryItemId,
+                                d.ItemName,
                                 u.BookingDate,
+                                u.PoojaPrice,
 
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
@@ -128,9 +138,12 @@ namespace AdminApi.Controllers
 
                 objBooking.BhaktaId = updateBookingDTO.BhaktaId;
                 objBooking.TempleId = updateBookingDTO.TempleId;
-                objBooking.PanditId = updateBookingDTO.PanditId;
+                objBooking.PoojaCategoryTypeId=updateBookingDTO.PoojaCategoryTypeId;
                 objBooking.PoojaCategoryId = updateBookingDTO.PoojaCategoryId;
+                objBooking.PoojaCategoryItemId = updateBookingDTO.PoojaCategoryItemId;
+                objBooking.PanditId = updateBookingDTO.PanditId;
                 objBooking.BookingDate = updateBookingDTO.BookingDate;
+                objBooking.PoojaPrice= updateBookingDTO.PoojaPrice;
 
                 objBooking.UpdatedBy = updateBookingDTO.UpdatedBy;
                 objBooking.UpdatedOn = System.DateTime.Now;
