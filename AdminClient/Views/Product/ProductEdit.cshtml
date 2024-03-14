@@ -1,0 +1,486 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "Product";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Product Edit</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/Product/ProductList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">Product Edit</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Category Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">ProductName Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="ProductName" placeholder="Enter Product Name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">SalePrice &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="SalePrice" placeholder="Enter SalePrice">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">MRP &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="MRP" placeholder="Enter MRP">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">DiscountAmount &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="DiscountAmount" placeholder="Enter DiscountAmount">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Thumbnail &nbsp;</label>
+                                <input type="file" class="form-control" id="Image" accept=".png,.jpg, .jpeg">
+                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image1 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image1" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg1" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image2 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image2" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg2" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image3 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image3" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg3" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image4 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image4" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg4" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Description  &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                @*<input type="text" class="form-control" id="Description" placeholder="Enter Description" required>*@
+                                <textarea id="Description" name="Description" rows="4" cols="25"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
+                            <a type="button" href="~/Product/ProductList" class="btn btn-radius btn-danger">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+
+        function CategoryList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Category/GetCategoryList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select Category </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].categoryId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].categoryId + '" ' + opt + ' > ' + res.data[i].categoryName + '</option>');
+                    }
+                    $("#SelectCategory").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        var productId = @ViewBag.ProductId
+            loadSingleProduct()
+        function loadSingleProduct() {
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Product/GetSingleProduct/" + productId,
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        CategoryList(data.categoryId);
+                        $('#ProductName').val(data.productName);
+                        $('#SalePrice').val(data.salePrice);
+                        $('#MRP').val(data.mrp);
+                        $('#DiscountAmount').val(data.discountAmount);
+                        $('#imgg').attr('src', data.thumbnail);
+                        $('#imgg1').attr('src', data.image1);
+                        $('#imgg2').attr('src', data.image2);
+                        $('#imgg3').attr('src', data.image3);
+                        $('#imgg4').attr('src', data.image4);
+                        $('#Description').val(data.description);
+                    }
+                    else {
+                        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#btnupdate").click(function (e) {
+            if (!document.getElementById("formPost").checkValidity()) {
+                e.preventDefault();
+            } else {
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg').attr('src');
+
+                if ($('#Image').val() != '' && $('#Image').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
+
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg1').attr('src');
+
+                if ($('#Image1').val() != '' && $('#Image1').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
+
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg2').attr('src');
+
+                if ($('#Image2').val() != '' && $('#Image2').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
+
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg3').attr('src');
+
+                if ($('#Image3').val() != '' && $('#Image3').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
+
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg4').attr('src');
+
+                if ($('#Image4').val() != '' && $('#Image4').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
+                var model = {
+                    productId: productId,
+                    categoryId: $.trim($("#SelectCategory").val()),
+                    productName: $.trim($("#ProductName").val()),
+                    salePrice: $.trim($("#SalePrice").val()),
+                    mrp: $.trim($("#MRP").val()),
+                    discountAmount: $.trim($("#DiscountAmount").val()),
+                    thumbnail: imgPath,
+                    image1: imgPath,
+                    image2: imgPath,
+                    image3: imgPath,
+                    image4: imgPath,
+                    description: $.trim($("#Description").val()),
+
+                    updatedBy: @Context.Session.GetInt32("UserId"),
+                }
+                console.log(model)
+                $.ajax({
+                    type: "POST",
+                    url: "@apiUrl/api/Product/UpdateProduct",
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    headers: {
+                        "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                    },
+                    success: function (data, statusText, xhr) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Product Update",
+                                text: "Successfully updated!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Product Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else if (data.status === "error") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        }
+                        preloader.addClass("d-none");
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        if (data.status == 401) {
+                            window.location.replace('/Message/TokenExpire');
+                        } else if (data.status == 403) {
+                            window.location.replace('/Message/Unauthorize');
+                        } else if (data.status == 400) {
+                            sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                        }
+                    }
+                });
+            }
+        });
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('Thumbnail').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('Thumbnail').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('Image1').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('Image1').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('Image2').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('Image2').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('Image3').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('Image3').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('Image4').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('Image4').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+}
