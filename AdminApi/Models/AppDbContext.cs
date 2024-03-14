@@ -1,11 +1,13 @@
 ﻿using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Booking;
+using AdminApi.Models.App.Categories;
 using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
 using AdminApi.Models.App.PoojaCategoryItems;
+using AdminApi.Models.App.Products;
 using AdminApi.Models.App.PushNotifications;
 using AdminApi.Models.App.Questions;
 using AdminApi.Models.App.Temples;
@@ -48,6 +50,9 @@ namespace AdminApi.Models
        
         public virtual DbSet<PoojaCategoryItem> PoojaCategoryItems { get; set; }
         public virtual DbSet<PushNotification> PushNotifications { get; set; }
+
+        public virtual DbSet<Category> Categories { get; set; } 
+        public virtual DbSet<Product> Products { get; set; } 
         
 
 
@@ -206,6 +211,24 @@ namespace AdminApi.Models
  .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<PushNotification>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Category>()
+ .Property(s => s.CreatedOn)
+ .HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Category>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Product>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Product>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
