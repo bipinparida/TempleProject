@@ -1,6 +1,7 @@
 ﻿using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Booking;
 using AdminApi.Models.App.Categories;
+using AdminApi.Models.App.Checkouts;
 using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
@@ -52,8 +53,9 @@ namespace AdminApi.Models
         public virtual DbSet<PushNotification> PushNotifications { get; set; }
 
         public virtual DbSet<Category> Categories { get; set; } 
-        public virtual DbSet<Product> Products { get; set; } 
-        
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Checkout> Checkouts { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -233,7 +235,14 @@ namespace AdminApi.Models
               .HasDefaultValue(false)
               .ValueGeneratedNever();
 
+            modelBuilder.Entity<Checkout>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
 
+            modelBuilder.Entity<Checkout>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
 
             #endregion
         }
