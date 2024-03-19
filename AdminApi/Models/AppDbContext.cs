@@ -5,6 +5,7 @@ using AdminApi.Models.App.Checkouts;
 using AdminApi.Models.App.Feedbacks;
 using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
+using AdminApi.Models.App.Orders;
 using AdminApi.Models.App.Pandits;
 using AdminApi.Models.App.PoojaCategory;
 using AdminApi.Models.App.PoojaCategoryItems;
@@ -55,6 +56,8 @@ namespace AdminApi.Models
         public virtual DbSet<Category> Categories { get; set; } 
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Checkout> Checkouts { get; set; }
+        public virtual DbSet<OrderParent> OrderParents { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
 
 
@@ -244,6 +247,25 @@ namespace AdminApi.Models
               .HasDefaultValue(false)
               .ValueGeneratedNever();
 
+
+
+            modelBuilder.Entity<OrderParent>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<OrderParent>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Order>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Order>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
             #endregion
         }
 
