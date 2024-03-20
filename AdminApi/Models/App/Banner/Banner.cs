@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace AdminApi.Models.App.Orders
+namespace AdminApi.Models.App.Banner
 {
-    public class Order
+    public class Banner
     {
-        public int OrderId { get; set; }
-        public int BhaktaId { get; set; }
-        public int TotalQuantity { get; set; }
-        public double TotalAmount { get; set; }
+        public int BannerId { get; set; }
+        public string BannerName { get; set; }
+        public string? BannerImage { get; set; }
 
 
         public int CreatedBy { get; set; }

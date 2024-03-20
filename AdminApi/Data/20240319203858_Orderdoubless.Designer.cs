@@ -4,56 +4,22 @@ using AdminApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace AdminApi.Data
+namespace AdminApi.data
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319203858_Orderdoubless")]
+    partial class Orderdoubless
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AdminApi.Models.App.Banner.Banner", b =>
-                {
-                    b.Property<int>("BannerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("BannerImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BannerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 705, DateTimeKind.Local).AddTicks(2638));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("BannerId");
-
-                    b.ToTable("Banners");
-                });
 
             modelBuilder.Entity("AdminApi.Models.App.Bhaktas.Bhakta", b =>
                 {
@@ -80,7 +46,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(5594));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 855, DateTimeKind.Local).AddTicks(178));
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -128,7 +94,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(3337));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 861, DateTimeKind.Local).AddTicks(1321));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -179,7 +145,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(7871));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 863, DateTimeKind.Local).AddTicks(4948));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -209,7 +175,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(9901));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 863, DateTimeKind.Local).AddTicks(8832));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -248,7 +214,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(9407));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 856, DateTimeKind.Local).AddTicks(5519));
 
                     b.Property<string>("FeedbackMessage")
                         .HasColumnType("nvarchar(max)");
@@ -284,7 +250,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(2257));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 860, DateTimeKind.Local).AddTicks(9606));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -329,7 +295,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(2316));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 854, DateTimeKind.Local).AddTicks(4717));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -368,7 +334,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 701, DateTimeKind.Local).AddTicks(133));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 849, DateTimeKind.Local).AddTicks(5187));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -401,7 +367,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(1289));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 854, DateTimeKind.Local).AddTicks(2432));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -437,7 +403,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 705, DateTimeKind.Local).AddTicks(771));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 864, DateTimeKind.Local).AddTicks(496));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -476,7 +442,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 705, DateTimeKind.Local).AddTicks(1685));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 864, DateTimeKind.Local).AddTicks(2551));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -533,7 +499,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(4636));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 854, DateTimeKind.Local).AddTicks(8345));
 
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -611,7 +577,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(6482));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 855, DateTimeKind.Local).AddTicks(1721));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -653,7 +619,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(8344));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 856, DateTimeKind.Local).AddTicks(400));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -695,7 +661,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(7306));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 855, DateTimeKind.Local).AddTicks(3153));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -728,7 +694,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(4229));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 861, DateTimeKind.Local).AddTicks(3389));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -773,7 +739,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(8964));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 863, DateTimeKind.Local).AddTicks(6837));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -833,7 +799,7 @@ namespace AdminApi.Data
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(6566));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 862, DateTimeKind.Local).AddTicks(9300));
 
                     b.Property<string>("FCMToken")
                         .HasColumnType("nvarchar(max)");
@@ -869,7 +835,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(300));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 860, DateTimeKind.Local).AddTicks(3068));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -902,7 +868,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 704, DateTimeKind.Local).AddTicks(1206));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 860, DateTimeKind.Local).AddTicks(7875));
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -944,7 +910,7 @@ namespace AdminApi.Data
                     b.Property<DateTime?>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 48, 54, 703, DateTimeKind.Local).AddTicks(3435));
+                        .HasDefaultValue(new DateTime(2024, 3, 20, 2, 8, 57, 854, DateTimeKind.Local).AddTicks(6745));
 
                     b.Property<string>("GodName")
                         .HasColumnType("nvarchar(max)");
@@ -1029,7 +995,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 1,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(7789),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1047),
                             IconClass = "fas fa-home",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1043,7 +1009,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 2,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8219),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1943),
                             IconClass = "fas fa-ellipsis-v",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1057,7 +1023,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 3,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8223),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1953),
                             IconClass = "",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1071,7 +1037,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 4,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8225),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1956),
                             IconClass = "",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1085,7 +1051,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 5,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8227),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1958),
                             IconClass = "fas fa-user",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1099,7 +1065,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 6,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8229),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1961),
                             IconClass = "",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1113,7 +1079,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 7,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8231),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1964),
                             IconClass = "",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1127,7 +1093,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 8,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8233),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1968),
                             IconClass = "",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1141,7 +1107,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 9,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8234),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1970),
                             IconClass = "fas fa-wrench",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1155,7 +1121,7 @@ namespace AdminApi.Data
                         {
                             MenuID = 10,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 699, DateTimeKind.Local).AddTicks(8236),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 846, DateTimeKind.Local).AddTicks(1974),
                             IconClass = "",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1207,7 +1173,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupID = 1,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 693, DateTimeKind.Local).AddTicks(9681),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 835, DateTimeKind.Local).AddTicks(994),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupName = "Super Admin Group"
@@ -1216,7 +1182,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupID = 2,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 695, DateTimeKind.Local).AddTicks(6072),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 838, DateTimeKind.Local).AddTicks(4181),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupName = "User Group"
@@ -1258,7 +1224,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 1,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6445),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2008),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1268,7 +1234,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 2,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6869),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2759),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1278,7 +1244,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 3,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6872),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2765),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1288,7 +1254,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 4,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6874),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2767),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1298,7 +1264,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 5,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6876),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2769),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1308,7 +1274,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 6,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6877),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2771),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1318,7 +1284,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 7,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6879),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2773),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1328,7 +1294,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 8,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6880),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2776),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 2,
@@ -1338,7 +1304,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 9,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6882),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2778),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 2,
@@ -1348,7 +1314,7 @@ namespace AdminApi.Data
                         {
                             MenuGroupWiseMenuMappingId = 10,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 700, DateTimeKind.Local).AddTicks(6884),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 848, DateTimeKind.Local).AddTicks(2780),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 2,
@@ -1430,7 +1396,7 @@ namespace AdminApi.Data
                         {
                             UserRoleId = 1,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 697, DateTimeKind.Local).AddTicks(8256),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 842, DateTimeKind.Local).AddTicks(5348),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 1,
@@ -1440,7 +1406,7 @@ namespace AdminApi.Data
                         {
                             UserRoleId = 2,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 697, DateTimeKind.Local).AddTicks(8777),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 842, DateTimeKind.Local).AddTicks(6111),
                             IsActive = true,
                             IsMigrationData = true,
                             MenuGroupId = 2,
@@ -1525,7 +1491,7 @@ namespace AdminApi.Data
                         {
                             UserId = 1,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 698, DateTimeKind.Local).AddTicks(6418),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 844, DateTimeKind.Local).AddTicks(774),
                             FullName = "Appman",
                             IsActive = true,
                             IsMigrationData = true,
@@ -1538,7 +1504,7 @@ namespace AdminApi.Data
                         {
                             UserId = 2,
                             AddedBy = 1,
-                            DateAdded = new DateTime(2024, 3, 20, 2, 48, 54, 698, DateTimeKind.Local).AddTicks(6965),
+                            DateAdded = new DateTime(2024, 3, 20, 2, 8, 57, 844, DateTimeKind.Local).AddTicks(1791),
                             FullName = "Helen Smith",
                             IsActive = true,
                             IsMigrationData = true,

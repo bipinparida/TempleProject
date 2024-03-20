@@ -3,41 +3,37 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "OrderParent";
+    ViewBag.Title = "Banner";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
-        <li class="breadcrumb-item active" aria-current="page">OrderParent List</li>
+        <li class="breadcrumb-item active" aria-current="page">Banner List</li>
     </ol>
-    @*<div class="ml-auto">
-        <a href="~/OrderParent/CreateOrderParent" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+    <div class="ml-auto">
+        <a href="~/Banner/CreateBanner" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
-            </span> OrderParent Create
+            </span> Banner Create
         </a>
-    </div>*@
+    </div>
 </div>
 
 <div class="row">
     <div class="col-md-12 col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">OrderParent List</div>
+                <div class="card-title">Banner List</div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="OrderParent_Tb" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline" style="width:100%">
+                    <table id="Banner_Tb" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Bhakta Name</th>
-                                <th>Total Quantity</th>
-                                <th>Total Amount</th>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Amount</th>
+                                <th>Banner Name</th>
+                                <th>Banner Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,15 +43,16 @@
         </div>
     </div>
 </div>
+
 @section scripts {
     <script>
 
         //List
-        loadOrderParent()
-        async function loadOrderParent() {
-            var table = $('#OrderParent_Tb').DataTable();
+        loadBanner()
+        async function loadBanner() {
+            var table = $('#Banner_Tb').DataTable();
             table.destroy();
-            table = $('#OrderParent_Tb').dataTable({
+            table = $('#Banner_Tb').dataTable({
                 "paginationType": "full_numbers",
                 "dom": 'Bfrtip',
                 "buttons": ['excel', 'print'],
@@ -64,7 +61,7 @@
                 "sort": true,
                 "info": true,
                 "ajax": {
-                    "url": '@apiUrl/api/OrderParent/GetAllOrderList',
+                    "url": '@apiUrl/api/Banner/GetBannerList',
                     "type": "GET",
                     "dataType": "json",
                     "headers": {
@@ -80,15 +77,19 @@
                 },
                 "order": [],
                 "columns": [
-                    { "data": "bhaktaName", "orderable": true, "visible": true },
-                    { "data": "totalQuantity", "orderable": true, "visible": true },
-                    { "data": "totalAmount", "orderable": true, "visible": true },
-                    { "data": "productName", "orderable": true, "visible": true },
-                    { "data": "quantity", "orderable": true, "visible": true },
-                    { "data": "amount", "orderable": true, "visible": true },
+                    { "data": "bannerName", "orderable": true, "visible": true },
                     {
                         "render": function (data, type, row) {
-                            return '<a class="btn btn-sm btn-primary" href="../OrderParent/OrderParentEdit?orderParentId=' + row.orderParentId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.orderParentId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
+                            if (row.bannerImage === '')
+                                return '';
+                            else
+                                return '<a href="#" data-toggle="modal" data-target="#photoModal" data-photo="' + row.bannerImage + '"><img style="margin-left: 28px;" class="avatar avatar-md rounded-circle" src="' + row.bannerImage + '"/></a>'
+                        }
+                    },
+
+                    {
+                        "render": function (data, type, row) {
+                            return '<a class="btn btn-sm btn-primary" href="../Banner/BannerEdit?BannerId=' + row.bannerId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.bannerId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
 
                         }
                     }
@@ -97,7 +98,7 @@
         }
 
         //Delete
-        $('#OrderParent_Tb tbody').on('click', 'button[data-target="#delete"]', function () {
+        $('#Banner_Tb tbody').on('click', 'button[data-target="#delete"]', function () {
             var id = $(this).data('id');
             swal({
                 html: true,
@@ -111,7 +112,7 @@
             }, function () {
                 $.ajax({
                     type: "GET",
-                    url: "@apiUrl/api/OrderParent/DeleteOrderParent/" + id + "/" + @Context.Session.GetInt32("UserId"),
+                    url: "@apiUrl/api/Banner/DeleteBanner/" + id + "/" + @Context.Session.GetInt32("UserId"),
                     contentType: "application/json; charset=utf-8",
                     headers: {
                         "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -119,10 +120,10 @@
                     dataType: "json",
                     success: function (data, statusText, xhr) {
                         if (xhr.status == 200) {
-                            $('#OrderParent_Tb').DataTable().ajax.reload(null, false);
+                            $('#Banner_Tb').DataTable().ajax.reload(null, false);
                             sweetAlert({
                                 html: true,
-                                title: "OrderParent",
+                                title: "Banner",
                                 text: "Successfully deleted!",
                                 type: "success"
                             });
@@ -142,5 +143,31 @@
                 });
             });
         });
+
+        // JavaScript function for opening profile photo in a modal
+        $(document).on('click', 'a[data-toggle="modal"]', function () {
+            var photoUrl = $(this).data('photo');
+            $('#profilePhotoModal').attr('src', photoUrl);
+        });
+
     </script>
 }
+
+
+<!-- Modal for displaying profile photo -->
+<div id="photoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Banner Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Center the content -->
+                <img id="profilePhotoModal" class="img-fluid mx-auto" src="" alt="Profile Photo">
+            </div>
+        </div>
+    </div>
+</div>

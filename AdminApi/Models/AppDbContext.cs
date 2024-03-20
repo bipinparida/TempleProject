@@ -1,4 +1,5 @@
-﻿using AdminApi.Models.App.Bhaktas;
+﻿using AdminApi.Models.App.Banner;
+using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Booking;
 using AdminApi.Models.App.Categories;
 using AdminApi.Models.App.Checkouts;
@@ -56,8 +57,9 @@ namespace AdminApi.Models
         public virtual DbSet<Category> Categories { get; set; } 
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Checkout> Checkouts { get; set; }
-        public virtual DbSet<OrderParent> OrderParents { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+        public virtual DbSet<Banner> Banners { get; set; }
 
 
 
@@ -249,20 +251,29 @@ namespace AdminApi.Models
 
 
 
-            modelBuilder.Entity<OrderParent>()
+            modelBuilder.Entity<Order>()
 .Property(s => s.CreatedOn)
 .HasDefaultValue(System.DateTime.Now);
 
-            modelBuilder.Entity<OrderParent>()
+            modelBuilder.Entity<Order>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
 
-            modelBuilder.Entity<Order>()
+            modelBuilder.Entity<OrderItem>()
 .Property(s => s.CreatedOn)
 .HasDefaultValue(System.DateTime.Now);
 
-            modelBuilder.Entity<Order>()
+            modelBuilder.Entity<OrderItem>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Banner>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Banner>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();

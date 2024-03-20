@@ -1,0 +1,233 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "Banner";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Banner Edit</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/Banner/BannerList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">Banner Edit</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Banner Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="BannerName" placeholder="Banner Name " required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Banner Image &nbsp;</label>
+                                <input type="file" class="form-control" id="BannerImage" accept=".png,.jpg, .jpeg">
+                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
+                            <a type="button" href="~/Banner/BannerList" class="btn btn-radius btn-danger">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        var bannerId = @ViewBag.BannerId
+            loadSingleBanner()
+        function loadSingleBanner() {
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Banner/GetSingleBanner/" + bannerId,
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        $('#BannerName').val(data.bannerName);
+                        $('#imgg').attr('src', data.bannerImage);
+                    }
+                    else {
+                        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#btnupdate").click(function (e) {
+            if (!document.getElementById("formPost").checkValidity()) {
+                e.preventDefault();
+            } else {
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg').attr('src');
+
+                if ($('#BannerImage').val() != '' && $('#BannerImage').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
+
+                var model = {
+                    bannerId: bannerId,
+                    bannerName: $.trim($("#BannerName").val()),
+                    bannerImage: imgPath,
+                    updatedBy: @Context.Session.GetInt32("UserId"),
+                }
+                console.log(model)
+                $.ajax({
+                    type: "POST",
+                    url: "@apiUrl/api/Banner/UpdateBanner",
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    headers: {
+                        "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                    },
+
+                    success: function (data, statusText, xhr) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Banner Update",
+                                text: "Successfully updated!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Banner Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else if (data.status === "error") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        }
+                        preloader.addClass("d-none");
+                    },
+
+                    error: function (data) {
+                        console.log(data);
+                        if (data.status == 401) {
+                            window.location.replace('/Message/TokenExpire');
+                        } else if (data.status == 403) {
+                            window.location.replace('/Message/Unauthorize');
+                        } else if (data.status == 400) {
+                            sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                        }
+                    }
+                });
+            }
+        });
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('BannerImage').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('BannerImage').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
+        //$("#btnupdate").click(function (e) {
+        //    // Prevent form submission if fields are empty
+        //    var bhaktaName = $.trim($("#BhaktaName").val());
+        //    var primaryPhone = $.trim($("#PrimaryPhone").val());
+        //    var password = $.trim($("#Password").val());
+
+        //    if (bhaktaName === "" || primaryPhone === "" || password === "") {
+        //        e.preventDefault();
+        //        Swal.fire({
+        //            icon: "warning",
+        //            title: "Validation Alert!",
+        //            text: "Please complete Name , Mobile Number & Password fields!",
+        //        });
+        //        return;
+        //    }
+
+
+        //});
+
+    </script>
+}
