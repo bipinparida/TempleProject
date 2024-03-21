@@ -114,7 +114,7 @@
         function loadSingleSubCategory() {
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/SubCategory/GetSubCategoryList/" + subCategoryId,
+                url: "@apiUrl/api/SubCategory/GetSingleSubCategory/" + subCategoryId,
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
