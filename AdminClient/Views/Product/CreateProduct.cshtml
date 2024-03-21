@@ -34,6 +34,24 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectTemple">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Pandit Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPandit">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">Category Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectCategory">
@@ -47,6 +65,8 @@
                                 <input type="text" class="form-control" id="ProductName" placeholder="Enter Product Name" required>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">SalePrice &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -59,14 +79,14 @@
                                 <input type="text" class="form-control" id="MRP" placeholder="Enter MRP">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">DiscountAmount &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="DiscountAmount" placeholder="Enter DiscountAmount">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label"> Thumbnail &nbsp;</label>
@@ -86,14 +106,14 @@
                                 <input type="file" class="form-control" id="Image2" accept=".png,.jpg, .jpeg">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label"> Image3 &nbsp;</label>
                                 <input type="file" class="form-control" id="Image3" accept=".png,.jpg, .jpeg">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label"> Image4 &nbsp;</label>
@@ -126,6 +146,69 @@
 
 @section scripts {
     <script>
+        Gettemple()
+        async function Gettemple(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Temple/GetTempleList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push(' <option value = ""> Select Temple </option> ');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].templeId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
+                    }
+                    $("#SelectTemple").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#SelectTemple").change(function () {
+            var vtempleid = $("#SelectTemple").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/Pandit/GetPanditListbyTempleId/' + vtempleid,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select Pandit</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].panditId + '" ' + opt + '>' + data['data'][i].panditName + '</option>');
+                    }
+                    $("#SelectPandit").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
         Getproduct()
         async function Getproduct(Id) {
             var opt = '';
@@ -192,6 +275,8 @@
                         uploadFile();
                     }
                     var model = {
+                        templeId: parseInt($("#SelectTemple").val()),
+                        panditId: parseInt($("#SelectPandit").val()),
                         categoryId: parseInt($("#SelectCategory").val()),
                         productName: $.trim($("#ProductName").val()),
                         salePrice: parseInt($("#SalePrice").val()),

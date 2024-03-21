@@ -2,6 +2,8 @@
 {
     public class CreateProductDTO
     {
+        public int? TempleId { get; set; }
+        public int? PanditId { get; set; }
         public int CategoryId { get; set; }
         public string ProductName { get; set; }
         public double SalePrice { get; set; }
@@ -18,6 +20,8 @@
     public class UpdateProductDTO
     {
         public int ProductId { get; set; }
+        public int? TempleId { get; set; }
+        public int? PanditId { get; set; }
         public int CategoryId { get; set; }
         public string ProductName { get; set; }
         public double SalePrice { get; set; }

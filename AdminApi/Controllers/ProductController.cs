@@ -35,13 +35,15 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult ProductCreate(CreateProductDTO createProductDTO)
         {
-            var objcheck = _context.Products.SingleOrDefault(opt => opt.ProductName == createProductDTO.ProductName && opt.IsDeleted == false);
+            var objcheck = _context.Products.SingleOrDefault(opt =>opt.TempleId==createProductDTO.TempleId && opt.PanditId==createProductDTO.PanditId && opt.ProductName == createProductDTO.ProductName && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
                 {
                     Product product = new Product();
 
+                    product.TempleId= createProductDTO.TempleId;
+                    product.PanditId= createProductDTO.PanditId;
                     product.CategoryId = createProductDTO.CategoryId;
                     product.ProductName = createProductDTO.ProductName;
                     product.SalePrice = createProductDTO.SalePrice;
@@ -83,13 +85,15 @@ namespace AdminApi.Controllers
             try
             {
                 var objProduct = _context.Products.SingleOrDefault(opt => opt.ProductId == updateProductDTO.ProductId);
-                var existingProduct = _context.Products.SingleOrDefault(opt => opt.ProductName == updateProductDTO.ProductName && opt.ProductId != updateProductDTO.ProductId && opt.IsDeleted == false);
+                var existingProduct = _context.Products.SingleOrDefault(opt => opt.TempleId==updateProductDTO.TempleId && opt.PanditId==updateProductDTO.PanditId && opt.ProductName == updateProductDTO.ProductName && opt.ProductId != updateProductDTO.ProductId && opt.IsDeleted == false);
 
                 if (existingProduct != null)
                 {
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate ProductName..!" });
                 }
 
+                objProduct.TempleId = updateProductDTO.TempleId;
+                objProduct.PanditId = updateProductDTO.PanditId;
                 objProduct.CategoryId = updateProductDTO.CategoryId;
                 objProduct.ProductName = updateProductDTO.ProductName;
                 objProduct.SalePrice = updateProductDTO.SalePrice;
@@ -124,10 +128,14 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Products
                             join c in _context.Categories on u.CategoryId equals c.CategoryId
+                            join d in _context.Temples on u.TempleId equals d.TempleId
+                            join e in _context.Pandits on u.PanditId equals e.PanditId
 
                             select new
                             {
                                 u.ProductId,
+                                u.TempleId,
+                                u.PanditId,
                                 u.CategoryId,
                                 u.ProductName,
                                 u.SalePrice,
@@ -140,6 +148,8 @@ namespace AdminApi.Controllers
                                 u.Image4,
                                 u.Description,
                                 c.CategoryName,
+                                d.TempleName,
+                                e.PanditName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
@@ -192,5 +202,48 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
+        ///<summary>
+        ///Gat Product List by Pandit ID
+        ///</summary>
+        [HttpGet("{PanditId}")]
+        public ActionResult GetProductListbyPanditId(int PanditId)
+        {
+            try
+            {
+                var list = (from u in _context.Products
+                            join t in _context.Pandits on u.PanditId equals t.PanditId
+
+                            select new
+                            {
+                                u.ProductId,
+                                u.TempleId,
+                                u.PanditId,
+                                u.CategoryId,
+                                u.ProductName,
+                                u.SalePrice,
+                                u.MRP,
+                                u.DiscountAmount,
+                                u.Thumbnail,
+                                u.Image1,
+                                u.Image2,
+                                u.Image3,
+                                u.Image4,
+                                u.Description,
+                                t.PanditName,
+
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
     }
 }
