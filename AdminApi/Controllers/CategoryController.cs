@@ -8,6 +8,8 @@ using AdminApi.Models.Helper;
 using System.Linq;
 using System;
 using AdminApi.DTO.App.CategoryDTO;
+using AdminApi.DTO.App.BhaktaDTO;
+using AdminApi.Models.App.Bhaktas;
 
 namespace AdminApi.Controllers
 {
@@ -40,8 +42,9 @@ namespace AdminApi.Controllers
                 if (objcheck == null)
                 {
                     Category category = new Category();
-
                     category.CategoryName = createCategoryDTO.CategoryName;
+                    category.CategoryImage = createCategoryDTO.CategoryImage;
+
 
                     category.CreatedBy = createCategoryDTO.CreatedBy;
                     category.CreatedOn = System.DateTime.Now;
@@ -80,6 +83,8 @@ namespace AdminApi.Controllers
                 }
 
                 objCategory.CategoryName = updateCategoryDTO.CategoryName;
+                objCategory.CategoryImage = updateCategoryDTO.CategoryImage;
+
                 objCategory.UpdatedBy = updateCategoryDTO.UpdatedBy;
                 objCategory.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
@@ -104,6 +109,7 @@ namespace AdminApi.Controllers
                             select new
                             {
                                 u.CategoryName,
+                                u.CategoryImage,
                                 u.CategoryId,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();

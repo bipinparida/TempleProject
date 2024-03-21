@@ -3,17 +3,17 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "Category";
+    ViewBag.Title = "SubCategory";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Category Edit</li>
+        <li class="breadcrumb-item active" aria-current="page">SubCategory Edit</li>
     </ol>
     <div class="ml-auto">
-        <a href="~/Category/CategoryList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+        <a href="~/SubCategory/SubCategoryList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
             </span> View
@@ -25,7 +25,7 @@
     <div class="col-md">
         <div class="card overflow-hidden">
             <div class="card-header">
-                <h3 class="card-title">Category Edit</h3>
+                <h3 class="card-title">SubCategory Edit</h3>
             </div>
             <div class="card-body">
                 <form action="#" role="form" class="validate" id="formPost">
@@ -33,16 +33,25 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Category Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <input type="text" class="form-control" id="CategoryName" placeholder="Enter CategoryName" required>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectCategory">
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Category Image &nbsp;</label>
-                                <input type="file" class="form-control" id="CategoryImage" accept=".png,.jpg, .jpeg">
-                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
+                                <label class="form-label">SubCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="SubCategoryName" placeholder="Enter SubCategory" required>
+                            </div>
+                        </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">SubCategory Image &nbsp;</label>
+                                <input type="file" class="form-control" id="SubCategoryImage" accept=".png,.jpg, .jpeg">
+                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
                             </div>
                         </div>
 
@@ -55,7 +64,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
-                            <a type="button" href="~/Category/CategoryList" class="btn btn-radius btn-danger">Reset</a>
+                            <a type="button" href="~/SubCategory/SubCategoryList" class="btn btn-radius btn-danger">Reset</a>
                         </div>
                     </div>
                 </form>
@@ -68,12 +77,44 @@
 
 @section scripts {
     <script>
-        var categoryId = @ViewBag.CategoryId
-            loadSingleCategory()
-        function loadSingleCategory() {
+
+        function categoryList(Id) {
+            var opt = '';
             $.ajax({
                 type: "GET",
-                url: "@apiUrl/api/Category/GetSingleCategory/" + categoryId,
+                url: "@apiUrl/api/Category/GetCategoryList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select Category </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].categoryId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].categoryId + '" ' + opt + ' > ' + res.data[i].categoryName + '</option>');
+                    }
+                    $("#SelectCategory").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        var subCategoryId = @ViewBag.SubCategoryId
+            loadSingleSubCategory()
+        function loadSingleSubCategory() {
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/SubCategory/GetSubCategoryList/" + subCategoryId,
                 contentType: "application/json; charset=utf-8",
                 headers: {
                     "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
@@ -81,8 +122,9 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        $('#CategoryName').val(data.categoryName);
-                        $('#imgg').attr('src', data.categoryImage);
+                        categoryList(data.categoryId);
+                        $('#SubCategoryName').val(data.subCategoryName);
+                        $('#imgg').attr('src', data.subCategoryImage);
                     }
                     else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -106,23 +148,25 @@
                 var currentImageSrc = '';
                 currentImageSrc = $('#imgg').attr('src');
 
-                if ($('#CategoryImage').val() != '' && $('#CategoryImage').val() != 'Choose file') {
+                if ($('#SubCategoryImage').val() != '' && $('#SubCategoryImage').val() != 'Choose file') {
                     uploadphoto();
                 } else if (currentImageSrc != '') {
                     imgPath = currentImageSrc;
                 }
 
                 var model = {
-                    categoryId: categoryId,
-                    categoryName: $.trim($("#CategoryName").val()),
-                    categoryImage: imgPath,
+                    subCategoryId: subCategoryId,
+
+                    categoryId: $.trim($("#SelectCategory").val()),
+                    subCategoryName: $.trim($("#SubCategoryName").val()),
+                    subCategoryImage: imgPath,
 
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
                 $.ajax({
                     type: "POST",
-                    url: "@apiUrl/api/Category/UpdateCategory",
+                    url: "@apiUrl/api/SubCategory/UpdateSubCategory",
                     data: JSON.stringify(model),
                     contentType: "application/json; charset=utf-8",
                     headers: {
@@ -132,7 +176,7 @@
                         if (xhr.status === 200) {
                             Swal.fire({
                                 icon: "success",
-                                title: "Category Update",
+                                title: "SubCategory Update",
                                 text: "Successfully updated!",
                             }).then(function () {
                                 location.reload(); // Refresh the page
@@ -142,7 +186,7 @@
                         } else if (data.status === "Duplicate") {
                             Swal.fire({
                                 icon: "warning",
-                                title: "Category Already Exists!",
+                                title: "SubCategory Already Exists!",
                                 text: data.responseMsg,
                             }).then(function () {
                                 location.reload(); // Refresh the page
@@ -182,10 +226,10 @@
 
 
         function uploadphoto() {
-            var totalFiles = document.getElementById('CategoryImage').files.length;
+            var totalFiles = document.getElementById('SubCategoryImage').files.length;
             if (totalFiles > 0) {
                 var formData = new FormData();
-                var files = document.getElementById('CategoryImage').files;
+                var files = document.getElementById('SubCategoryImage').files;
                 formData.append("file", files[0]);
                 $.ajax(
                     {

@@ -60,6 +60,7 @@ namespace AdminApi.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Banner> Banners { get; set; }
+        public virtual DbSet<SubCategory> SubCategorys { get; set; }
 
 
 

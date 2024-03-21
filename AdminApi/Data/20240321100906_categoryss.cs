@@ -1,0 +1,825 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace AdminApi.data
+{
+    public partial class categoryss : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Temples",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 645, DateTimeKind.Local).AddTicks(8586),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(961));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "States",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 645, DateTimeKind.Local).AddTicks(4602),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 280, DateTimeKind.Local).AddTicks(6328));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Questions",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(1849),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(3569));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "QuestionMappings",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(3838),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(5251));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PushNotifications",
+                nullable: false,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 648, DateTimeKind.Local).AddTicks(4285),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 283, DateTimeKind.Local).AddTicks(6390));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Products",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 648, DateTimeKind.Local).AddTicks(8709),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(1474));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategoryTypes",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(5887),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(8455));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategoryMappings",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(7667),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(97));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategoryItems",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(9582),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 283, DateTimeKind.Local).AddTicks(1242));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategories",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(4067),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(6583));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Pandits",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(565),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(3012));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Orders",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(1788),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(5621));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "OrderItems",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(3482),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(7449));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "LiveTests",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(5714),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(7089));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Feedbacks",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(9463),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(1715));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Countries",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(7102),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(8425));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Cities",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 645, DateTimeKind.Local).AddTicks(6711),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 280, DateTimeKind.Local).AddTicks(8734));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Checkouts",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(318),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(3523));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Categories",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 648, DateTimeKind.Local).AddTicks(6858),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 283, DateTimeKind.Local).AddTicks(9379));
+
+            migrationBuilder.AddColumn<string>(
+                name: "CategoryImage",
+                table: "Categories",
+                nullable: true);
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Bookings",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(7707),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(9067));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Bhaktas",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(2401),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(4954));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Banners",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(5016),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(9460));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(6347));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7148));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 3,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7155));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 4,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7158));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 5,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7160));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 6,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7163));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 7,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7166));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 8,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7168));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 9,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7172));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 10,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 639, DateTimeKind.Local).AddTicks(7175));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroup",
+                keyColumn: "MenuGroupID",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 629, DateTimeKind.Local).AddTicks(2820));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroup",
+                keyColumn: "MenuGroupID",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 632, DateTimeKind.Local).AddTicks(942));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(1465));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2142));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 3,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2147));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 4,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2149));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 5,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2151));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 6,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2154));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 7,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2156));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 8,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2159));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 9,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2161));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 10,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(2163));
+
+            migrationBuilder.UpdateData(
+                table: "UserRole",
+                keyColumn: "UserRoleId",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 636, DateTimeKind.Local).AddTicks(514));
+
+            migrationBuilder.UpdateData(
+                table: "UserRole",
+                keyColumn: "UserRoleId",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 636, DateTimeKind.Local).AddTicks(1300));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "UserId",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 637, DateTimeKind.Local).AddTicks(4633));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "UserId",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 15, 39, 5, 637, DateTimeKind.Local).AddTicks(5625));
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "CategoryImage",
+                table: "Categories");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Temples",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(961),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 645, DateTimeKind.Local).AddTicks(8586));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "States",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 280, DateTimeKind.Local).AddTicks(6328),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 645, DateTimeKind.Local).AddTicks(4602));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Questions",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(3569),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(1849));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "QuestionMappings",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(5251),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(3838));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PushNotifications",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 283, DateTimeKind.Local).AddTicks(6390),
+                oldClrType: typeof(DateTime),
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 648, DateTimeKind.Local).AddTicks(4285));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Products",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(1474),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 648, DateTimeKind.Local).AddTicks(8709));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategoryTypes",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(8455),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(5887));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategoryMappings",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(97),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(7667));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategoryItems",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 283, DateTimeKind.Local).AddTicks(1242),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(9582));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "PoojaCategories",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(6583),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(4067));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Pandits",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(3012),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(565));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Orders",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(5621),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(1788));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "OrderItems",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(7449),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(3482));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "LiveTests",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(7089),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(5714));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Feedbacks",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(1715),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(9463));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Countries",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(8425),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 641, DateTimeKind.Local).AddTicks(7102));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Cities",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 280, DateTimeKind.Local).AddTicks(8734),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 645, DateTimeKind.Local).AddTicks(6711));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Checkouts",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(3523),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(318));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Categories",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 283, DateTimeKind.Local).AddTicks(9379),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 648, DateTimeKind.Local).AddTicks(6858));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Bookings",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 282, DateTimeKind.Local).AddTicks(9067),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 647, DateTimeKind.Local).AddTicks(7707));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Bhaktas",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 281, DateTimeKind.Local).AddTicks(4954),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 646, DateTimeKind.Local).AddTicks(2401));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Banners",
+                type: "datetime2",
+                nullable: true,
+                defaultValue: new DateTime(2024, 3, 21, 10, 31, 8, 284, DateTimeKind.Local).AddTicks(9460),
+                oldClrType: typeof(DateTime),
+                oldNullable: true,
+                oldDefaultValue: new DateTime(2024, 3, 21, 15, 39, 5, 649, DateTimeKind.Local).AddTicks(5016));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(3057));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4032));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 3,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4044));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 4,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4047));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 5,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4050));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 6,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4053));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 7,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4055));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 8,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4058));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 9,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4061));
+
+            migrationBuilder.UpdateData(
+                table: "Menu",
+                keyColumn: "MenuID",
+                keyValue: 10,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 274, DateTimeKind.Local).AddTicks(4064));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroup",
+                keyColumn: "MenuGroupID",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 265, DateTimeKind.Local).AddTicks(280));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroup",
+                keyColumn: "MenuGroupID",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 267, DateTimeKind.Local).AddTicks(2090));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(1160));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2276));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 3,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2285));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 4,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2288));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 5,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2290));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 6,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2293));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 7,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2295));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 8,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2298));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 9,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2386));
+
+            migrationBuilder.UpdateData(
+                table: "MenuGroupWiseMenuMapping",
+                keyColumn: "MenuGroupWiseMenuMappingId",
+                keyValue: 10,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 276, DateTimeKind.Local).AddTicks(2388));
+
+            migrationBuilder.UpdateData(
+                table: "UserRole",
+                keyColumn: "UserRoleId",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 269, DateTimeKind.Local).AddTicks(9858));
+
+            migrationBuilder.UpdateData(
+                table: "UserRole",
+                keyColumn: "UserRoleId",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 270, DateTimeKind.Local).AddTicks(575));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "UserId",
+                keyValue: 1,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 271, DateTimeKind.Local).AddTicks(9088));
+
+            migrationBuilder.UpdateData(
+                table: "Users",
+                keyColumn: "UserId",
+                keyValue: 2,
+                column: "DateAdded",
+                value: new DateTime(2024, 3, 21, 10, 31, 8, 272, DateTimeKind.Local).AddTicks(157));
+        }
+    }
+}
