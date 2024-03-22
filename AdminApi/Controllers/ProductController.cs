@@ -45,11 +45,13 @@ namespace AdminApi.Controllers
                     product.TempleId= createProductDTO.TempleId;
                     product.PanditId= createProductDTO.PanditId;
                     product.CategoryId = createProductDTO.CategoryId;
+                    product.SubCategoryId = createProductDTO.SubCategoryId;
                     product.ProductName = createProductDTO.ProductName;
                     product.SalePrice = createProductDTO.SalePrice;
                     product.MRP = createProductDTO.MRP;
                     product.DiscountAmount = createProductDTO.DiscountAmount;
                     product.Thumbnail = createProductDTO.Thumbnail;
+                    product.Image = createProductDTO.Image;
                     product.Image1 = createProductDTO.Image1;
                     product.Image2 = createProductDTO.Image2;
                     product.Image3 = createProductDTO.Image3;
@@ -95,11 +97,13 @@ namespace AdminApi.Controllers
                 objProduct.TempleId = updateProductDTO.TempleId;
                 objProduct.PanditId = updateProductDTO.PanditId;
                 objProduct.CategoryId = updateProductDTO.CategoryId;
+                objProduct.SubCategoryId = updateProductDTO.SubCategoryId;
                 objProduct.ProductName = updateProductDTO.ProductName;
                 objProduct.SalePrice = updateProductDTO.SalePrice;
                 objProduct.MRP = updateProductDTO.MRP;
                 objProduct.DiscountAmount = updateProductDTO.DiscountAmount;
                 objProduct.Thumbnail = updateProductDTO.Thumbnail;
+                objProduct.Image = updateProductDTO.Image;
                 objProduct.Image1 = updateProductDTO.Image1;
                 objProduct.Image2 = updateProductDTO.Image2;
                 objProduct.Image3 = updateProductDTO.Image3;
@@ -130,6 +134,7 @@ namespace AdminApi.Controllers
                             join c in _context.Categories on u.CategoryId equals c.CategoryId
                             join d in _context.Temples on u.TempleId equals d.TempleId
                             join e in _context.Pandits on u.PanditId equals e.PanditId
+                            join f in _context.SubCategorys on u.SubCategoryId equals f.SubCategoryId
 
                             select new
                             {
@@ -137,6 +142,7 @@ namespace AdminApi.Controllers
                                 u.TempleId,
                                 u.PanditId,
                                 u.CategoryId,
+                                u.SubCategoryId,
                                 u.ProductName,
                                 u.SalePrice,
                                 u.MRP,
@@ -150,6 +156,7 @@ namespace AdminApi.Controllers
                                 c.CategoryName,
                                 d.TempleName,
                                 e.PanditName,
+                                f.SubCategoryName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
@@ -220,11 +227,13 @@ namespace AdminApi.Controllers
                                 u.TempleId,
                                 u.PanditId,
                                 u.CategoryId,
+                                u.SubCategoryId,
                                 u.ProductName,
                                 u.SalePrice,
                                 u.MRP,
                                 u.DiscountAmount,
                                 u.Thumbnail,
+                                u.Image,
                                 u.Image1,
                                 u.Image2,
                                 u.Image3,

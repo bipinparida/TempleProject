@@ -164,5 +164,38 @@ namespace AdminApi.Controllers
             }
         }
 
+
+        ///<summary>
+        ///Get SubCategory List by CategoryId
+        ///</summary>
+        [HttpGet("{CategoryId}")]
+        public ActionResult GetSubCategoryListbyCategoryId(int CategoryId)
+        {
+            try
+            {
+                var list = (from u in _context.SubCategorys
+                            join a in _context.Categories on u.CategoryId equals a.CategoryId
+
+                            select new
+                            {
+                                u.SubCategoryId,
+                                u.SubCategoryName,
+                                u.SubCategoryImage,
+                                a.CategoryName,
+                                u.CategoryId,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.CategoryId == CategoryId).Distinct().ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
     }
 }
