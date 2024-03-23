@@ -61,6 +61,15 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label class="form-label">SubCategory Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectSubCategory">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label class="form-label">ProductName Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="ProductName" placeholder="Enter Product Name" required>
                             </div>
@@ -96,32 +105,14 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label"> Image1 &nbsp;</label>
-                                <input type="file" class="form-control" id="Image1" accept=".png,.jpg, .jpeg">
+                                <label class="form-label">Images &nbsp;</label>
+                                <input type="file" class="form-control" id="Images" accept=".png,.jpg, .jpeg" multiple>
+                                <small style="color:red">Only JPG and PNG files are allowed.</small>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label"> Image2 &nbsp;</label>
-                                <input type="file" class="form-control" id="Image2" accept=".png,.jpg, .jpeg">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label"> Image3 &nbsp;</label>
-                                <input type="file" class="form-control" id="Image3" accept=".png,.jpg, .jpeg">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label"> Image4 &nbsp;</label>
-                                <input type="file" class="form-control" id="Image4" accept=".png,.jpg, .jpeg">
-                            </div>
-                        </div>
-                    </div>
 
+                        
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -240,6 +231,38 @@
                 }
             });
         }
+
+        $("#SelectCategory").change(function () {
+            var vsubcategoryid = $("#SelectCategory").val()
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: '@apiUrl/api/SubCategory/GetSubCategoryListbyCategoryId/' + vsubcategoryid,
+                dataType: "json",
+                success: function (data) {
+                    var options = [];
+                    options.push('<option>Select SubCategory</option>');
+                    for (var i = 0; i < data['data'].length; i++) {
+                        //if (Id == res.data[i].stateId) {
+                        //    opt = 'selected'
+                        //} else {
+                        //    opt = '';
+                        //}
+                        options.push('<option value="' + data['data'][i].subCategoryId + '" ' + opt + '>' + data['data'][i].subCategoryName + '</option>');
+                    }
+                    $("#SelectSubCategory").html(options.join(''));
+
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        });
+
         
         $(function () {
 
@@ -255,22 +278,7 @@
                         uploadFile();
                     }
                     imgPath = '';
-                    var totalFiles = document.getElementById('Image1').files.length;
-                    if (totalFiles > 0) {
-                        uploadFile();
-                    }
-                    imgPath = '';
-                    var totalFiles = document.getElementById('Image2').files.length;
-                    if (totalFiles > 0) {
-                        uploadFile();
-                    }
-                    imgPath = '';
-                    var totalFiles = document.getElementById('Image3').files.length;
-                    if (totalFiles > 0) {
-                        uploadFile();
-                    }
-                    imgPath = '';
-                    var totalFiles = document.getElementById('Image4').files.length;
+                    var totalFiles = document.getElementById('Images').files.length;
                     if (totalFiles > 0) {
                         uploadFile();
                     }
@@ -278,15 +286,13 @@
                         templeId: parseInt($("#SelectTemple").val()),
                         panditId: parseInt($("#SelectPandit").val()),
                         categoryId: parseInt($("#SelectCategory").val()),
+                        subCategoryId: parseInt($("#SelectSubCategory").val()),
                         productName: $.trim($("#ProductName").val()),
                         salePrice: parseInt($("#SalePrice").val()),
                         mrp: parseInt($("#MRP").val()),
                         discountAmount: parseInt($("#DiscountAmount").val()),
                         thumbnail: imgPath,
-                        image1: imgPath,
-                        image2: imgPath,
-                        image3: imgPath,
-                        image4: imgPath,
+                        image: imgPath,
                         description: $.trim($("#Description").val()),
                         createdBy: @Context.Session.GetInt32("UserId"),
                     }
@@ -378,11 +384,13 @@
                 }
 
             }
+
+
             function uploadFile() {
-                var totalFiles = document.getElementById('Image1').files.length;
+                var totalFiles = document.getElementById('Image').files.length;
                 if (totalFiles > 0) {
                     var formData = new FormData();
-                    var files = document.getElementById('Image1').files;
+                    var files = document.getElementById('Image').files;
                     formData.append("file", files[0]);
                     $.ajax(
                         {
@@ -404,84 +412,7 @@
                 }
 
             }
-            function uploadFile() {
-                var totalFiles = document.getElementById('Image2').files.length;
-                if (totalFiles > 0) {
-                    var formData = new FormData();
-                    var files = document.getElementById('Image2').files;
-                    formData.append("file", files[0]);
-                    $.ajax(
-                        {
-                            url: "/Upload/ImgUpload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            async: false,
-                            type: "POST",
-                            success: function (data) {
-                                imgPath = data;
 
-                            },
-                            error: function (data) {
-                                window.location.replace('/Message/SessionExpire');
-                            }
-                        }
-                    );
-                }
-
-            }
-            function uploadFile() {
-                var totalFiles = document.getElementById('Image3').files.length;
-                if (totalFiles > 0) {
-                    var formData = new FormData();
-                    var files = document.getElementById('Image3').files;
-                    formData.append("file", files[0]);
-                    $.ajax(
-                        {
-                            url: "/Upload/ImgUpload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            async: false,
-                            type: "POST",
-                            success: function (data) {
-                                imgPath = data;
-
-                            },
-                            error: function (data) {
-                                window.location.replace('/Message/SessionExpire');
-                            }
-                        }
-                    );
-                }
-
-            }
-            function uploadFile() {
-                var totalFiles = document.getElementById('Image4').files.length;
-                if (totalFiles > 0) {
-                    var formData = new FormData();
-                    var files = document.getElementById('Image4').files;
-                    formData.append("file", files[0]);
-                    $.ajax(
-                        {
-                            url: "/Upload/ImgUpload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            async: false,
-                            type: "POST",
-                            success: function (data) {
-                                imgPath = data;
-
-                            },
-                            error: function (data) {
-                                window.location.replace('/Message/SessionExpire');
-                            }
-                        }
-                    );
-                }
-
-            }
         });
     </script>
 }
