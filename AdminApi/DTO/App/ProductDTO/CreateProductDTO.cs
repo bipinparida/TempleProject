@@ -1,4 +1,6 @@
-﻿namespace AdminApi.DTO.App.ProductDTO
+﻿using System.Collections.Generic;
+
+namespace AdminApi.DTO.App.ProductDTO
 {
     public class CreateProductDTO
     {
@@ -11,8 +13,10 @@
         public double MRP { get; set; }
         public double? DiscountAmount { get; set; }
         public string Thumbnail { get; set; }
-		public string Image { get; set; }
-		public string Image1 { get; set; }
+
+		//public List<string> Image { get; set; } = new List<string>(); // List of images
+        public string Image { get; set; }
+        public string Image1 { get; set; }
         public string Image2 { get; set; }
         public string Image3 { get; set; }
         public string Image4 { get; set; }
@@ -31,6 +35,9 @@
         public double MRP { get; set; }
         public double? DiscountAmount { get; set; }
         public string Thumbnail { get; set; }
+
+		//public List<string> Image { get; set; } = new List<string>(); // List of images
+
         public string Image { get; set; }
         public string Image1 { get; set; }
         public string Image2 { get; set; }
