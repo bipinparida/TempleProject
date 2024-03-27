@@ -68,14 +68,16 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                      
+                    
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">ProductName Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <input type="text" class="form-control" id="ProductName" placeholder="Enter Product Name" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">SalePrice &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -95,6 +97,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -103,6 +106,7 @@
                                 <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">Images &nbsp;</label>
@@ -111,17 +115,43 @@
                             </div>
                         </div>
 
-                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image1 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image1" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image2 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image2" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image3 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image3" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image4 &nbsp;</label>
+                                <input type="file" class="form-control" id="Image4" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Description  &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                @*<input type="text" class="form-control" id="Description" placeholder="Enter Description" required>*@
                                 <textarea id="Description" name="Description" rows="4" cols="25"></textarea>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="btncreate" class="btn btn-radius btn-success">Create</button>
@@ -263,7 +293,7 @@
             });
         });
 
-        
+
         $(function () {
 
             $("#btncreate").click(function (e) {
@@ -282,6 +312,26 @@
                     if (totalFiles > 0) {
                         uploadFile();
                     }
+                    imgPath = '';
+                    var totalFiles = document.getElementById('Image1').files.length;
+                    if (totalFiles > 0) {
+                        uploadFile();
+                    }
+                    imgPath = '';
+                    var totalFiles = document.getElementById('Image2').files.length;
+                    if (totalFiles > 0) {
+                        uploadFile();
+                    }
+                    imgPath = '';
+                    var totalFiles = document.getElementById('Image3').files.length;
+                    if (totalFiles > 0) {
+                        uploadFile();
+                    }
+                    imgPath = '';
+                    var totalFiles = document.getElementById('Image4').files.length;
+                    if (totalFiles > 0) {
+                        uploadFile();
+                    }
                     var model = {
                         templeId: parseInt($("#SelectTemple").val()),
                         panditId: parseInt($("#SelectPandit").val()),
@@ -292,7 +342,11 @@
                         mrp: parseInt($("#MRP").val()),
                         discountAmount: parseInt($("#DiscountAmount").val()),
                         thumbnail: imgPath,
-                        image: imgPath,
+                        images: imgPath,
+                        image1: imgPath,
+                        image2: imgPath,
+                        image3: imgPath,
+                        image4: imgPath,
                         description: $.trim($("#Description").val()),
                         createdBy: @Context.Session.GetInt32("UserId"),
                     }
@@ -385,34 +439,136 @@
 
             }
 
-
-            function uploadFile() {
+            function uploadFiles() {
                 var totalFiles = document.getElementById('Image').files.length;
                 if (totalFiles > 0) {
                     var formData = new FormData();
                     var files = document.getElementById('Image').files;
-                    formData.append("file", files[0]);
-                    $.ajax(
-                        {
-                            url: "/Upload/ImgUpload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            async: false,
-                            type: "POST",
-                            success: function (data) {
-                                imgPath = data;
-
-                            },
-                            error: function (data) {
-                                window.location.replace('/Message/SessionExpire');
-                            }
+                    for (var i = 0; i < totalFiles; i++) {
+                        formData.append("files[]", files[i]);
+                    }
+                    $.ajax({
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+                        success: function (data) {
+                            // Handle success response
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            // Handle error response
+                            window.location.replace('/Message/SessionExpire');
                         }
-                    );
+                    });
                 }
-
             }
+                    function uploadFile() {
+                        var totalFiles = document.getElementById('Image1').files.length;
+                        if (totalFiles > 0) {
+                            var formData = new FormData();
+                            var files = document.getElementById('Image1').files;
+                            formData.append("file", files[0]);
+                            $.ajax(
+                                {
+                                    url: "/Upload/ImgUpload",
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    async: false,
+                                    type: "POST",
+                                    success: function (data) {
+                                        imgPath = data;
 
-        });
+                                    },
+                                    error: function (data) {
+                                        window.location.replace('/Message/SessionExpire');
+                                    }
+                                }
+                            );
+                        }
+
+                    }
+                    function uploadFile() {
+                        var totalFiles = document.getElementById('Image2').files.length;
+                        if (totalFiles > 0) {
+                            var formData = new FormData();
+                            var files = document.getElementById('Image2').files;
+                            formData.append("file", files[0]);
+                            $.ajax(
+                                {
+                                    url: "/Upload/ImgUpload",
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    async: false,
+                                    type: "POST",
+                                    success: function (data) {
+                                        imgPath = data;
+
+                                    },
+                                    error: function (data) {
+                                        window.location.replace('/Message/SessionExpire');
+                                    }
+                                }
+                            );
+                        }
+
+                    }
+                    function uploadFile() {
+                        var totalFiles = document.getElementById('Image3').files.length;
+                        if (totalFiles > 0) {
+                            var formData = new FormData();
+                            var files = document.getElementById('Image3').files;
+                            formData.append("file", files[0]);
+                            $.ajax(
+                                {
+                                    url: "/Upload/ImgUpload",
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    async: false,
+                                    type: "POST",
+                                    success: function (data) {
+                                        imgPath = data;
+
+                                    },
+                                    error: function (data) {
+                                        window.location.replace('/Message/SessionExpire');
+                                    }
+                                }
+                            );
+                        }
+
+                    }
+                    function uploadFile() {
+                        var totalFiles = document.getElementById('Image4').files.length;
+                        if (totalFiles > 0) {
+                            var formData = new FormData();
+                            var files = document.getElementById('Image4').files;
+                            formData.append("file", files[0]);
+                            $.ajax(
+                                {
+                                    url: "/Upload/ImgUpload",
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    async: false,
+                                    type: "POST",
+                                    success: function (data) {
+                                        imgPath = data;
+
+                                    },
+                                    error: function (data) {
+                                        window.location.replace('/Message/SessionExpire');
+                                    }
+                                }
+                            );
+                        }
+
+                    }
+                });
     </script>
 }
