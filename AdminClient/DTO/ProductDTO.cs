@@ -16,13 +16,22 @@ namespace AdminClient.DTO
 		public string Thumbnail { get; set; }
 		public string Image { get; set; }
 
-		//public List<string> Image { get; set; } = new List<string>(); 
-																	 
-		public string Description { get; set; }
+        public string Image1 { get; set; }
+        public string Image2 { get; set; }
+        public string Image3 { get; set; }
+        public string Image4 { get; set; }
+
+        //public List<string> Image { get; set; } = new List<string>(); 
+
+        public string Description { get; set; }
 		public int CreatedBy { get; set; }
 
-		public IFormFile file { get; set; }
-		public List<IFormFile> files { get; set; } = new List<IFormFile>(); // For multiple images
+        public IFormFile file { get; set; }
+        public IFormFile file1 { get; set; }
+        public IFormFile file2 { get; set; }
+        public IFormFile file3 { get; set; }
+        public IFormFile file4 { get; set; }
+        public List<IFormFile> files { get; set; } = new List<IFormFile>(); // For multiple images
 	}
 
 	public class ProductViewModel
@@ -39,8 +48,13 @@ namespace AdminClient.DTO
 		public string Thumbnail { get; set; }
 		public string Image { get; set; }
 
-		//public List<string> Image { get; set; } = new List<string>(); 
-		public string Description { get; set; }
+        public string Image1 { get; set; }
+        public string Image2 { get; set; }
+        public string Image3 { get; set; }
+        public string Image4 { get; set; }
+
+        //public List<string> Image { get; set; } = new List<string>(); 
+        public string Description { get; set; }
 		public int CreatedBy { get; set; }
 
 	}
@@ -58,8 +72,13 @@ namespace AdminClient.DTO
 		public string Thumbnail { get; set; }
 		public string Image { get; set; }
 
-		//public List<string> Image { get; set; } = new List<string>(); 
-		public string Description { get; set; }
+        public string Image1 { get; set; }
+        public string Image2 { get; set; }
+        public string Image3 { get; set; }
+        public string Image4 { get; set; }
+
+        //public List<string> Image { get; set; } = new List<string>(); 
+        public string Description { get; set; }
 		public int CreatedBy { get; set; }
 
 	}
