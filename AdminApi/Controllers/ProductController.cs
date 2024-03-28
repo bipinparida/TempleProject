@@ -9,6 +9,7 @@ using System;
 using AdminApi.DTO.App.ProductDTO;
 using System.Linq;
 using AdminApi.DTO.App.CategoryDTO;
+using System.Collections.Generic;
 
 namespace AdminApi.Controllers
 {
@@ -242,57 +243,117 @@ namespace AdminApi.Controllers
             }
         }
 
-		///<summary>
-		///Gat Product List by Pandit ID
-		///</summary>
-
-		//[HttpGet("{PanditId}")]
-		//public ActionResult GetProductListbyPanditId(int PanditId)
-		//{
-		//    try
-		//    {
-		//        var list = (from u in _context.Products
-		//                    join t in _context.Pandits on u.PanditId equals t.PanditId
-
-		//                    select new
-		//                    {
-		//                        u.ProductId,
-		//                        u.TempleId,
-		//                        u.PanditId,
-		//                        u.CategoryId,
-		//                        u.SubCategoryId,
-		//                        u.ProductName,
-		//                        u.SalePrice,
-		//                        u.MRP,
-		//                        u.DiscountAmount,
-		//                        u.Thumbnail,
-		//                        u.Image,
-		//                        u.Image1,
-		//                        u.Image2,
-		//                        u.Image3,
-		//                        u.Image4,
-		//                        u.Description,
-		//                        t.PanditName,
-
-		//                        u.IsDeleted
-		//                    }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
-
-		//        int totalRecords = list.Count();
-
-		//        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-		//    }
-		//    catch (Exception ex)
-		//    {
-		//        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-		//    }
-		//}
 
 
-		[HttpGet("{PanditId}")]
-		public ActionResult GetProductListbyPanditId(int PanditId)
-		{
-			try
-			{
+        //[HttpGet("{PanditId}")]
+        //public ActionResult GetProductListbyPanditId(int PanditId)
+        //{
+        //    try
+        //    {
+        //        var list = (from u in _context.Products
+        //                    join t in _context.Pandits on u.PanditId equals t.PanditId
+
+        //                    select new
+        //                    {
+        //                        u.ProductId,
+        //                        u.TempleId,
+        //                        u.PanditId,
+        //                        u.CategoryId,
+        //                        u.SubCategoryId,
+        //                        u.ProductName,
+        //                        u.SalePrice,
+        //                        u.MRP,
+        //                        u.DiscountAmount,
+        //                        u.Thumbnail,
+        //                        u.Image,
+        //                        u.Image1,
+        //                        u.Image2,
+        //                        u.Image3,
+        //                        u.Image4,
+        //                        u.Description,
+        //                        t.PanditName,
+
+        //                        u.IsDeleted
+        //                    }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
+
+        //        int totalRecords = list.Count();
+
+        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+
+        //[HttpGet("{PanditId}")]
+        //public ActionResult GetProductListbyPanditId(int PanditId)
+        //{
+        //	try
+        //	{
+        //              var list = (from u in _context.Products
+        //                          join t in _context.Pandits on u.PanditId equals t.PanditId
+
+        //                          select new
+        //                          {
+        //                              u.ProductId,
+        //                              u.TempleId,
+        //                              u.PanditId,
+        //                              u.CategoryId,
+        //                              u.SubCategoryId,
+        //                              u.ProductName,
+        //                              u.SalePrice,
+        //                              u.MRP,
+        //                              u.DiscountAmount,
+        //                              u.Thumbnail,
+        //                              u.Image,
+        //                              u.Description,
+        //                              t.PanditName,
+        //                              u.IsDeleted
+        //                          }).ToList();
+
+        //              var productsArrayImages = list.Select(item =>
+        //			new
+        //			{
+        //				ProductId = item.ProductId,
+        //				TempleId = item.TempleId,
+        //				PanditId = item.PanditId,
+        //				PanditName = item.PanditName,
+        //				CategoryId = item.CategoryId,
+        //				SubCategoryId = item.SubCategoryId,
+        //				ProductName = item.ProductName,
+        //				SalePrice = item.SalePrice,
+        //				MRP = item.MRP,
+        //				DiscountAmount = item.DiscountAmount,
+        //				Description = item.Description,
+        //				Thumbnail = item.Thumbnail,
+
+        //				Image = item.Image?.Split(',').Select(image =>
+        //				   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
+
+        //				IsDeleted = item.IsDeleted,
+
+        //			}).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
+
+        //		int totalRecords = productsArrayImages.Count();
+
+        //		return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //	}
+        //}
+
+        ///<summary>
+        ///Gat Product List by Pandit ID
+        ///</summary>
+        [HttpGet("{PanditId}")]
+        public ActionResult GetProductListbyPanditId(int PanditId)
+        {
+            try
+            {
                 var list = (from u in _context.Products
                             join t in _context.Pandits on u.PanditId equals t.PanditId
 
@@ -308,234 +369,451 @@ namespace AdminApi.Controllers
                                 u.MRP,
                                 u.DiscountAmount,
                                 u.Thumbnail,
-                                u.Image,
+                                u.Image1,
+                                u.Image2,
+                                u.Image3,
+                                u.Image4,
                                 u.Description,
                                 t.PanditName,
                                 u.IsDeleted
                             }).ToList();
 
                 var productsArrayImages = list.Select(item =>
-					new
-					{
-						ProductId = item.ProductId,
-						TempleId = item.TempleId,
-						PanditId = item.PanditId,
-						PanditName = item.PanditName,
-						CategoryId = item.CategoryId,
-						SubCategoryId = item.SubCategoryId,
-						ProductName = item.ProductName,
-						SalePrice = item.SalePrice,
-						MRP = item.MRP,
-						DiscountAmount = item.DiscountAmount,
-						Description = item.Description,
-						Thumbnail = item.Thumbnail,
-						
-						Image = item.Image?.Split(',').Select(image =>
-						   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
+                    new
+                    {
+                        ProductId = item.ProductId,
+                        TempleId = item.TempleId,
+                        PanditId = item.PanditId,
+                        PanditName = item.PanditName,
+                        CategoryId = item.CategoryId,
+                        SubCategoryId = item.SubCategoryId,
+                        ProductName = item.ProductName,
+                        SalePrice = item.SalePrice,
+                        MRP = item.MRP,
+                        DiscountAmount = item.DiscountAmount,
+                        Description = item.Description,
+                        Thumbnail = item.Thumbnail,
 
-						IsDeleted = item.IsDeleted,
-
-					}).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
-
-				int totalRecords = productsArrayImages.Count();
-
-				return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-			}
-			catch (Exception ex)
-			{
-				return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-			}
-		}
-
-		///<summary>
-		///Gat Product List by Temple ID
-		///</summary>
-	
-		[HttpGet("{TempleId}")]
-		public ActionResult GetProductListbyTempleId(int TempleId)
-		{
-			try
-			{
-				var list = (from u in _context.Products
-							join t in _context.Temples on u.TempleId equals t.TempleId
-
-							select new
-							{
-								u.ProductId,
-								u.TempleId,
-								u.PanditId,
-								u.CategoryId,
-								u.SubCategoryId,
-								u.ProductName,
-								u.SalePrice,
-								u.MRP,
-								u.DiscountAmount,
-								u.Thumbnail,
-								u.Image,
-								u.Description,
-								t.TempleName,
-								u.IsDeleted
-							}).ToList();
-
-				var productsArrayImages = list.Select(item =>
-					new
-					{
-						ProductId = item.ProductId,
-						TempleId = item.TempleId,
-						TempleName = item.TempleName,
-						PanditId = item.PanditId,
-						CategoryId = item.CategoryId,
-						SubCategoryId = item.SubCategoryId,
-						ProductName = item.ProductName,
-						SalePrice = item.SalePrice,
-						MRP = item.MRP,
-						DiscountAmount = item.DiscountAmount,
-						Description = item.Description,
-						Thumbnail = item.Thumbnail,
-
-						Image = item.Image?.Split(',').Select(image =>
-						   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
-
-						IsDeleted = item.IsDeleted,
-
-					}).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
-
-				int totalRecords = productsArrayImages.Count();
-
-				return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-			}
-			catch (Exception ex)
-			{
-				return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-			}
-		}
+                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
+    .Where(image => !string.IsNullOrEmpty(image))
+    .Select(image => new { Image = image.Trim() })
+    .ToList(),
 
 
-		///<summary>
-		///Gat Product List by Category ID
-		///</summary>
+                        IsDeleted = item.IsDeleted,
 
-		[HttpGet("{CategoryId}")]
-		public ActionResult GetProductListbyCategoryId(int CategoryId)
-		{
-			try
-			{
-				var list = (from u in _context.Products
-							join t in _context.Categories on u.CategoryId equals t.CategoryId
+                    }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
 
-							select new
-							{
-								u.ProductId,
-								u.TempleId,
-								u.PanditId,
-								u.CategoryId,
-								u.SubCategoryId,
-								u.ProductName,
-								u.SalePrice,
-								u.MRP,
-								u.DiscountAmount,
-								u.Thumbnail,
-								u.Image,
-								u.Description,
-								t.CategoryName,
-								u.IsDeleted
-							}).ToList();
+                int totalRecords = productsArrayImages.Count();
 
-				var productsArrayImages = list.Select(item =>
-					new
-					{
-						ProductId = item.ProductId,
-						TempleId = item.TempleId,
-						PanditId = item.PanditId,
-						CategoryId = item.CategoryId,
-						CategoryName = item.CategoryName,
-						SubCategoryId = item.SubCategoryId,
-						ProductName = item.ProductName,
-						SalePrice = item.SalePrice,
-						MRP = item.MRP,
-						DiscountAmount = item.DiscountAmount,
-						Description = item.Description,
-						Thumbnail = item.Thumbnail,
+                return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
 
-						Image = item.Image?.Split(',').Select(image =>
-						   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
 
-						IsDeleted = item.IsDeleted,
 
-					}).Where(x => x.IsDeleted == false && x.CategoryId == CategoryId).ToList();
+        /////<summary>
+        /////Gat Product List by Temple ID
+        /////</summary>
 
-				int totalRecords = productsArrayImages.Count();
+        //[HttpGet("{TempleId}")]
+        //public ActionResult GetProductListbyTempleId(int TempleId)
+        //{
+        //	try
+        //	{
+        //		var list = (from u in _context.Products
+        //					join t in _context.Temples on u.TempleId equals t.TempleId
 
-				return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-			}
-			catch (Exception ex)
-			{
-				return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-			}
-		}
+        //					select new
+        //					{
+        //						u.ProductId,
+        //						u.TempleId,
+        //						u.PanditId,
+        //						u.CategoryId,
+        //						u.SubCategoryId,
+        //						u.ProductName,
+        //						u.SalePrice,
+        //						u.MRP,
+        //						u.DiscountAmount,
+        //						u.Thumbnail,
+        //						u.Image,
+        //						u.Description,
+        //						t.TempleName,
+        //						u.IsDeleted
+        //					}).ToList();
 
-		///<summary>
-		///Gat Product List by SubCategory ID
-		///</summary>
+        //		var productsArrayImages = list.Select(item =>
+        //			new
+        //			{
+        //				ProductId = item.ProductId,
+        //				TempleId = item.TempleId,
+        //				TempleName = item.TempleName,
+        //				PanditId = item.PanditId,
+        //				CategoryId = item.CategoryId,
+        //				SubCategoryId = item.SubCategoryId,
+        //				ProductName = item.ProductName,
+        //				SalePrice = item.SalePrice,
+        //				MRP = item.MRP,
+        //				DiscountAmount = item.DiscountAmount,
+        //				Description = item.Description,
+        //				Thumbnail = item.Thumbnail,
 
-		[HttpGet("{SubCategoryId}")]
-		public ActionResult GetProductListbySubCategoryId(int SubCategoryId)
-		{
-			try
-			{
-				var list = (from u in _context.Products
-							join t in _context.SubCategorys on u.SubCategoryId equals t.SubCategoryId
+        //				Image = item.Image?.Split(',').Select(image =>
+        //				   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
 
-							select new
-							{
-								u.ProductId,
-								u.TempleId,
-								u.PanditId,
-								u.CategoryId,
-								u.SubCategoryId,
-								u.ProductName,
-								u.SalePrice,
-								u.MRP,
-								u.DiscountAmount,
-								u.Thumbnail,
-								u.Image,
-								u.Description,
-								t.SubCategoryName,
-								u.IsDeleted
-							}).ToList();
+        //				IsDeleted = item.IsDeleted,
 
-				var productsArrayImages = list.Select(item =>
-					new
-					{
-						ProductId = item.ProductId,
-						TempleId = item.TempleId,
-						PanditId = item.PanditId,
-						CategoryId = item.CategoryId,
-						SubCategoryId = item.SubCategoryId,
-						SubCategoryName = item.SubCategoryName,
-						ProductName = item.ProductName,
-						SalePrice = item.SalePrice,
-						MRP = item.MRP,
-						DiscountAmount = item.DiscountAmount,
-						Description = item.Description,
-						Thumbnail = item.Thumbnail,
+        //			}).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
 
-						Image = item.Image?.Split(',').Select(image =>
-						   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
+        //		int totalRecords = productsArrayImages.Count();
 
-						IsDeleted = item.IsDeleted,
+        //		return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //	}
+        //}
 
-					}).Where(x => x.IsDeleted == false && x.SubCategoryId == SubCategoryId).ToList();
 
-				int totalRecords = productsArrayImages.Count();
+        ///<summary>
+        ///Gat Product List by Temple ID
+        ///</summary>
 
-				return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-			}
-			catch (Exception ex)
-			{
-				return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-			}
-		}
+        [HttpGet("{TempleId}")]
+        public ActionResult GetProductListbyTempleId(int TempleId)
+        {
+            try
+            {
+                var list = (from u in _context.Products
+                            join t in _context.Temples on u.TempleId equals t.TempleId
 
-	}
+                            select new
+                            {
+                                u.ProductId,
+                                u.TempleId,
+                                u.PanditId,
+                                u.CategoryId,
+                                u.SubCategoryId,
+                                u.ProductName,
+                                u.SalePrice,
+                                u.MRP,
+                                u.DiscountAmount,
+                                u.Thumbnail,
+                                u.Image1,
+                                u.Image2,
+                                u.Image3,
+                                u.Image4,
+                                u.Description,
+                                t.TempleName,
+                                u.IsDeleted
+                            }).ToList();
+
+                var productsArrayImages = list.Select(item =>
+                    new
+                    {
+                        ProductId = item.ProductId,
+                        TempleId = item.TempleId,
+                        TempleName = item.TempleName,
+                        PanditId = item.PanditId,
+                        CategoryId = item.CategoryId,
+                        SubCategoryId = item.SubCategoryId,
+                        ProductName = item.ProductName,
+                        SalePrice = item.SalePrice,
+                        MRP = item.MRP,
+                        DiscountAmount = item.DiscountAmount,
+                        Description = item.Description,
+                        Thumbnail = item.Thumbnail,
+
+
+                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
+    .Where(image => !string.IsNullOrEmpty(image))
+    .Select(image => new { Image = image.Trim() })
+    .ToList(),
+
+                        IsDeleted = item.IsDeleted,
+
+                    }).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
+
+                int totalRecords = productsArrayImages.Count();
+
+                return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+
+        /////<summary>
+        /////Gat Product List by Category ID
+        /////</summary>
+
+        //[HttpGet("{CategoryId}")]
+        //public ActionResult GetProductListbyCategoryId(int CategoryId)
+        //{
+        //	try
+        //	{
+        //		var list = (from u in _context.Products
+        //					join t in _context.Categories on u.CategoryId equals t.CategoryId
+
+        //					select new
+        //					{
+        //						u.ProductId,
+        //						u.TempleId,
+        //						u.PanditId,
+        //						u.CategoryId,
+        //						u.SubCategoryId,
+        //						u.ProductName,
+        //						u.SalePrice,
+        //						u.MRP,
+        //						u.DiscountAmount,
+        //						u.Thumbnail,
+        //						u.Image,
+        //						u.Description,
+        //						t.CategoryName,
+        //						u.IsDeleted
+        //					}).ToList();
+
+        //		var productsArrayImages = list.Select(item =>
+        //			new
+        //			{
+        //				ProductId = item.ProductId,
+        //				TempleId = item.TempleId,
+        //				PanditId = item.PanditId,
+        //				CategoryId = item.CategoryId,
+        //				CategoryName = item.CategoryName,
+        //				SubCategoryId = item.SubCategoryId,
+        //				ProductName = item.ProductName,
+        //				SalePrice = item.SalePrice,
+        //				MRP = item.MRP,
+        //				DiscountAmount = item.DiscountAmount,
+        //				Description = item.Description,
+        //				Thumbnail = item.Thumbnail,
+
+        //				Image = item.Image?.Split(',').Select(image =>
+        //				   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
+
+        //				IsDeleted = item.IsDeleted,
+
+        //			}).Where(x => x.IsDeleted == false && x.CategoryId == CategoryId).ToList();
+
+        //		int totalRecords = productsArrayImages.Count();
+
+        //		return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //	}
+        //}
+
+
+        ///<summary>
+        ///Gat Product List by Category ID
+        ///</summary>
+        [HttpGet("{CategoryId}")]
+        public ActionResult GetProductListbyCategoryId(int CategoryId)
+        {
+            try
+            {
+                var list = (from u in _context.Products
+                            join t in _context.Categories on u.CategoryId equals t.CategoryId
+
+                            select new
+                            {
+                                u.ProductId,
+                                u.TempleId,
+                                u.PanditId,
+                                u.CategoryId,
+                                u.SubCategoryId,
+                                u.ProductName,
+                                u.SalePrice,
+                                u.MRP,
+                                u.DiscountAmount,
+                                u.Thumbnail,
+                                u.Image1,
+                                u.Image2,
+                                u.Image3,
+                                u.Image4,
+                                u.Description,
+                                t.CategoryName,
+                                u.IsDeleted
+                            }).ToList();
+
+                var productsArrayImages = list.Select(item =>
+                    new
+                    {
+                        ProductId = item.ProductId,
+                        TempleId = item.TempleId,
+                        PanditId = item.PanditId,
+                        CategoryId = item.CategoryId,
+                        CategoryName = item.CategoryName,
+                        SubCategoryId = item.SubCategoryId,
+                        ProductName = item.ProductName,
+                        SalePrice = item.SalePrice,
+                        MRP = item.MRP,
+                        DiscountAmount = item.DiscountAmount,
+                        Description = item.Description,
+                        Thumbnail = item.Thumbnail,
+
+
+                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
+    .Where(image => !string.IsNullOrEmpty(image))
+    .Select(image => new { Image = image.Trim() })
+    .ToList(),
+
+
+                        IsDeleted = item.IsDeleted,
+
+                    }).Where(x => x.IsDeleted == false && x.CategoryId == CategoryId).ToList();
+
+                int totalRecords = productsArrayImages.Count();
+
+                return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+        /////<summary>
+        /////Gat Product List by SubCategory ID
+        /////</summary>
+
+        //[HttpGet("{SubCategoryId}")]
+        //public ActionResult GetProductListbySubCategoryId(int SubCategoryId)
+        //{
+        //	try
+        //	{
+        //		var list = (from u in _context.Products
+        //					join t in _context.SubCategorys on u.SubCategoryId equals t.SubCategoryId
+
+        //					select new
+        //					{
+        //						u.ProductId,
+        //						u.TempleId,
+        //						u.PanditId,
+        //						u.CategoryId,
+        //						u.SubCategoryId,
+        //						u.ProductName,
+        //						u.SalePrice,
+        //						u.MRP,
+        //						u.DiscountAmount,
+        //						u.Thumbnail,
+        //						u.Image,
+        //						u.Description,
+        //						t.SubCategoryName,
+        //						u.IsDeleted
+        //					}).ToList();
+
+        //		var productsArrayImages = list.Select(item =>
+        //			new
+        //			{
+        //				ProductId = item.ProductId,
+        //				TempleId = item.TempleId,
+        //				PanditId = item.PanditId,
+        //				CategoryId = item.CategoryId,
+        //				SubCategoryId = item.SubCategoryId,
+        //				SubCategoryName = item.SubCategoryName,
+        //				ProductName = item.ProductName,
+        //				SalePrice = item.SalePrice,
+        //				MRP = item.MRP,
+        //				DiscountAmount = item.DiscountAmount,
+        //				Description = item.Description,
+        //				Thumbnail = item.Thumbnail,
+
+        //				Image = item.Image?.Split(',').Select(image =>
+        //				   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
+
+        //				IsDeleted = item.IsDeleted,
+
+        //			}).Where(x => x.IsDeleted == false && x.SubCategoryId == SubCategoryId).ToList();
+
+        //		int totalRecords = productsArrayImages.Count();
+
+        //		return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //	}
+        //	catch (Exception ex)
+        //	{
+        //		return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //	}
+        //}
+
+
+
+        ///<summary>
+        ///Gat Product List by SubCategory ID
+        ///</summary>
+        [HttpGet("{SubCategoryId}")]
+        public ActionResult GetProductListbySubCategoryId(int SubCategoryId)
+        {
+            try
+            {
+                var list = (from u in _context.Products
+                            join t in _context.SubCategorys on u.SubCategoryId equals t.SubCategoryId
+
+                            select new
+                            {
+                                u.ProductId,
+                                u.TempleId,
+                                u.PanditId,
+                                u.CategoryId,
+                                u.SubCategoryId,
+                                u.ProductName,
+                                u.SalePrice,
+                                u.MRP,
+                                u.DiscountAmount,
+                                u.Thumbnail,
+                                u.Image1,
+                                u.Image2,
+                                u.Image3,
+                                u.Image4,
+                                u.Description,
+                                t.SubCategoryName,
+                                u.IsDeleted
+                            }).ToList();
+
+                var productsArrayImages = list.Select(item =>
+                    new
+                    {
+                        ProductId = item.ProductId,
+                        TempleId = item.TempleId,
+                        PanditId = item.PanditId,
+                        CategoryId = item.CategoryId,
+                        SubCategoryId = item.SubCategoryId,
+                        SubCategoryName = item.SubCategoryName,
+                        ProductName = item.ProductName,
+                        SalePrice = item.SalePrice,
+                        MRP = item.MRP,
+                        DiscountAmount = item.DiscountAmount,
+                        Description = item.Description,
+                        Thumbnail = item.Thumbnail,
+
+                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
+    .Where(image => !string.IsNullOrEmpty(image))
+    .Select(image => new { Image = image.Trim() })
+    .ToList(),
+
+                        IsDeleted = item.IsDeleted,
+
+                    }).Where(x => x.IsDeleted == false && x.SubCategoryId == SubCategoryId).ToList();
+
+                int totalRecords = productsArrayImages.Count();
+
+                return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+    }
 }
