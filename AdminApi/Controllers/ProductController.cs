@@ -36,15 +36,13 @@ namespace AdminApi.Controllers
         [HttpPost]
         public IActionResult ProductCreate(CreateProductDTO createProductDTO)
         {
-            var objcheck = _context.Products.SingleOrDefault(opt =>opt.TempleId==createProductDTO.TempleId && opt.PanditId==createProductDTO.PanditId && opt.ProductName == createProductDTO.ProductName && opt.IsDeleted == false);
+            var objcheck = _context.Products.SingleOrDefault(opt => opt.ProductName == createProductDTO.ProductName && opt.IsDeleted == false);
             try
             {
                 if (objcheck == null)
                 {
                     Product product = new Product();
 
-                    product.TempleId= createProductDTO.TempleId;
-                    product.PanditId= createProductDTO.PanditId;
                     product.CategoryId = createProductDTO.CategoryId;
                     product.SubCategoryId = createProductDTO.SubCategoryId;
                     product.ProductName = createProductDTO.ProductName;
@@ -52,21 +50,6 @@ namespace AdminApi.Controllers
                     product.MRP = createProductDTO.MRP;
                     product.DiscountAmount = createProductDTO.DiscountAmount;
                     product.Thumbnail = createProductDTO.Thumbnail;
-
-
-                    //product.Image = string.Join(",", createProductDTO.Image); // Join multiple images with comma
-
-
-					//if (createProductDTO.Image != null && createProductDTO.Image.Any())
-					//{
-					//	// Join the list of images into a comma-separated string
-					//	product.Image = string.Join(",", createProductDTO.Image); // Join multiple images with comma
-					//}
-					//else
-					//{
-					//	product.Image = null; // or an empty string depending on your database schema
-					//}
-
 
                     product.Image = createProductDTO.Image;
                     product.Image1 = createProductDTO.Image1;
@@ -105,15 +88,13 @@ namespace AdminApi.Controllers
             try
             {
                 var objProduct = _context.Products.SingleOrDefault(opt => opt.ProductId == updateProductDTO.ProductId);
-                var existingProduct = _context.Products.SingleOrDefault(opt => opt.TempleId==updateProductDTO.TempleId && opt.PanditId==updateProductDTO.PanditId && opt.ProductName == updateProductDTO.ProductName && opt.ProductId != updateProductDTO.ProductId && opt.IsDeleted == false);
-
+                //var existingProduct = _context.Products.SingleOrDefault(opt => opt.TempleId==updateProductDTO.TempleId && opt.PanditId==updateProductDTO.PanditId && opt.ProductName == updateProductDTO.ProductName && opt.ProductId != updateProductDTO.ProductId && opt.IsDeleted == false);
+                var existingProduct = _context.Products.SingleOrDefault(opt => opt.ProductName == updateProductDTO.ProductName && opt.ProductId != updateProductDTO.ProductId && opt.IsDeleted == false);
                 if (existingProduct != null)
                 {
                     return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = "Duplicate ProductName..!" });
                 }
 
-                objProduct.TempleId = updateProductDTO.TempleId;
-                objProduct.PanditId = updateProductDTO.PanditId;
                 objProduct.CategoryId = updateProductDTO.CategoryId;
                 objProduct.SubCategoryId = updateProductDTO.SubCategoryId;
                 objProduct.ProductName = updateProductDTO.ProductName;
@@ -123,23 +104,11 @@ namespace AdminApi.Controllers
                 objProduct.Thumbnail = updateProductDTO.Thumbnail;
 
 
-				//if (updateProductDTO.Image != null && updateProductDTO.Image.Any())
-				//{
-				//	// Join the list of images into a comma-separated string
-				//	objProduct.Image = string.Join(",", updateProductDTO.Image); // Join multiple images with comma
-				//}
-				//else
-				//{
-				//	objProduct.Image = null; // or an empty string depending on your database schema
-				//}
-
                 objProduct.Image = updateProductDTO.Image;
-
                 objProduct.Image1 = updateProductDTO.Image1;
                 objProduct.Image2 = updateProductDTO.Image2;
                 objProduct.Image3 = updateProductDTO.Image3;
                 objProduct.Image4 = updateProductDTO.Image4;
-
                 objProduct.Description = updateProductDTO.Description;
 
                 objProduct.UpdatedBy = updateProductDTO.UpdatedBy;
@@ -164,15 +133,11 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Products
                             join c in _context.Categories on u.CategoryId equals c.CategoryId
-                            join d in _context.Temples on u.TempleId equals d.TempleId
-                            join e in _context.Pandits on u.PanditId equals e.PanditId
                             join f in _context.SubCategorys on u.SubCategoryId equals f.SubCategoryId
 
                             select new
                             {
                                 u.ProductId,
-                                u.TempleId,
-                                u.PanditId,
                                 u.CategoryId,
                                 u.SubCategoryId,
                                 u.ProductName,
@@ -187,8 +152,6 @@ namespace AdminApi.Controllers
                                 u.Image4,
                                 u.Description,
                                 c.CategoryName,
-                                d.TempleName,
-                                e.PanditName,
                                 f.SubCategoryName,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
@@ -242,313 +205,6 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
-
-
-
-        //[HttpGet("{PanditId}")]
-        //public ActionResult GetProductListbyPanditId(int PanditId)
-        //{
-        //    try
-        //    {
-        //        var list = (from u in _context.Products
-        //                    join t in _context.Pandits on u.PanditId equals t.PanditId
-
-        //                    select new
-        //                    {
-        //                        u.ProductId,
-        //                        u.TempleId,
-        //                        u.PanditId,
-        //                        u.CategoryId,
-        //                        u.SubCategoryId,
-        //                        u.ProductName,
-        //                        u.SalePrice,
-        //                        u.MRP,
-        //                        u.DiscountAmount,
-        //                        u.Thumbnail,
-        //                        u.Image,
-        //                        u.Image1,
-        //                        u.Image2,
-        //                        u.Image3,
-        //                        u.Image4,
-        //                        u.Description,
-        //                        t.PanditName,
-
-        //                        u.IsDeleted
-        //                    }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
-
-        //        int totalRecords = list.Count();
-
-        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-        //    }
-        //}
-
-
-        //[HttpGet("{PanditId}")]
-        //public ActionResult GetProductListbyPanditId(int PanditId)
-        //{
-        //	try
-        //	{
-        //              var list = (from u in _context.Products
-        //                          join t in _context.Pandits on u.PanditId equals t.PanditId
-
-        //                          select new
-        //                          {
-        //                              u.ProductId,
-        //                              u.TempleId,
-        //                              u.PanditId,
-        //                              u.CategoryId,
-        //                              u.SubCategoryId,
-        //                              u.ProductName,
-        //                              u.SalePrice,
-        //                              u.MRP,
-        //                              u.DiscountAmount,
-        //                              u.Thumbnail,
-        //                              u.Image,
-        //                              u.Description,
-        //                              t.PanditName,
-        //                              u.IsDeleted
-        //                          }).ToList();
-
-        //              var productsArrayImages = list.Select(item =>
-        //			new
-        //			{
-        //				ProductId = item.ProductId,
-        //				TempleId = item.TempleId,
-        //				PanditId = item.PanditId,
-        //				PanditName = item.PanditName,
-        //				CategoryId = item.CategoryId,
-        //				SubCategoryId = item.SubCategoryId,
-        //				ProductName = item.ProductName,
-        //				SalePrice = item.SalePrice,
-        //				MRP = item.MRP,
-        //				DiscountAmount = item.DiscountAmount,
-        //				Description = item.Description,
-        //				Thumbnail = item.Thumbnail,
-
-        //				Image = item.Image?.Split(',').Select(image =>
-        //				   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
-
-        //				IsDeleted = item.IsDeleted,
-
-        //			}).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
-
-        //		int totalRecords = productsArrayImages.Count();
-
-        //		return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-        //	}
-        //	catch (Exception ex)
-        //	{
-        //		return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-        //	}
-        //}
-
-        ///<summary>
-        ///Gat Product List by Pandit ID
-        ///</summary>
-        [HttpGet("{PanditId}")]
-        public ActionResult GetProductListbyPanditId(int PanditId)
-        {
-            try
-            {
-                var list = (from u in _context.Products
-                            join t in _context.Pandits on u.PanditId equals t.PanditId
-
-                            select new
-                            {
-                                u.ProductId,
-                                u.TempleId,
-                                u.PanditId,
-                                u.CategoryId,
-                                u.SubCategoryId,
-                                u.ProductName,
-                                u.SalePrice,
-                                u.MRP,
-                                u.DiscountAmount,
-                                u.Thumbnail,
-                                u.Image1,
-                                u.Image2,
-                                u.Image3,
-                                u.Image4,
-                                u.Description,
-                                t.PanditName,
-                                u.IsDeleted
-                            }).ToList();
-
-                var productsArrayImages = list.Select(item =>
-                    new
-                    {
-                        ProductId = item.ProductId,
-                        TempleId = item.TempleId,
-                        PanditId = item.PanditId,
-                        PanditName = item.PanditName,
-                        CategoryId = item.CategoryId,
-                        SubCategoryId = item.SubCategoryId,
-                        ProductName = item.ProductName,
-                        SalePrice = item.SalePrice,
-                        MRP = item.MRP,
-                        DiscountAmount = item.DiscountAmount,
-                        Description = item.Description,
-                        Thumbnail = item.Thumbnail,
-
-                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
-    .Where(image => !string.IsNullOrEmpty(image))
-    .Select(image => new { Image = image.Trim() })
-    .ToList(),
-
-
-                        IsDeleted = item.IsDeleted,
-
-                    }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).ToList();
-
-                int totalRecords = productsArrayImages.Count();
-
-                return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-            }
-            catch (Exception ex)
-            {
-                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-            }
-        }
-
-
-
-        /////<summary>
-        /////Gat Product List by Temple ID
-        /////</summary>
-
-        //[HttpGet("{TempleId}")]
-        //public ActionResult GetProductListbyTempleId(int TempleId)
-        //{
-        //	try
-        //	{
-        //		var list = (from u in _context.Products
-        //					join t in _context.Temples on u.TempleId equals t.TempleId
-
-        //					select new
-        //					{
-        //						u.ProductId,
-        //						u.TempleId,
-        //						u.PanditId,
-        //						u.CategoryId,
-        //						u.SubCategoryId,
-        //						u.ProductName,
-        //						u.SalePrice,
-        //						u.MRP,
-        //						u.DiscountAmount,
-        //						u.Thumbnail,
-        //						u.Image,
-        //						u.Description,
-        //						t.TempleName,
-        //						u.IsDeleted
-        //					}).ToList();
-
-        //		var productsArrayImages = list.Select(item =>
-        //			new
-        //			{
-        //				ProductId = item.ProductId,
-        //				TempleId = item.TempleId,
-        //				TempleName = item.TempleName,
-        //				PanditId = item.PanditId,
-        //				CategoryId = item.CategoryId,
-        //				SubCategoryId = item.SubCategoryId,
-        //				ProductName = item.ProductName,
-        //				SalePrice = item.SalePrice,
-        //				MRP = item.MRP,
-        //				DiscountAmount = item.DiscountAmount,
-        //				Description = item.Description,
-        //				Thumbnail = item.Thumbnail,
-
-        //				Image = item.Image?.Split(',').Select(image =>
-        //				   new { Image = image.Trim() }) ?? Enumerable.Empty<object>(),
-
-        //				IsDeleted = item.IsDeleted,
-
-        //			}).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
-
-        //		int totalRecords = productsArrayImages.Count();
-
-        //		return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-        //	}
-        //	catch (Exception ex)
-        //	{
-        //		return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-        //	}
-        //}
-
-
-        ///<summary>
-        ///Gat Product List by Temple ID
-        ///</summary>
-
-        [HttpGet("{TempleId}")]
-        public ActionResult GetProductListbyTempleId(int TempleId)
-        {
-            try
-            {
-                var list = (from u in _context.Products
-                            join t in _context.Temples on u.TempleId equals t.TempleId
-
-                            select new
-                            {
-                                u.ProductId,
-                                u.TempleId,
-                                u.PanditId,
-                                u.CategoryId,
-                                u.SubCategoryId,
-                                u.ProductName,
-                                u.SalePrice,
-                                u.MRP,
-                                u.DiscountAmount,
-                                u.Thumbnail,
-                                u.Image1,
-                                u.Image2,
-                                u.Image3,
-                                u.Image4,
-                                u.Description,
-                                t.TempleName,
-                                u.IsDeleted
-                            }).ToList();
-
-                var productsArrayImages = list.Select(item =>
-                    new
-                    {
-                        ProductId = item.ProductId,
-                        TempleId = item.TempleId,
-                        TempleName = item.TempleName,
-                        PanditId = item.PanditId,
-                        CategoryId = item.CategoryId,
-                        SubCategoryId = item.SubCategoryId,
-                        ProductName = item.ProductName,
-                        SalePrice = item.SalePrice,
-                        MRP = item.MRP,
-                        DiscountAmount = item.DiscountAmount,
-                        Description = item.Description,
-                        Thumbnail = item.Thumbnail,
-
-
-                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
-    .Where(image => !string.IsNullOrEmpty(image))
-    .Select(image => new { Image = image.Trim() })
-    .ToList(),
-
-                        IsDeleted = item.IsDeleted,
-
-                    }).Where(x => x.IsDeleted == false && x.TempleId == TempleId).ToList();
-
-                int totalRecords = productsArrayImages.Count();
-
-                return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
-            }
-            catch (Exception ex)
-            {
-                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
-            }
-        }
-
 
 
         /////<summary>
@@ -629,8 +285,8 @@ namespace AdminApi.Controllers
                             select new
                             {
                                 u.ProductId,
-                                u.TempleId,
-                                u.PanditId,
+                                //u.TempleId,
+                                //u.PanditId,
                                 u.CategoryId,
                                 u.SubCategoryId,
                                 u.ProductName,
@@ -638,6 +294,7 @@ namespace AdminApi.Controllers
                                 u.MRP,
                                 u.DiscountAmount,
                                 u.Thumbnail,
+                                u.Image,
                                 u.Image1,
                                 u.Image2,
                                 u.Image3,
@@ -651,8 +308,8 @@ namespace AdminApi.Controllers
                     new
                     {
                         ProductId = item.ProductId,
-                        TempleId = item.TempleId,
-                        PanditId = item.PanditId,
+                        //TempleId = item.TempleId,
+                        //PanditId = item.PanditId,
                         CategoryId = item.CategoryId,
                         CategoryName = item.CategoryName,
                         SubCategoryId = item.SubCategoryId,
@@ -664,7 +321,7 @@ namespace AdminApi.Controllers
                         Thumbnail = item.Thumbnail,
 
 
-                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
+                        Images = new List<string> { item.Image,item.Image1, item.Image2, item.Image3, item.Image4 }
     .Where(image => !string.IsNullOrEmpty(image))
     .Select(image => new { Image = image.Trim() })
     .ToList(),
@@ -763,8 +420,8 @@ namespace AdminApi.Controllers
                             select new
                             {
                                 u.ProductId,
-                                u.TempleId,
-                                u.PanditId,
+                                //u.TempleId,
+                                //u.PanditId,
                                 u.CategoryId,
                                 u.SubCategoryId,
                                 u.ProductName,
@@ -772,6 +429,7 @@ namespace AdminApi.Controllers
                                 u.MRP,
                                 u.DiscountAmount,
                                 u.Thumbnail,
+                                u.Image,
                                 u.Image1,
                                 u.Image2,
                                 u.Image3,
@@ -785,8 +443,8 @@ namespace AdminApi.Controllers
                     new
                     {
                         ProductId = item.ProductId,
-                        TempleId = item.TempleId,
-                        PanditId = item.PanditId,
+                        //TempleId = item.TempleId,
+                        //PanditId = item.PanditId,
                         CategoryId = item.CategoryId,
                         SubCategoryId = item.SubCategoryId,
                         SubCategoryName = item.SubCategoryName,
@@ -797,7 +455,7 @@ namespace AdminApi.Controllers
                         Description = item.Description,
                         Thumbnail = item.Thumbnail,
 
-                        Images = new List<string> { item.Image1, item.Image2, item.Image3, item.Image4 }
+                        Images = new List<string> { item.Image, item.Image1, item.Image2, item.Image3, item.Image4 }
     .Where(image => !string.IsNullOrEmpty(image))
     .Select(image => new { Image = image.Trim() })
     .ToList(),
@@ -815,5 +473,6 @@ namespace AdminApi.Controllers
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
+
     }
 }

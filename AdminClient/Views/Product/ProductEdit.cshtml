@@ -32,24 +32,6 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label">Temple Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <div class="input-box">
-                                    <select class="form-control" id="SelectTemple">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">Pandit Name &nbsp;<span style="color: red;"><b>*</b></span></label>
-                                <div class="input-box">
-                                    <select class="form-control" id="SelectPandit">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
                                 <label class="form-label">Category Name &nbsp;<span style="color: red;"><b>*</b></span></label>
                                 <div class="input-box">
                                     <select class="form-control" id="SelectCategory">
@@ -66,9 +48,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                   
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">ProductName Name &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -81,6 +60,10 @@
                                 <input type="text" class="form-control" id="SalePrice" placeholder="Enter SalePrice">
                             </div>
                         </div>
+                    </div>
+                   
+                    <div class="row">
+                       
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">MRP &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -93,13 +76,10 @@
                                 <input type="text" class="form-control" id="DiscountAmount" placeholder="Enter DiscountAmount">
                             </div>
                         </div>
-                    </div>
-                   
-                    <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label"> Thumbnail &nbsp;</label>
-                                <input type="file" class="form-control" id="Image" accept=".png,.jpg, .jpeg">
+                                <input type="file" class="form-control" id="Thumbnail" accept=".png,.jpg, .jpeg">
                                 <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
                             </div>
                         </div>
@@ -108,6 +88,21 @@
                                 <img id="imgg" src="" width="100" class="rounded-circle">
                             </div>
                         </div>
+                    </div>
+                   
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label"> Image &nbsp;</label>
+                                <input type="file" class="form-control" id="Image" accept=".png,.jpg, .jpeg">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="img" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label"> Image1 &nbsp;</label>
@@ -120,6 +115,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -144,6 +140,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -157,6 +154,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -182,73 +180,6 @@
 
 @section scripts {
     <script>
-
-        function TempleList(Id) {
-            var opt = '';
-            $.ajax({
-                type: "GET",
-                url: "@apiUrl/api/Temple/GetTempleList",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (res) {
-                    var options = [];
-                    options.push('<option value = ""> Select Temple </option>');
-                    for (var i = 0; i < res.data.length; i++) {
-                        if (Id == res.data[i].templeId) {
-                            opt = 'selected'
-                        } else {
-                            opt = '';
-                        }
-                        options.push('<option value = "' + res.data[i].templeId + '" ' + opt + ' > ' + res.data[i].templeName + '</option>');
-                    }
-                    $("#SelectTemple").html(options.join(''));
-                },
-
-                error: function (data) {
-                    if (data.status == 401) {
-                        window.location.replace('/Message/TokenExpire');
-                    } else if (data.status == 403) {
-                        window.location.replace('/Message/Unauthorize');
-                    }
-                }
-            });
-        }
-
-        function PanditList(selectedPandit) {
-            var opt = '';
-            $.ajax({
-                type: "GET",
-                url: "@apiUrl/api/Pandit/GetPanditList",
-                contentType: "application/json; charset=utf-8",
-                headers: {
-                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
-                },
-                dataType: "json",
-                success: function (res) {
-                    var options = [];
-                    options.push('<option value="">Select Pandit</option>');
-                    for (var i = 0; i < res.data.length; i++) {
-                        var panditName = res.data[i].panditName;
-                        var panditId = res.data[i].panditId;
-                        options.push('<option value="' + panditId + '">' + panditName + '</option>');
-                    }
-                    $("#SelectPandit").html(options.join(''));
-
-                    if (selectedPandit) {
-                        $('#SelectPandit').val(selectedPandit);
-                        $('#SelectPandit').trigger('change');
-                    }
-                },
-                error: function (data) {
-                    if (data.status == 401) {
-                        window.location.replace('/Message/TokenExpire');
-                    } else if (data.status == 403) {
-                        window.location.replace('/Message/Unauthorize');
-                    }
-                }
-            });
-        }
-
 
         function CategoryList(Id) {
             var opt = '';
@@ -329,8 +260,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data) {
-                        TempleList(data.templeId);
-                        PanditList(data.panditId);
                         CategoryList(data.categoryId);
                         SubcategoryList(data.subCategoryId);
                         $('#ProductName').val(data.productName);
@@ -338,6 +267,7 @@
                         $('#MRP').val(data.mrp);
                         $('#DiscountAmount').val(data.discountAmount);
                         $('#imgg').attr('src', data.thumbnail);
+                        $('#img').attr('src', data.image);
                         $('#imgg1').attr('src', data.image1);
                         $('#imgg2').attr('src', data.image2);
                         $('#imgg3').attr('src', data.image3);
@@ -366,10 +296,20 @@
                 var currentImageSrc = '';
                 currentImageSrc = $('#imgg').attr('src');
 
-                if ($('#Image').val() != '' && $('#Image').val() != 'Choose file') {
+                if ($('#Thumbnail').val() != '' && $('#Thumbnail').val() != 'Choose file') {
                     uploadphoto1();
                 } else if (currentImageSrc != '') {
                     imgPath = currentImageSrc;
+                }
+
+                imgPathh = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#img').attr('src');
+
+                if ($('#Image').val() != '' && $('#Image').val() != 'Choose file') {
+                    uploadphotoo();
+                } else if (currentImageSrc != '') {
+                    imgPathh = currentImageSrc;
                 }
 
                 imgPath1 = '';
@@ -413,8 +353,6 @@
                 }
                 var model = {
                     productId: productId,
-                    templeId: $.trim($("#SelectTemple").val()),
-                    panditId: $.trim($("#SelectPandit").val()),
                     categoryId: $.trim($("#SelectCategory").val()),
                     subCategoryId: $.trim($("#SelectSubCategory").val()),
                     productName: $.trim($("#ProductName").val()),
@@ -422,6 +360,7 @@
                     mrp: $.trim($("#MRP").val()),
                     discountAmount: $.trim($("#DiscountAmount").val()),
                     thumbnail: imgPath,
+                    image: imgPathh,
                     image1: imgPath1,
                     image2: imgPath2,
                     image3: imgPath3,
@@ -492,6 +431,33 @@
         });
 
         function uploadphoto1() {
+            var totalFiles = document.getElementById('Thumbnail').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('Thumbnail').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
+
+        function uploadphotoo() {
             var totalFiles = document.getElementById('Image').files.length;
             if (totalFiles > 0) {
                 var formData = new FormData();
@@ -507,7 +473,7 @@
                         type: "POST",
 
                         success: function (data) {
-                            imgPath = data;
+                            imgPathh = data;
 
                         },
                         error: function (data) {
