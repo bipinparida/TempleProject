@@ -179,6 +179,92 @@ namespace AdminApi.Controllers
         }
 
 
+        ///<summary>
+        ///Get Booking List by Bhakta ID 
+        ///</summary>
+        [HttpGet("{BhaktaId}")]
+        public ActionResult GetBookingListbyBhaktaId(int BhaktaId)
+        {
+            try
+            {
+                var list = (from u in _context.Bookings
+                            join b in _context.Bhaktas on u.BhaktaId equals b.BhaktaId
+                            join t in _context.Temples on u.TempleId equals t.TempleId
+                            join p in _context.Pandits on u.PanditId equals p.PanditId
+                            join s in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals s.PoojaCategoryTypeId
+                            join c in _context.PoojaCategories on u.PoojaCategoryId equals c.PoojaCategoryId
+
+                            select new
+                            {
+                                u.BhaktaId,
+                                b.BhaktaName,
+                                u.TempleId,
+                                t.TempleName,
+                                u.PoojaCategoryTypeId,
+                                s.PoojaCategoryTypeName,
+                                u.PoojaCategoryId,
+                                c.PoojaCategoryName,
+                                u.PanditId,
+                                p.PanditName,
+                                u.BookingDate,
+                                u.PoojaPrice,
+                               
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.BhaktaId == BhaktaId).Distinct().ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+        ///<summary>
+        ///Get Booking List by Pandit ID 
+        ///</summary>
+        [HttpGet("{PanditId}")]
+        public ActionResult GetBookingListbyPanditId(int PanditId)
+        {
+            try
+            {
+                var list = (from u in _context.Bookings
+                            join b in _context.Bhaktas on u.BhaktaId equals b.BhaktaId
+                            join t in _context.Temples on u.TempleId equals t.TempleId
+                            join p in _context.Pandits on u.PanditId equals p.PanditId
+                            join s in _context.PoojaCategoryTypes on u.PoojaCategoryTypeId equals s.PoojaCategoryTypeId
+                            join c in _context.PoojaCategories on u.PoojaCategoryId equals c.PoojaCategoryId
+
+                            select new
+                            {
+                                u.BhaktaId,
+                                b.BhaktaName,
+                                u.TempleId,
+                                t.TempleName,
+                                u.PoojaCategoryTypeId,
+                                s.PoojaCategoryTypeName,
+                                u.PoojaCategoryId,
+                                c.PoojaCategoryName,
+                                u.PanditId,
+                                p.PanditName,
+                                u.BookingDate,
+                                u.PoojaPrice,
+
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).Distinct().ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
 
 
     }
