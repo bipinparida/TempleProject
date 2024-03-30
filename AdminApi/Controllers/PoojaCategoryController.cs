@@ -148,7 +148,7 @@ namespace AdminApi.Controllers
                 {
                     if (existingCategoryNames.Any(x => x.PoojaCategoryName == itemDTO.PoojaCategoryName && x.TempleId == itemDTO.TempleId))
                     {
-                        var temple = _TempleRepo.SelectById(itemDTO.TempleId); // Assuming you have a service method to retrieve temple name by ID
+                        var temple = _TempleRepo.SelectById(itemDTO.TempleId); 
                         var templeName = temple != null ? temple.TempleName : "Unknown";
 
                         return Accepted(new Confirmation { Status = "Duplicate", ResponseMsg = $"Pooja Category with name '{itemDTO.PoojaCategoryName}' for Temple Name '{templeName}' already exists!" });
@@ -159,6 +159,7 @@ namespace AdminApi.Controllers
                         TempleId = itemDTO.TempleId,
                         PoojaCategoryTypeId = itemDTO.PoojaCategoryTypeId,
                         PoojaCategoryName = itemDTO.PoojaCategoryName,
+                        PoojaCategoryImage=itemDTO.PoojaCategoryImage,
                         PoojaPrice=itemDTO.PoojaPrice,
                         CreatedBy = itemDTO.CreatedBy,
                         CreatedOn = DateTime.Now
@@ -199,6 +200,7 @@ namespace AdminApi.Controllers
                 objPoojaCategory.TempleId = updatePoojaCategoryDTO.TempleId;
                 objPoojaCategory.PoojaCategoryTypeId = updatePoojaCategoryDTO.PoojaCategoryTypeId;
                 objPoojaCategory.PoojaCategoryName = updatePoojaCategoryDTO.PoojaCategoryName;
+                objPoojaCategory.PoojaCategoryImage = updatePoojaCategoryDTO.PoojaCategoryImage;
                 objPoojaCategory.PoojaPrice = updatePoojaCategoryDTO.PoojaPrice;
                 objPoojaCategory.UpdatedBy = updatePoojaCategoryDTO.UpdatedBy;
                 objPoojaCategory.UpdatedOn = System.DateTime.Now;
@@ -229,6 +231,7 @@ namespace AdminApi.Controllers
                                 u.PoojaCategoryId,
                                 u.PoojaCategoryName,
                                 u.PoojaCategoryTypeId,
+                                u.PoojaCategoryImage,
                                 u.PoojaPrice,
                                 u.TempleId,
                                 t.TempleName,

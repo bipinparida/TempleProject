@@ -35,6 +35,7 @@
                                 <th>Temple Name</th>
                                 <th>PoojaCategoryType Name</th>
                                 <th>PoojaCategory Name</th>
+                                <th>PoojaCategory Image</th>
                                 <th>PoojaPrice</th>
                                 <th>Action</th>
                             </tr>
@@ -81,6 +82,14 @@
                     { "data": "templeName", "orderable": true, "visible": true },
                     { "data": "poojaCategoryTypeName", "orderable": true, "visible": true },
                     { "data": "poojaCategoryName", "orderable": true, "visible": true },
+                    {
+                        "render": function (data, type, row) {
+                            if (row.poojaCategoryImage === '')
+                                return '';
+                            else
+                                return '<a href="#" data-toggle="modal" data-target="#photoModal" data-photo="' + row.poojaCategoryImage + '"><img style="margin-left: 28px;" class="avatar avatar-md rounded-circle" src="' + row.poojaCategoryImage + '"/></a>'
+                        }
+                    },
                     { "data": "poojaPrice", "orderable": true, "visible": true },
                     {
                         "render": function (data, type, row) {
@@ -138,5 +147,28 @@
                 });
             });
         });
+
+        $(document).on('click', 'a[data-toggle="modal"]', function () {
+            var photoUrl = $(this).data('photo');
+            $('#profilePhotoModal').attr('src', photoUrl);
+        });
     </script>
 }
+
+<!-- Modal for displaying profile photo -->
+<div id="photoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bhakta Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Center the content -->
+                <img id="profilePhotoModal" class="img-fluid mx-auto" src="" alt="Profile Photo">
+            </div>
+        </div>
+    </div>
+</div>
