@@ -10,6 +10,7 @@ using AdminApi.DTO.App.ProductDTO;
 using System.Linq;
 using AdminApi.DTO.App.CategoryDTO;
 using System.Collections.Generic;
+using AdminApi.Models.App.Orders;
 
 namespace AdminApi.Controllers
 {
@@ -467,6 +468,48 @@ namespace AdminApi.Controllers
                 int totalRecords = productsArrayImages.Count();
 
                 return Ok(new { data = productsArrayImages, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+
+
+
+        ///<summary>
+        ///Gat Order List by Bhakta ID
+        ///</summary>
+        [HttpGet("{BhaktaId}")]
+        public ActionResult GetOrderListbyBhaktaId(int BhaktaId)
+        {
+            try
+            {
+                var list = (from u in _context.Orders
+                            join t in _context.Bhaktas on u.BhaktaId equals t.BhaktaId
+                            where u.BhaktaId == BhaktaId 
+                            select new
+                            {
+                                u.OrderId,
+                                u.BhaktaId,
+                                u.TotalQuantity,
+                                u.TotalAmount,
+                                u.IsDeleted,
+                                OrderItem = (from r in _context.OrderItems
+                                             join s in _context.Products on r.ProductId equals s.ProductId
+                                             where r.OrderId == u.OrderId
+                                             select new 
+                                             {
+                                                 r.OrderId,
+                                                 s.ProductName,
+                                                 r.Quantity,
+                                                 r.Amount,
+                                             }).ToList()
+                            }).Where(x => x.IsDeleted == false).Distinct().ToList();
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
             }
             catch (Exception ex)
             {
