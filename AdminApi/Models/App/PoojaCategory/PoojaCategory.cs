@@ -8,6 +8,7 @@ namespace AdminApi.Models.App.PoojaCategory
         public int TempleId { get; set; }
         public int PoojaCategoryTypeId { get; set; }
         public string PoojaCategoryName { get; set; }
+        public string? PoojaCategoryImage { get; set; }
         public double? PoojaPrice { get; set; }
 
         public int CreatedBy { get; set; }
