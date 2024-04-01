@@ -162,7 +162,6 @@
                     e.preventDefault();
                 }
                 else {
-                    
                     var OptionDetails = [];
 
 
@@ -333,7 +332,6 @@
             });
         }
 
-
         $(function () {
             $("#Add_Optn").click(function (e) {
                 var TempleValue = $('#SelectTemple').val();
@@ -346,34 +344,53 @@
                 var PoojaCategoryImage = $('#PoojaCategoryImage')[0].files[0];
                 var PoojaPrice = $('#PoojaPrice').val();
 
-
                 if (TempleValue && PoojaCategoryTypeValue && PoojaCategoryName && PoojaCategoryImage && PoojaPrice) {
                     var existingRow = $('#PoojaCategory_Tb').find('td[data-value="' + PoojaCategoryName + '"]').closest('tr');
                     if (existingRow.length) {
                         alert('Item already added!');
                     } else {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td data-value='" + e.target.result + "'><img src='" + e.target.result + "' width='50px'></td><td data-value='" + PoojaPrice + "'>" + PoojaPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                        
+                        uploadFile(function (imgPath) {
+                            
+                            var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td data-value='" + imgPath + "'><img src='" + imgPath + "' width='50px'></td><td data-value='" + PoojaPrice + "'>" + PoojaPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
                             $('#PoojaCategory_Tb').append(row);
-                        };
-                        reader.readAsDataURL(PoojaCategoryImage);
+                        });
                     }
                 }
 
                 $('#PoojaCategoryName').val('');
                 $('#PoojaCategoryImage').val('');
                 $('#PoojaPrice').val('');
-                // Clear the file input after adding row
             });
 
            
+            function uploadFile(callback) {
+                var totalFiles = document.getElementById('PoojaCategoryImage').files.length;
+                if (totalFiles > 0) {
+                    var formData = new FormData();
+                    var files = document.getElementById('PoojaCategoryImage').files;
+                    formData.append("file", files[0]);
+                    $.ajax({
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        success: function (data) {
+                            var imgPath = data;
+                            callback(imgPath); // Call the callback function with image path
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    });
+                }
+            }
+
             $(document).on("click", ".delRowBtn", function () {
                 $(this).closest("tr").remove();
             });
         });
-
-
 
     </script>
 
