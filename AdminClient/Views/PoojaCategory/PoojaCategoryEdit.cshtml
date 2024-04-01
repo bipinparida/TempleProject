@@ -54,7 +54,20 @@
                                 <input type="text" class="form-control" id="PoojaCategoryName" placeholder="Enter PoojaCategoryName" required>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategory Image &nbsp;</label>
+                                <input type="file" class="form-control" id="PoojaCategoryImage" accept=".png,.jpg, .jpeg">
+                                <small style="color:red">Only JPG and PNG files are allowed.</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="form-label">PoojaPrice &nbsp;<span style="color: red;"><b>*</b></span></label>
@@ -154,6 +167,7 @@
                         TempleList(data.templeId);
                         PoojacategoryTypeList(data.poojaCategoryTypeId);
                         $('#PoojaCategoryName').val(data.poojaCategoryName);
+                        $('#imgg').attr('src', data.poojaCategoryImage);
                         $('#PoojaPrice').val(data.poojaPrice);
                     }
                     else {
@@ -174,12 +188,22 @@
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
             } else {
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg').attr('src');
+
+                if ($('#PoojaCategoryImage').val() != '' && $('#PoojaCategoryImage').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
 
                 var model = {
                     poojaCategoryId: poojaCategoryId,
                     templeId: $.trim($("#SelectTemple").val()),
                     poojaCategoryTypeId: $.trim($("#SelectPoojaCategoryType").val()),
                     poojaCategoryName: $.trim($("#PoojaCategoryName").val()),
+                    poojaCategoryImage: imgPath,
                     poojaPrice: $.trim($("#PoojaPrice").val()),
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
@@ -263,6 +287,34 @@
                     }
                 });
             }
+
+            function uploadphoto() {
+                var totalFiles = document.getElementById('PoojaCategoryImage').files.length;
+                if (totalFiles > 0) {
+                    var formData = new FormData();
+                    var files = document.getElementById('PoojaCategoryImage').files;
+                    formData.append("file", files[0]);
+                    $.ajax(
+                        {
+                            url: "/Upload/ImgUpload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            async: false,
+                            type: "POST",
+
+                            success: function (data) {
+                                imgPath = data;
+
+                            },
+                            error: function (data) {
+                                window.location.replace('/Message/SessionExpire');
+                            }
+                        }
+                    );
+                }
+            }
+
         });
     </script>
 }
