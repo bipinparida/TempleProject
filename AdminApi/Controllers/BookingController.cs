@@ -360,14 +360,14 @@ namespace AdminApi.Controllers
 
 
         ///<summary>
-        ///Complete Booking Task by ID
+        ///Complete Booking Pooja by BookingId
         ///</summary>
-        [HttpGet("{Id}")]
-        public ActionResult CompleteBooking(int Id)
+        [HttpGet("{BookingId}")]
+        public ActionResult CompleteBooking(int BookingId)
         {
             try
             {
-                var objabout = _context.Bookings.SingleOrDefault(opt => opt.BookingId == Id);
+                var objabout = _context.Bookings.SingleOrDefault(opt => opt.BookingId == BookingId);
 
                 objabout.IsComplete = true;
 
