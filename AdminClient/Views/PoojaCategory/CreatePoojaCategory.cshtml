@@ -100,10 +100,10 @@
                             <div class="form-group">
                                 <label class="form-label">PoojaCategory Image &nbsp;</label>
                                 <input type="file" class="form-control" id="PoojaCategoryImage" accept=".png,.jpg, .jpeg">
-                                <small  style="color:red">Only JPG and PNG files are allowed.</small>
-
+                                <small style="color:red">Only JPG and PNG files are allowed.</small>
                             </div>
                         </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-3">
@@ -162,45 +162,40 @@
                     e.preventDefault();
                 }
                 else {
-                    imgPath = '';
-                    var totalFiles = document.getElementById('PoojaCategoryImage').files.length;
-                    if (totalFiles > 0) {
-                        uploadFile();
-                    }
-                    //var OptionDetails = [];
+                    
+                    var OptionDetails = [];
 
 
-                    //$.each($("#Optnn tbody tr"), function () {
-                    //    var $irow = $(this),
-                    //        rowObj = {};
+                    $.each($("#Optnn tbody tr"), function () {
+                        var $irow = $(this),
+                            rowObj = {};
 
                         // Retrieve the data-value attributes
-                        //var TempleName = parseInt($irow.find("td:eq(0)").data("value"));
-                        //var PoojaCategoryTypeName = parseInt($irow.find("td:eq(1)").data("value"));
-                        //var PoojaCategoryName = $irow.find("td:eq(2)").data("value");
-                        //var PoojaCategoryImage = $irow.find("td:eq(3)").find("input[type=file]")[0].files[0];
-                        //var PoojaPrice = parseFloat($irow.find("td:eq(4)").data("value"));
+                        var TempleName = parseInt($irow.find("td:eq(0)").data("value"));
+                        var PoojaCategoryTypeName = parseInt($irow.find("td:eq(1)").data("value"));
+                        var PoojaCategoryName = $irow.find("td:eq(2)").data("value");
+                        var PoojaCategoryImage = $irow.find("td:eq(3) img").attr("src"); 
+                        var PoojaPrice = parseFloat($irow.find("td:eq(4)").data("value"));
 
-                        //var a = {
-                        //    "templeId": TempleName,
-                        //    "poojaCategoryTypeId": PoojaCategoryTypeName,
-                        //    "poojaCategoryName": PoojaCategoryName,
-                        //    "poojaCategoryImage": PoojaCategoryImage,
-                        //    "poojaPrice": PoojaPrice,
-                        //}
-                        //OptionDetails.push(a);
-                    //});
+                        var a = {
+                            "templeId": TempleName,
+                            "poojaCategoryTypeId": PoojaCategoryTypeName,
+                            "poojaCategoryName": PoojaCategoryName,
+                            "poojaCategoryImage": PoojaCategoryImage,
+                            "poojaPrice": PoojaPrice,
+                        }
+                        OptionDetails.push(a);
+                    });
 
-                    //var preloader = $("#preloader");
-                    //preloader.removeClass("d-none");
+                    var preloader = $("#preloader");
+                    preloader.removeClass("d-none");
                     var model = {
                         "templeId": parseInt($("#SelectTemple").val()),
                         "poojaCategoryTypeId": parseInt($("#SelectPoojaCategoryType").val()),
                         "poojaCategoryName": $.trim($("#PoojaCategoryName").val()),
-                        //"poojaCategoryImage": $.trim($("#poojaCategoryImage").val()),
-                        poojaCategoryImage: imgPath,
+                        "poojaCategoryImage": $.trim($("#PoojaCategoryImage").val()),
                         "poojaPrice": parseFloat($("#PoojaPrice").val()),
-                        //createPoojaCategoryDTOs: OptionDetails,
+                        createPoojaCategoryDTOs: OptionDetails,
                         createdBy: @Context.Session.GetInt32("UserId"),
                     }
                     console.log(model)
@@ -264,32 +259,6 @@
                 }
             });
 
-            function uploadFile() {
-                var totalFiles = document.getElementById('PoojaCategoryImage').files.length;
-                if (totalFiles > 0) {
-                    var formData = new FormData();
-                    var files = document.getElementById('PoojaCategoryImage').files;
-                    formData.append("file", files[0]);
-                    $.ajax(
-                        {
-                            url: "/Upload/ImgUpload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            async: false,
-                            type: "POST",
-                            success: function (data) {
-                                imgPath = data;
-
-                            },
-                            error: function (data) {
-                                window.location.replace('/Message/SessionExpire');
-                            }
-                        }
-                    );
-                }
-
-            }
         });
 
         GetItem()
@@ -367,32 +336,16 @@
 
         $(function () {
             $("#Add_Optn").click(function (e) {
-               
                 var TempleValue = $('#SelectTemple').val();
                 var TempleText = $('#SelectTemple option:selected').text();
 
-               
                 var PoojaCategoryTypeValue = $('#SelectPoojaCategoryType').val();
                 var PoojaCategoryTypeText = $('#SelectPoojaCategoryType option:selected').text();
 
-               
                 var PoojaCategoryName = $('#PoojaCategoryName').val();
                 var PoojaCategoryImage = $('#PoojaCategoryImage')[0].files[0];
-
                 var PoojaPrice = $('#PoojaPrice').val();
-               
-                //if (TempleValue && PoojaCategoryTypeValue && PoojaCategoryName && PoojaCategoryImage && PoojaPrice) {
 
-                //    var existingRow = $('#PoojaCategory_Tb').find('td[data-value="' + PoojaCategoryName + '"]').closest('tr');
-                //    if (existingRow.length) {
-                        
-                //        alert('Item already added!');
-                //    } else {
-                        
-                //        var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td data-value='" + PoojaCategoryImage + "'>" + PoojaCategoryImage + "</td><td data-value='" + PoojaPrice + "'>" + PoojaPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
-                //        $('#PoojaCategory_Tb').append(row);
-                //    }
-                //}
 
                 if (TempleValue && PoojaCategoryTypeValue && PoojaCategoryName && PoojaCategoryImage && PoojaPrice) {
                     var existingRow = $('#PoojaCategory_Tb').find('td[data-value="' + PoojaCategoryName + '"]').closest('tr');
@@ -401,16 +354,17 @@
                     } else {
                         var reader = new FileReader();
                         reader.onload = function (e) {
-                            var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td data-value='" + PoojaCategoryImage.name + "'>" + PoojaCategoryImage.name + "</td><td data-value='" + PoojaPrice + "'>" + PoojaPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
+                            var row = "<tr><td data-value='" + TempleValue + "'>" + TempleText + "</td><td data-value='" + PoojaCategoryTypeValue + "'>" + PoojaCategoryTypeText + "</td><td data-value='" + PoojaCategoryName + "'>" + PoojaCategoryName + "</td><td data-value='" + e.target.result + "'><img src='" + e.target.result + "' width='50px'></td><td data-value='" + PoojaPrice + "'>" + PoojaPrice + "</td><td><button class='delRowBtn'><i class='ion-trash-b' style='color: red;'></i></button></td></tr>";
                             $('#PoojaCategory_Tb').append(row);
                         };
                         reader.readAsDataURL(PoojaCategoryImage);
                     }
                 }
-               
+
                 $('#PoojaCategoryName').val('');
                 $('#PoojaCategoryImage').val('');
                 $('#PoojaPrice').val('');
+                // Clear the file input after adding row
             });
 
            
