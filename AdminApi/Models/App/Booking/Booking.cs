@@ -11,6 +11,7 @@ namespace AdminApi.Models.App.Booking
         public int PoojaCategoryId { get; set; }
         public int PoojaCategoryItemId { get; set; }
         public int PanditId { get; set; }
+        public bool IsComplete { get; set; }
       
         public DateTime? BookingDate { get; set; }
         public double? PoojaPrice { get; set; }
