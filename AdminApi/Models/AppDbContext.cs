@@ -4,6 +4,7 @@ using AdminApi.Models.App.Booking;
 using AdminApi.Models.App.Categories;
 using AdminApi.Models.App.Checkouts;
 using AdminApi.Models.App.Feedbacks;
+using AdminApi.Models.App.Horoscope;
 using AdminApi.Models.App.LiveTest;
 using AdminApi.Models.App.Location;
 using AdminApi.Models.App.Orders;
@@ -61,6 +62,7 @@ namespace AdminApi.Models
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Banner> Banners { get; set; }
         public virtual DbSet<SubCategory> SubCategorys { get; set; }
+        public virtual DbSet<Horoscope> Horoscopes { get; set; }
 
 
 
@@ -275,6 +277,15 @@ namespace AdminApi.Models
 .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Banner>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Horoscope>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Horoscope>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();

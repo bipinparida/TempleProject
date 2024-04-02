@@ -1,0 +1,324 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Http
+@inject IConfiguration Configuration;
+
+@{
+    ViewBag.Title = "Horoscope";
+    string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
+}
+<!-- PAGE-HEADER -->
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Consol</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Horoscope Edit</li>
+    </ol>
+    <div class="ml-auto">
+        <a href="~/Horoscope/HoroscopeList" class="btn btn-primary btn-icon btn-sm text-white mr-2">
+            <span>
+                <i class="fe fe-plus"></i>
+            </span> View
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card overflow-hidden">
+            <div class="card-header">
+                <h3 class="card-title">Horoscope Create</h3>
+            </div>
+            <div class="card-body">
+                <form action="#" role="form" class="validate" id="formPost">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Bhakta Name </label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectBhakta">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PanditId Name </label>
+                                <div class="input-box">
+                                    <select class="form-control" id="SelectPanditId">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Zodiac Name &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="ZodiacName" placeholder="Enter ZodiacName">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">DateOfBirth &nbsp;</label>
+                                <input type="date" class="form-control" name="example-text-input" tabindex="11" id="DateOfBirth">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Question  &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Question" placeholder="Enter Question">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Address &nbsp;</label>
+                                <input type="text" class="form-control" id="Address" placeholder="Enter Address">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Mobile Number &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="number" class="form-control" id="PrimaryPhone" placeholder="Enter Mobile Number" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Alternate Mobile Number &nbsp;</label>
+                                <input type="number" class="form-control" id="AlternatePhone" placeholder="Enter Alternate Mobile Number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Price &nbsp;<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" id="Price" placeholder="Enter Price">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="btnupdate" class="btn btn-radius btn-success">Update</button>
+                            <a type="button" href="~/Horoscope/HoroscopeList" class="btn btn-radius btn-danger">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        function BhaktaList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Bhakta/GetBhaktaList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select Bhakta </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].bhaktaId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].bhaktaId + '" ' + opt + ' > ' + res.data[i].bhaktaName + '</option>');
+                    }
+                    $("#SelectBhakta").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        function PanditList(Id) {
+            var opt = '';
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Pandit/GetPanditList",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var options = [];
+                    options.push('<option value = ""> Select Pandit </option>');
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (Id == res.data[i].panditId) {
+                            opt = 'selected'
+                        } else {
+                            opt = '';
+                        }
+                        options.push('<option value = "' + res.data[i].panditId + '" ' + opt + ' > ' + res.data[i].panditName + '</option>');
+                    }
+                    $("#SelectPanditId").html(options.join(''));
+                },
+
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+
+        var horoscopeId = @ViewBag.HoroscopeId
+            loadSinglehoroscope()
+        function loadSinglehoroscope() {
+            $.ajax({
+                type: "GET",
+                url: "@apiUrl/api/Horoscope/GetSingleHoroscope/" + horoscopeId,
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        BhaktaList(data.bhaktaId);
+                        PanditList(data.panditId);
+                        $('#ZodiacName').val(data.zodiac);
+                        if (data.dateOfBirth != null) {
+                            var dateTimeString = data.dateOfBirth;
+                            var dateOnly = dateTimeString.split('T')[0]; 
+                            $('#DateOfBirth').val(dateOnly);
+                        } else {
+                            $('#DateOfBirth').val('');
+                        }
+                        $('#Question').val(data.question);
+                        $('#Address').val(data.address);
+                        $('#PrimaryPhone').val(data.primaryPhone);
+                        $('#AlternatePhone').val(data.alternatePhone);
+                        $('#Price').val(data.price);
+
+                    }
+                    else {
+                        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    }
+                },
+                error: function (data) {
+                    if (data.status == 401) {
+                        window.location.replace('/Message/TokenExpire');
+                    } else if (data.status == 403) {
+                        window.location.replace('/Message/Unauthorize');
+                    }
+                }
+            });
+        }
+
+        $("#btnupdate").click(function (e) {
+            if (!document.getElementById("formPost").checkValidity()) {
+                e.preventDefault();
+            } else {
+                var model = {
+                    horoscopeId: horoscopeId,
+                    bhaktaId: $.trim($("#SelectBhakta").val()),
+                    panditId: $.trim($("#SelectPanditId").val()),
+                    zodiac: $.trim($("#ZodiacName").val()),
+                    dateOfBirth: $.trim($("#DateOfBirth").val()) == '' ? null : $.trim($("#DateOfBirth").val().replace(/\//g, '-')),
+                    question: $.trim($("#Question").val()),
+                    address: $.trim($("#Address").val()),
+                    primaryPhone: $.trim($("#PrimaryPhone").val()),
+                    alternatePhone: $.trim($("#AlternatePhone").val()),
+                    price: $.trim($("#Price").val()),
+                    updatedBy: @Context.Session.GetInt32("UserId"),
+                }
+                console.log(model)
+                $.ajax({
+                    type: "POST",
+                    url: "@apiUrl/api/Horoscope/UpdateHoroscope",
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    headers: {
+                        "authorization": "Bearer @Context.Session.GetString("TokenTxt")"
+                    },
+                    //success: function (data, statusText, xhr) {
+                    //    console.log(data)
+                    //    if (xhr.status === 200) {
+                    //        $('#Temple_Tb').DataTable().ajax.reload(null, false);
+                    //        sweetAlert({
+                    //            html: true,
+                    //            icon: "success",
+                    //            title: "Temple Update",
+                    //            text: "Successfully updated!",
+                    //            type: "success"
+                    //        });
+                    //    } else if (data.status === "duplicate") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else if (data.status === "error") {
+                    //        sweetAlert("Validation Alert!", data.responseMsg, "warning");
+                    //    } else {
+                    //        sweetAlert("Validation Alert!", "Something unexpected!", "warning");
+                    //    }
+                    //},
+                    success: function (data, statusText, xhr) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Horoscope Update",
+                                text: "Successfully updated!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+
+                            //preloader.addClass("d-none");
+                        } else if (data.status === "Duplicate") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Horoscope Already Exists!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else if (data.status === "error") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: data.responseMsg,
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Validation Alert!",
+                                text: "Something unexpected!",
+                            }).then(function () {
+                                location.reload(); // Refresh the page
+                            });
+                        }
+                        preloader.addClass("d-none");
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        if (data.status == 401) {
+                            window.location.replace('/Message/TokenExpire');
+                        } else if (data.status == 403) {
+                            window.location.replace('/Message/Unauthorize');
+                        } else if (data.status == 400) {
+                            sweetAlert("Validation Alert!", "Please check input data!", "warning");
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
+}
