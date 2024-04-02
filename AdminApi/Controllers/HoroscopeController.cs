@@ -171,5 +171,81 @@ namespace AdminApi.Controllers
             }
         }
 
+        ///<summary>
+        ///Get Horoscope List by Bhakta ID 
+        ///</summary>
+        [HttpGet("{BhaktaId}")]
+        public ActionResult GetHoroscopeListbyBhaktaId(int BhaktaId)
+        {
+            try
+            {
+                var list = (from u in _context.Horoscopes
+                            join b in _context.Bhaktas on u.BhaktaId equals b.BhaktaId
+                            join p in _context.Pandits on u.PanditId equals p.PanditId
+
+                            select new
+                            {
+                                u.BhaktaId,
+                                b.BhaktaName,
+                                u.PanditId,
+                                p.PanditName,
+                                u.Zodiac,
+                                u.DateOfBirth,
+                                u.Question,
+                                u.Address,
+                                u.PrimaryPhone,
+                                u.AlternatePhone,
+                                u.Price,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.BhaktaId == BhaktaId).Distinct().ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+        ///<summary>
+        ///Get Horoscope List by Pandit ID 
+        ///</summary>
+        [HttpGet("{PanditId}")]
+        public ActionResult GetHoroscopeListbyPanditId(int PanditId)
+        {
+            try
+            {
+                var list = (from u in _context.Horoscopes
+                            join b in _context.Bhaktas on u.BhaktaId equals b.BhaktaId
+                            join p in _context.Pandits on u.PanditId equals p.PanditId
+
+                            select new
+                            {
+                                u.BhaktaId,
+                                b.BhaktaName,
+                                u.PanditId,
+                                p.PanditName,
+                                u.Zodiac,
+                                u.DateOfBirth,
+                                u.Question,
+                                u.Address,
+                                u.PrimaryPhone,
+                                u.AlternatePhone,
+                                u.Price,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.PanditId == PanditId).Distinct().ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
     }
 }
