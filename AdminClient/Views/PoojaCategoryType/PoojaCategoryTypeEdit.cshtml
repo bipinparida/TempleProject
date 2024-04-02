@@ -36,6 +36,21 @@
                                 <input type="text" class="form-control" id="PoojaCategoryTypeName" placeholder="Enter PoojaCategoryName" required>
                             </div>
                         </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategoryType Image &nbsp;</label>
+                                <input type="file" class="form-control" id="PoojaCategoryTypeImage" accept=".png,.jpg, .jpeg">
+                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <img id="imgg" src="" width="100" class="rounded-circle">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -67,6 +82,7 @@
                 success: function (data) {
                     if (data) {
                         $('#PoojaCategoryTypeName').val(data.poojaCategoryTypeName);
+                        $('#imgg').attr('src', data.poojaCategoryTypeImage);
                     }
                     else {
                         sweetAlert("Validation Alert!", "Something unexpected!", "warning");
@@ -86,11 +102,20 @@
             if (!document.getElementById("formPost").checkValidity()) {
                 e.preventDefault();
             } else {
+                imgPath = '';
+                var currentImageSrc = '';
+                currentImageSrc = $('#imgg').attr('src');
+
+                if ($('#PoojaCategoryTypeImage').val() != '' && $('#PoojaCategoryTypeImage').val() != 'Choose file') {
+                    uploadphoto();
+                } else if (currentImageSrc != '') {
+                    imgPath = currentImageSrc;
+                }
 
                 var model = {
                     poojaCategoryTypeId: poojaCategoryTypeId,
                     poojaCategoryTypeName: $.trim($("#PoojaCategoryTypeName").val()),
-
+                    poojaCategoryTypeImage: imgPath,
                     updatedBy: @Context.Session.GetInt32("UserId"),
                 }
                 console.log(model)
@@ -174,5 +199,32 @@
                 });
             }
         });
+
+        function uploadphoto() {
+            var totalFiles = document.getElementById('PoojaCategoryTypeImage').files.length;
+            if (totalFiles > 0) {
+                var formData = new FormData();
+                var files = document.getElementById('PoojaCategoryTypeImage').files;
+                formData.append("file", files[0]);
+                $.ajax(
+                    {
+                        url: "/Upload/ImgUpload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        type: "POST",
+
+                        success: function (data) {
+                            imgPath = data;
+
+                        },
+                        error: function (data) {
+                            window.location.replace('/Message/SessionExpire');
+                        }
+                    }
+                );
+            }
+        }
     </script>
 }
