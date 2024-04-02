@@ -109,8 +109,14 @@ namespace AdminApi.Controllers
                             select new
                             {
                                 u.ProductId,
-                                c.ProductName,
                                 u.Quantity,
+                                c.ProductName,
+                                c.CategoryId,
+                                c.SubCategoryId,
+                                c.SalePrice,
+                                c.MRP,
+                                c.DiscountAmount,
+                                c.Description,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
@@ -237,6 +243,43 @@ namespace AdminApi.Controllers
             else
             {
                 return NotFound();
+            }
+        }
+
+
+        ///<summary>
+        ///Get Checkout List by Createdby
+        ///</summary>
+        [HttpGet("{CreatedBy}")]
+        public ActionResult GetCheckoutListbyCreatedBy(int CreatedBy)
+        {
+            try
+            {
+                var list = (from u in _context.Checkouts
+                            join c in _context.Products on u.ProductId equals c.ProductId
+                            where u.CreatedBy == CreatedBy && u.IsDeleted == false
+
+                            select new
+                            {
+                                u.ProductId,
+                                u.Quantity,
+                                c.ProductName,
+                                c.CategoryId,
+                                c.SubCategoryId,
+                                c.SalePrice,
+                                c.MRP,
+                                c.DiscountAmount,
+                                c.Description,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
         }
     }
