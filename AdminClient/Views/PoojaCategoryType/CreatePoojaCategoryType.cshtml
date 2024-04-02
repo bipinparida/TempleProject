@@ -38,6 +38,15 @@
                                 <input type="text" class="form-control" id="PoojaCategoryTypeName" placeholder="Enter PoojaCategory Type Name" required>
                             </div>
                         </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">PoojaCategoryType Image &nbsp;</label>
+                                <input type="file" class="form-control" id="PoojaCategoryTypeImage" accept=".png,.jpg, .jpeg">
+                                <small @* class="form-text text-muted"*@ style="color:red">Only JPG and PNG files are allowed.</small>
+
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -63,8 +72,15 @@
                     e.preventDefault();
                 }
                 else {
+                    imgPath = '';
+                    var totalFiles = document.getElementById('PoojaCategoryTypeImage').files.length;
+                    if (totalFiles > 0) {
+                        uploadFile();
+                    }
                     var model = {
                         poojaCategoryTypeName: $.trim($("#PoojaCategoryTypeName").val()),
+                        poojaCategoryTypeImage: imgPath,
+
                         createdBy: @Context.Session.GetInt32("UserId"),
                     }
                     console.log(model)
@@ -100,7 +116,7 @@
                             if (xhr.status === 200) {
                                 Swal.fire({
                                     icon: "success",
-                                    title: "PoojaCategory Create",
+                                    title: "PoojaCategoryType Create",
                                     text: "Successfully Created!",
                                 }).then(function () {
                                     location.reload(); // Refresh the page
@@ -147,6 +163,32 @@
                     });
                 }
             });
+            function uploadFile() {
+                var totalFiles = document.getElementById('PoojaCategoryTypeImage').files.length;
+                if (totalFiles > 0) {
+                    var formData = new FormData();
+                    var files = document.getElementById('PoojaCategoryTypeImage').files;
+                    formData.append("file", files[0]);
+                    $.ajax(
+                        {
+                            url: "/Upload/ImgUpload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            async: false,
+                            type: "POST",
+                            success: function (data) {
+                                imgPath = data;
+
+                            },
+                            error: function (data) {
+                                window.location.replace('/Message/SessionExpire');
+                            }
+                        }
+                    );
+                }
+
+            }
         });
     </script>
 }

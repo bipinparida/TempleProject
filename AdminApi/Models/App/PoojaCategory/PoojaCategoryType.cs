@@ -6,6 +6,7 @@ namespace AdminApi.Models.App.PoojaCategory
     {
         public int PoojaCategoryTypeId { get; set; }
         public string PoojaCategoryTypeName { get; set; }
+        public string? PoojaCategoryTypeImage { get; set; }
 
         public int CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }

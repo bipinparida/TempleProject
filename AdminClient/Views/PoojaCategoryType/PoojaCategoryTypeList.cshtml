@@ -16,7 +16,7 @@
         <a href="~/PoojaCategoryType/CreatePoojaCategoryType" class="btn btn-primary btn-icon btn-sm text-white mr-2">
             <span>
                 <i class="fe fe-plus"></i>
-            </span> PoojaCategory Create
+            </span> PoojaCategoryType Create
         </a>
     </div>
 </div>
@@ -32,7 +32,8 @@
                     <table id="PoojaCategoryType_Tb" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline" style="width:100%">
                         <thead>
                             <tr>
-                                <th>PoojaCategory Type Name</th>
+                                <th>PoojaCategoryType Name</th>
+                                <th>PoojaCategoryType Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -76,6 +77,14 @@
                 "order": [],
                 "columns": [
                     { "data": "poojaCategoryTypeName", "orderable": true, "visible": true },
+                    {
+                        "render": function (data, type, row) {
+                            if (row.poojaCategoryTypeImage === '')
+                                return '';
+                            else
+                                return '<a href="#" data-toggle="modal" data-target="#photoModal" data-photo="' + row.poojaCategoryTypeImage + '"><img style="margin-left: 28px;" class="avatar avatar-md rounded-circle" src="' + row.poojaCategoryTypeImage + '"/></a>'
+                        }
+                    },
                     {
                         "render": function (data, type, row) {
                             return '<a class="btn btn-sm btn-primary" href="../PoojaCategoryType/PoojaCategoryTypeEdit?poojaCategoryTypeId=' + row.poojaCategoryTypeId + '"><i class="fa fa-edit"></i></a>' + '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.poojaCategoryTypeId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
@@ -132,5 +141,32 @@
                 });
             });
         });
+
+        // JavaScript function for opening profile photo in a modal
+        $(document).on('click', 'a[data-toggle="modal"]', function () {
+            var photoUrl = $(this).data('photo');
+            $('#profilePhotoModal').attr('src', photoUrl);
+        });
     </script>
 }
+
+
+
+<!-- Modal for displaying profile photo -->
+<div id="photoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">PoojaCategoryType Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Center the content -->
+                <img id="profilePhotoModal" class="img-fluid mx-auto" src="" alt="Profile Photo">
+            </div>
+        </div>
+    </div>
+</div>
+

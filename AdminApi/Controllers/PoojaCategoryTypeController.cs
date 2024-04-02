@@ -45,6 +45,7 @@ namespace AdminApi.Controllers
                     PoojaCategoryType poojaCategoryType = new PoojaCategoryType();
 
                     poojaCategoryType.PoojaCategoryTypeName = createPoojaCategoryTypeDTO.PoojaCategoryTypeName;
+                    poojaCategoryType.PoojaCategoryTypeImage = createPoojaCategoryTypeDTO.PoojaCategoryTypeImage;
 
                     poojaCategoryType.CreatedBy = createPoojaCategoryTypeDTO.CreatedBy;
                     poojaCategoryType.CreatedOn = System.DateTime.Now;
@@ -82,6 +83,7 @@ namespace AdminApi.Controllers
                 }
 
                 objCategoryType.PoojaCategoryTypeName = updatePoojaCategoryTypeDTO.PoojaCategoryTypeName;
+                objCategoryType.PoojaCategoryTypeImage = updatePoojaCategoryTypeDTO.PoojaCategoryTypeImage;
                 objCategoryType.UpdatedBy = updatePoojaCategoryTypeDTO.UpdatedBy;
                 objCategoryType.UpdatedOn = System.DateTime.Now;
                 _context.SaveChanges();
@@ -107,6 +109,7 @@ namespace AdminApi.Controllers
                             {
                                 u.PoojaCategoryTypeId,
                                 u.PoojaCategoryTypeName,
+                                u.PoojaCategoryTypeImage,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
