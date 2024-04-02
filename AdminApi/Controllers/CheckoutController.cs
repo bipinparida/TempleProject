@@ -168,8 +168,10 @@ namespace AdminApi.Controllers
             }
         }
 
-
-        [HttpPost]
+        ///<summary>
+        ///CheckoutPlusUpdate by CheckoutId and CreatedBy
+        ///</summary>
+        [HttpPost("{CheckoutId}/{CreatedBy}")]
         public ActionResult CheckoutPlusUpdate(int CheckoutId, int CreatedBy)
         {
             try
@@ -194,7 +196,10 @@ namespace AdminApi.Controllers
             }
         }
 
-        [HttpPost]
+        ///<summary>
+        ///CheckoutMinusUpdate by CheckoutId and CreatedBy
+        ///</summary>
+        [HttpPost("{CheckoutId}/{CreatedBy}")]
         public ActionResult CheckOutMinusUpdate(int CheckoutId, int CreatedBy)
         {
             try
@@ -228,7 +233,11 @@ namespace AdminApi.Controllers
             }
         }
 
-        [HttpPost]
+
+        ///<summary>
+        ///CheckOutDeleteAfterOrder by ProductId , DeletedBy and CreatedBy
+        ///</summary>
+        [HttpGet("{ProductId}/{DeletedBy}/{CreatedBy}")]
         public ActionResult CheckOutDeleteAfterOrder(int ProductId,int DeletedBy, int CreatedBy)
         {
             var objCheckout = _context.Checkouts.SingleOrDefault(opt => opt.ProductId == ProductId && opt.IsDeleted == false && opt.CreatedBy == CreatedBy);
