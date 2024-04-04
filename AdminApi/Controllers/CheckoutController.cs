@@ -117,6 +117,7 @@ namespace AdminApi.Controllers
                                 c.MRP,
                                 c.DiscountAmount,
                                 c.Description,
+                                u.CreatedBy,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
@@ -279,6 +280,8 @@ namespace AdminApi.Controllers
                                 c.MRP,
                                 c.DiscountAmount,
                                 c.Description,
+                                c.Thumbnail,
+                                u.CreatedBy,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
 
