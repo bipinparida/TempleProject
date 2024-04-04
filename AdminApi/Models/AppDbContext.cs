@@ -1,4 +1,5 @@
-﻿using AdminApi.Models.App.Banner;
+﻿using AdminApi.Models.App.Address;
+using AdminApi.Models.App.Banner;
 using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Booking;
 using AdminApi.Models.App.Categories;
@@ -64,7 +65,7 @@ namespace AdminApi.Models
         public virtual DbSet<SubCategory> SubCategorys { get; set; }
         public virtual DbSet<Horoscope> Horoscopes { get; set; }
 
-
+        public virtual DbSet<Address> Addresss { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
@@ -286,6 +287,15 @@ namespace AdminApi.Models
 .HasDefaultValue(System.DateTime.Now);
 
             modelBuilder.Entity<Horoscope>()
+              .Property(s => s.IsDeleted)
+              .HasDefaultValue(false)
+              .ValueGeneratedNever();
+
+            modelBuilder.Entity<Address>()
+.Property(s => s.CreatedOn)
+.HasDefaultValue(System.DateTime.Now);
+
+            modelBuilder.Entity<Address>()
               .Property(s => s.IsDeleted)
               .HasDefaultValue(false)
               .ValueGeneratedNever();
