@@ -1,11 +1,11 @@
 ﻿using AdminApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using AdminApi.Models.App.Address;
 using AdminApi.Models.Helper;
 using System;
-using AdminApi.DTO.App.AddressDTO;
 using System.Linq;
+using AdminApi.Models.App.Orders;
+using AdminApi.DTO.App.OrderDTO;
 
 namespace AdminApi.Controllers
 {
@@ -36,15 +36,17 @@ namespace AdminApi.Controllers
             {
                 Address address = new Address();
 
-                address.Name = createAddressDTO.Name;
+                address.FullName = createAddressDTO.FullName;
                 address.Pincode = createAddressDTO.Pincode;
                 address.CountryId = createAddressDTO.CountryId;
                 address.StateId = createAddressDTO.StateId;
-                address.CityId = createAddressDTO.CityId;
+                address.CityName = createAddressDTO.CityName;
                 address.PrimaryPhone = createAddressDTO.PrimaryPhone;
                 address.AlternatePhone = createAddressDTO.AlternatePhone;
                 address.MailId = createAddressDTO.MailId;
                 address.HouseNumber = createAddressDTO.HouseNumber;
+                address.AddressLine1 = createAddressDTO.AddressLine1;
+                address.LandMark = createAddressDTO.LandMark;
 
 
                 address.CreatedBy = createAddressDTO.CreatedBy;
@@ -70,15 +72,17 @@ namespace AdminApi.Controllers
             {
                 var objAddress = _context.Addresss.SingleOrDefault(opt => opt.AddressId == updateAddressDTO.AddressId);
 
-                objAddress.Name = updateAddressDTO.Name;
+                objAddress.FullName = updateAddressDTO.FullName;
                 objAddress.Pincode = updateAddressDTO.Pincode;
                 objAddress.CountryId = updateAddressDTO.CountryId;
                 objAddress.StateId = updateAddressDTO.StateId;
-                objAddress.CityId = updateAddressDTO.CityId;
+                objAddress.CityName = updateAddressDTO.CityName;
                 objAddress.PrimaryPhone = updateAddressDTO.PrimaryPhone;
                 objAddress.AlternatePhone = updateAddressDTO.AlternatePhone;
                 objAddress.MailId = updateAddressDTO.MailId;
                 objAddress.HouseNumber = updateAddressDTO.HouseNumber;
+                objAddress.AddressLine1 = updateAddressDTO.AddressLine1;
+                objAddress.LandMark = updateAddressDTO.LandMark;
 
 
                 objAddress.UpdatedBy = updateAddressDTO.UpdatedBy;
@@ -103,13 +107,12 @@ namespace AdminApi.Controllers
                 var list = (from u in _context.Addresss
                             join b in _context.Countries on u.CountryId equals b.CountryId
                             join t in _context.States on u.StateId equals t.StateId
-                            join p in _context.Cities on u.CityId equals p.CityId
                             join a in _context.Bhaktas on u.CreatedBy equals a.BhaktaId
 
                             select new
                             {
                                 u.AddressId,
-                                u.Name,
+                                u.FullName,
                                 u.Pincode,
                                 u.CountryId,
                                 a.BhaktaId,
@@ -117,12 +120,13 @@ namespace AdminApi.Controllers
                                 b.CountryName,
                                 u.StateId,
                                 t.StateName,
-                                u.CityId,
-                                p.CityName,
+                                u.CityName,
                                 u.PrimaryPhone,
                                 u.AlternatePhone,
                                 u.MailId,
                                 u.HouseNumber,
+                                u.AddressLine1,
+                                u.LandMark,
 
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
@@ -187,25 +191,25 @@ namespace AdminApi.Controllers
                 var list = (from u in _context.Addresss
                             join b in _context.Countries on u.CountryId equals b.CountryId
                             join t in _context.States on u.StateId equals t.StateId
-                            join p in _context.Cities on u.CityId equals p.CityId
                             join a in _context.Bhaktas on u.CreatedBy equals a.BhaktaId
 
                             select new
                             {
                                 u.AddressId,
-                                u.Name,
+                                u.FullName,
                                 u.Pincode,
                                 u.CountryId,
                                 a.BhaktaId,
                                 b.CountryName,
                                 u.StateId,
                                 t.StateName,
-                                u.CityId,
-                                p.CityName,
+                                u.CityName,
                                 u.PrimaryPhone,
                                 u.AlternatePhone,
                                 u.MailId,
                                 u.HouseNumber,
+                                u.AddressLine1,
+                                u.LandMark,
                                 u.CreatedBy,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false && x.CreatedBy == BhaktaId).ToList();

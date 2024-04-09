@@ -1,5 +1,4 @@
-﻿using AdminApi.Models.App.Address;
-using AdminApi.Models.App.Banner;
+﻿using AdminApi.Models.App.Banner;
 using AdminApi.Models.App.Bhaktas;
 using AdminApi.Models.App.Booking;
 using AdminApi.Models.App.Categories;

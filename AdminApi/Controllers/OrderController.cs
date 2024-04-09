@@ -128,24 +128,24 @@ namespace AdminApi.Controllers
                             join c in _context.Addresss on u.AddressId equals c.AddressId
                             join e in _context.Countries on c.CountryId equals e.CountryId
                             join f in _context.States on c.StateId equals f.StateId
-                            join g in _context.Cities on c.CityId equals g.CityId
 
                             select new
                             {
                                 u.OrderId,
                                 u.AddressId,
-                                c.Name,
+                                c.FullName,
                                 c.Pincode,
                                 c.CountryId,
                                 e.CountryName,
                                 c.StateId,
                                 f.StateName,
-                                c.CityId,
-                                g.CityName,
+                                c.CityName,
                                 c.PrimaryPhone,
                                 c.AlternatePhone,
                                 c.MailId,
                                 c.HouseNumber,
+                                c.AddressLine1,
+                                c.LandMark,
                                 u.TotalQuantity,
                                 u.TotalAmount,
                                 u.IsDeleted,
@@ -185,23 +185,23 @@ namespace AdminApi.Controllers
                             join c in _context.Addresss on u.AddressId equals c.AddressId
                             join e in _context.Countries on c.CountryId equals e.CountryId
                             join f in _context.States on c.StateId equals f.StateId
-                            join g in _context.Cities on c.CityId equals g.CityId
 
                             select new
                             {
                                 u.OrderId,
                                 u.AddressId,
-                                c.Name,
+                                c.FullName,
                                 c.CountryId,
                                 e.CountryName,
                                 c.StateId,
                                 f.StateName,
-                                c.CityId,
-                                g.CityName,
+                                c.CityName,
                                 c.PrimaryPhone,
                                 c.AlternatePhone,
                                 c.MailId,
                                 c.HouseNumber,
+                                c.AddressLine1,
+                                c.LandMark,
                                 u.TotalQuantity,
                                 u.TotalAmount,
                                 u.IsDeleted,
