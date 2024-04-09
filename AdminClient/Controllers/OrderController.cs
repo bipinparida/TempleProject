@@ -9,5 +9,10 @@ namespace AdminClient.Controllers
         {
             return View();
         }
+        public IActionResult OrderItemList(int OrderId)
+        {
+            ViewBag.OrderId = OrderId;
+            return View();
+        }
     }
 }

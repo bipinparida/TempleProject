@@ -105,11 +105,13 @@ namespace AdminApi.Controllers
             {
                 var list = (from u in _context.Checkouts
                             join c in _context.Products on u.ProductId equals c.ProductId
-
+                            join a in _context.Bhaktas on u.CreatedBy equals a.BhaktaId
                             select new
                             {
                                 u.ProductId,
                                 u.Quantity,
+                                a.BhaktaId,
+                                a.BhaktaName,
                                 c.ProductName,
                                 c.CategoryId,
                                 c.SubCategoryId,
@@ -238,24 +240,62 @@ namespace AdminApi.Controllers
         ///<summary>
         ///CheckOutDeleteAfterOrder by ProductId , DeletedBy and CreatedBy
         ///</summary>
-        [HttpGet("{ProductId}/{DeletedBy}/{CreatedBy}")]
-        public ActionResult CheckOutDeleteAfterOrder(int ProductId,int DeletedBy, int CreatedBy)
+        //[HttpGet("{ProductId}/{DeletedBy}/{CreatedBy}")]
+        //public ActionResult CheckOutDeleteAfterOrder(int ProductId, int DeletedBy, int CreatedBy)
+        //{
+        //    try
+        //    {
+        //        var objCheckout = _context.Checkouts.SingleOrDefault(opt => opt.ProductId == ProductId && opt.IsDeleted == false && opt.CreatedBy == CreatedBy);
+
+        //        if (objCheckout != null)
+        //        {
+        //            objCheckout.IsDeleted = true;
+        //            objCheckout.UpdatedBy = DeletedBy;
+        //            objCheckout.UpdatedOn = DateTime.Now;
+        //            _context.SaveChanges();
+        //            return Ok(objCheckout);
+        //        }
+        //        else
+        //        {
+        //            return NotFound();
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //}
+
+
+
+        ///<summary>
+        ///CheckOutDeleteAfterOrder by ProductId , CreatedBy
+        ///</summary>
+        [HttpGet("{ProductId}/{CreatedBy}")]
+        public ActionResult CheckOutDeleteAfterOrder(int ProductId, int CreatedBy)
         {
-            var objCheckout = _context.Checkouts.SingleOrDefault(opt => opt.ProductId == ProductId && opt.IsDeleted == false && opt.CreatedBy == CreatedBy);
-            if (objCheckout != null)
+            try
             {
-                objCheckout.IsDeleted= true;
-                objCheckout.UpdatedBy = DeletedBy;
-                objCheckout.UpdatedOn = DateTime.Now;
-                _context.SaveChanges();
-                return Ok(objCheckout);
+                var objCheckout = _context.Checkouts.SingleOrDefault(opt => opt.ProductId == ProductId && opt.CreatedBy == CreatedBy);
+
+                if (objCheckout != null)
+                {
+                    objCheckout.IsDeleted = true;
+                    objCheckout.UpdatedBy = CreatedBy;
+                    objCheckout.UpdatedOn = DateTime.Now;
+                    _context.SaveChanges();
+                    return Ok(objCheckout);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch
             {
-                return NotFound();
+                throw;
             }
         }
-
 
         ///<summary>
         ///Get Checkout List by Createdby
@@ -284,6 +324,37 @@ namespace AdminApi.Controllers
                                 u.CreatedBy,
                                 u.IsDeleted
                             }).Where(x => x.IsDeleted == false).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+        }
+
+        ///<summary>
+        ///Get chekoutlist by bhaktaId
+        ///</summary>
+        [HttpGet("{BhaktaId}/{CreatedBy}")]
+        public ActionResult chekoutlistbyBhaktaId(int BhaktaId)
+        {
+            try
+            {
+                var list = (from u in _context.Checkouts
+                            join t in _context.Bhaktas on u.CreatedBy equals t.BhaktaId
+
+                            select new
+                            {
+                                u.CheckoutId,
+                                u.ProductId,
+                                u.Quantity,
+                                u.CreatedBy,
+                                t.BhaktaId,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.CreatedBy == BhaktaId).ToList();
 
                 int totalRecords = list.Count();
 

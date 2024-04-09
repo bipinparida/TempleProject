@@ -3,50 +3,34 @@
 @inject IConfiguration Configuration;
 
 @{
-    ViewBag.Title = "Order";
+    ViewBag.Title = "OrderItem";
     string apiUrl = Configuration.GetValue<string>("WebAPIBaseUrl");
 }
+
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#"><i class="fe fe-file-text mr-1"></i>Admin Console</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Order List</li>
+        <li class="breadcrumb-item active" aria-current="page">OrderItem List</li>
     </ol>
+   
 </div>
 
 <div class="row">
     <div class="col-md-12 col-lg-12">
         <div class="card">
-
             <div class="card-header">
-
-                <button class="btn btn-info btn-icon btn-sm text-white mr-2">
-                    <span>
-                        <i class="fa fa-list"></i>
-                    </span> OrderItemList
-                </button>
-
-
+                <div class="card-title">OrderItem List</div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="Order_Tb" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline" style="width:100%">
+                    <table id="OrderItem_Tb" class="table table-striped table-bordered nowrap dataTable no-footer dtr-inline" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Pincode</th>
-                                <th>Country Name</th>
-                                <th>State Name</th>
-                                <th>City Name</th>
-                                <th>PrimaryPhone Number</th>
-                                <th>AlternatePhone Number</th>
-                                <th>MailId</th>
-                                <th>House Number</th>
-                                <th>Total Quantity</th>
-                                <th>Total Amount</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
                                 <th>Action</th>
-
-                                <th>OrderItem</th>
                             </tr>
                         </thead>
                     </table>
@@ -55,16 +39,19 @@
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
+
 @section scripts {
     <script>
-
-        //List
-        loadOrder()
-        async function loadOrder() {
-            var table = $('#Order_Tb').DataTable();
+        var orderId = @ViewBag.OrderId
+            //List
+            loadorderitem()
+        async function loadorderitem() {
+            var table = $('#OrderItem_Tb').DataTable();
             table.destroy();
-            table = $('#Order_Tb').dataTable({
+            table = $('#OrderItem_Tb').dataTable({
                 "paginationType": "full_numbers",
                 "dom": 'Bfrtip',
                 "buttons": ['excel', 'print'],
@@ -73,7 +60,7 @@
                 "sort": true,
                 "info": true,
                 "ajax": {
-                    "url": '@apiUrl/api/Order/GetAllOrderList',
+                    "url": '@apiUrl/api/Order/GetOrderItemListbyOrderId/' + orderId,
                     "type": "GET",
                     "dataType": "json",
                     "headers": {
@@ -89,35 +76,24 @@
                 },
                 "order": [],
                 "columns": [
-                    { "data": "name", "orderable": true, "visible": true },
-                    { "data": "pincode", "orderable": true, "visible": true },
-                    { "data": "countryName", "orderable": true, "visible": true },
-                    { "data": "stateName", "orderable": true, "visible": true },
-                    { "data": "cityName", "orderable": true, "visible": true },
-                    { "data": "primaryPhone", "orderable": true, "visible": true },
-                    { "data": "alternatePhone", "orderable": true, "visible": true },
-                    { "data": "mailId", "orderable": true, "visible": true },
-                    { "data": "houseNumber", "orderable": true, "visible": true },
-                    { "data": "totalQuantity", "orderable": true, "visible": true },
-                    { "data": "totalAmount", "orderable": true, "visible": true },
-                    {
-                        "render": function (data, type, row) {
-                            return  '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.orderId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
+                    { "data": "productName", "orderable": true, "visible": true },
+                    { "data": "quantity", "orderable": true, "visible": true },
+                    { "data": "amount", "orderable": true, "visible": true },
 
-                        }
-                    },
                     {
                         "render": function (data, type, row) {
-                            return '  &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp  &nbsp&nbsp &nbsp&nbsp<a class="btn btn-sm btn-info" title="OrderItem" href="../Order/OrderItemList?orderId=' + row.orderId + '"><i class="fa fa-list"></i></a>';
+                            return '&nbsp&nbsp<button class="btn btn-sm btn-danger" data-target="#delete" data-id=' + row.orderId + ' data-title="Delete"><i class="fa fa-trash"></i></button>';
 
                         }
                     }
                 ]
             });
+
         }
 
+
         //Delete
-        $('#Order_Tb tbody').on('click', 'button[data-target="#delete"]', function () {
+        $('#OrderItem_Tb tbody').on('click', 'button[data-target="#delete"]', function () {
             var id = $(this).data('id');
             swal({
                 html: true,
@@ -139,10 +115,10 @@
                     dataType: "json",
                     success: function (data, statusText, xhr) {
                         if (xhr.status == 200) {
-                            $('#Order_Tb').DataTable().ajax.reload(null, false);
+                            $('#OrderItem_Tb').DataTable().ajax.reload(null, false);
                             sweetAlert({
                                 html: true,
-                                title: "Order",
+                                title: "OrderItem",
                                 text: "Successfully deleted!",
                                 type: "success"
                             });
@@ -163,5 +139,8 @@
             });
         });
 
+
     </script>
+
+
 }

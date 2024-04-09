@@ -41,7 +41,7 @@ namespace AdminApi.Controllers
             {
                 Order order = new Order();
 
-                order.BhaktaId = createOrderDTO.BhaktaId;
+                order.AddressId = createOrderDTO.AddressId;
                 order.TotalQuantity = createOrderDTO.TotalQuantity;
                 order.TotalAmount = createOrderDTO.TotalAmount;
 
@@ -81,7 +81,7 @@ namespace AdminApi.Controllers
                 var objOrder = _context.Orders.SingleOrDefault(opt => opt.OrderId == updateOrderDTO.OrderId);
                 if (objOrder != null)
                 {
-                    objOrder.BhaktaId = updateOrderDTO.BhaktaId;
+                    objOrder.AddressId = updateOrderDTO.AddressId;
                     objOrder.TotalQuantity = updateOrderDTO.TotalQuantity;
                     objOrder.TotalAmount = updateOrderDTO.TotalAmount;
                     objOrder.UpdatedBy = updateOrderDTO.UpdatedBy;
@@ -124,12 +124,28 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.Orders
-                            join c in _context.Bhaktas on u.BhaktaId equals c.BhaktaId
+                                
+                            join c in _context.Addresss on u.AddressId equals c.AddressId
+                            join e in _context.Countries on c.CountryId equals e.CountryId
+                            join f in _context.States on c.StateId equals f.StateId
+                            join g in _context.Cities on c.CityId equals g.CityId
+
                             select new
                             {
                                 u.OrderId,
-                                u.BhaktaId,
-                                c.BhaktaName,
+                                u.AddressId,
+                                c.Name,
+                                c.Pincode,
+                                c.CountryId,
+                                e.CountryName,
+                                c.StateId,
+                                f.StateName,
+                                c.CityId,
+                                g.CityName,
+                                c.PrimaryPhone,
+                                c.AlternatePhone,
+                                c.MailId,
+                                c.HouseNumber,
                                 u.TotalQuantity,
                                 u.TotalAmount,
                                 u.IsDeleted,
@@ -143,7 +159,7 @@ namespace AdminApi.Controllers
                                              r.Amount,
                                          }).ToList()
 
-                            }).Where(x => x.IsDeleted == false).Distinct().ToList();
+                            }).Where(x => x.IsDeleted == false).ToList();
 
                 int totalRecords = list.Count();
 
@@ -165,13 +181,27 @@ namespace AdminApi.Controllers
             try
             {
                 var list = (from u in _context.Orders
-                            join c in _context.Bhaktas on u.BhaktaId equals c.BhaktaId
+
+                            join c in _context.Addresss on u.AddressId equals c.AddressId
+                            join e in _context.Countries on c.CountryId equals e.CountryId
+                            join f in _context.States on c.StateId equals f.StateId
+                            join g in _context.Cities on c.CityId equals g.CityId
 
                             select new
                             {
                                 u.OrderId,
-                                u.BhaktaId,
-                                c.BhaktaName,
+                                u.AddressId,
+                                c.Name,
+                                c.CountryId,
+                                e.CountryName,
+                                c.StateId,
+                                f.StateName,
+                                c.CityId,
+                                g.CityName,
+                                c.PrimaryPhone,
+                                c.AlternatePhone,
+                                c.MailId,
+                                c.HouseNumber,
                                 u.TotalQuantity,
                                 u.TotalAmount,
                                 u.IsDeleted,
@@ -222,32 +252,64 @@ namespace AdminApi.Controllers
         ///<summary>
         ///Get Order List by Bhakta ID
         ///</summary>
-        [HttpGet("{BhaktaId}")]
-        public ActionResult GetOrderListbyBhaktaId(int BhaktaId)
+        //[HttpGet("{BhaktaId}")]
+        //public ActionResult GetOrderListbyBhaktaId(int BhaktaId)
+        //{
+        //    try
+        //    {
+        //        var list = (from u in _context.Orders
+        //                    join t in _context.Bhaktas on u.BhaktaId equals t.BhaktaId
+        //                    where u.BhaktaId == BhaktaId
+        //                    select new
+        //                    {
+        //                        u.OrderId,
+        //                        u.BhaktaId,
+        //                        u.TotalQuantity,
+        //                        u.TotalAmount,
+        //                        u.IsDeleted,
+        //                        OrderItem = (from r in _context.OrderItems
+        //                                     join s in _context.Products on r.ProductId equals s.ProductId
+        //                                     where r.OrderId == u.OrderId
+        //                                     select new
+        //                                     {
+        //                                         r.OrderId,
+        //                                         s.ProductName,
+        //                                         r.Quantity,
+        //                                         r.Amount,
+        //                                     }).ToList()
+        //                    }).Where(x => x.IsDeleted == false).Distinct().ToList();
+        //        int totalRecords = list.Count();
+
+        //        return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+        //    }
+        //}
+
+        ///<summary>
+        ///Gat OrderItem List by Order ID
+        ///</summary>
+        [HttpGet("{OrderId}")]
+        public ActionResult GetOrderItemListbyOrderId(int OrderId)
         {
             try
             {
                 var list = (from u in _context.Orders
-                            join t in _context.Bhaktas on u.BhaktaId equals t.BhaktaId
-                            where u.BhaktaId == BhaktaId
+                            join t in _context.OrderItems on u.OrderId equals t.OrderId
+                            join a in _context.Products on t.ProductId equals a.ProductId
+
                             select new
                             {
                                 u.OrderId,
-                                u.BhaktaId,
-                                u.TotalQuantity,
-                                u.TotalAmount,
-                                u.IsDeleted,
-                                OrderItem = (from r in _context.OrderItems
-                                             join s in _context.Products on r.ProductId equals s.ProductId
-                                             where r.OrderId == u.OrderId
-                                             select new
-                                             {
-                                                 r.OrderId,
-                                                 s.ProductName,
-                                                 r.Quantity,
-                                                 r.Amount,
-                                             }).ToList()
-                            }).Where(x => x.IsDeleted == false).Distinct().ToList();
+                                t.ProductId,
+                                a.ProductName,
+                                t.Quantity,
+                                t.Amount,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.OrderId == OrderId).ToList();
+
                 int totalRecords = list.Count();
 
                 return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });

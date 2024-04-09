@@ -1,10 +1,7 @@
-﻿using AdminApi.Models.App.Banner;
-using AdminApi.Models;
+﻿using AdminApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using AdminApi.Models.App.Address;
-using AdminApi.DTO.App.BookingDTO;
-using AdminApi.Models.App.Booking;
 using AdminApi.Models.Helper;
 using System;
 using AdminApi.DTO.App.AddressDTO;
@@ -107,6 +104,7 @@ namespace AdminApi.Controllers
                             join b in _context.Countries on u.CountryId equals b.CountryId
                             join t in _context.States on u.StateId equals t.StateId
                             join p in _context.Cities on u.CityId equals p.CityId
+                            join a in _context.Bhaktas on u.CreatedBy equals a.BhaktaId
 
                             select new
                             {
@@ -114,6 +112,8 @@ namespace AdminApi.Controllers
                                 u.Name,
                                 u.Pincode,
                                 u.CountryId,
+                                a.BhaktaId,
+                                a.BhaktaName,
                                 b.CountryName,
                                 u.StateId,
                                 t.StateName,
@@ -173,6 +173,53 @@ namespace AdminApi.Controllers
             {
                 return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
             }
+        }
+
+        ///<summary>
+        ///Get Address by BhaktaId
+        ///</summary>
+        [HttpGet("{BhaktaId}/{CreatedBy}")]
+        public ActionResult GetAddressByBhaktaId(int BhaktaId)
+        {
+
+            try
+            {
+                var list = (from u in _context.Addresss
+                            join b in _context.Countries on u.CountryId equals b.CountryId
+                            join t in _context.States on u.StateId equals t.StateId
+                            join p in _context.Cities on u.CityId equals p.CityId
+                            join a in _context.Bhaktas on u.CreatedBy equals a.BhaktaId
+
+                            select new
+                            {
+                                u.AddressId,
+                                u.Name,
+                                u.Pincode,
+                                u.CountryId,
+                                a.BhaktaId,
+                                b.CountryName,
+                                u.StateId,
+                                t.StateName,
+                                u.CityId,
+                                p.CityName,
+                                u.PrimaryPhone,
+                                u.AlternatePhone,
+                                u.MailId,
+                                u.HouseNumber,
+                                u.CreatedBy,
+                                u.IsDeleted
+                            }).Where(x => x.IsDeleted == false && x.CreatedBy == BhaktaId).ToList();
+
+                int totalRecords = list.Count();
+
+                return Ok(new { data = list, recordsTotal = totalRecords, recordsFiltered = totalRecords });
+            }
+            catch (Exception ex)
+            {
+                return Accepted(new Confirmation { Status = "error", ResponseMsg = ex.Message });
+            }
+
+
         }
     }
 }

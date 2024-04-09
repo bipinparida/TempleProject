@@ -5,7 +5,7 @@ namespace AdminApi.Models.App.Orders
     public class Order
     {
         public int OrderId { get; set; }
-        public int BhaktaId { get; set; }
+        public int AddressId { get; set; }
         public int TotalQuantity { get; set; }
         public double TotalAmount { get; set; }
 
